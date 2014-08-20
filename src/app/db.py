@@ -9,7 +9,8 @@ class Db(object):
 	def __init__(self, dbName, dbUser, dbPassword, dbPort, dbHost):
 		pass
 	
-	# add query methods
+	def insertRecord(**kwargs):
+		pass
 
 	def __del__(self):
 		pass
