@@ -43,7 +43,7 @@ class DB(object):
 		pg_fields = []
 
 		for field in query_fields:
-			pg_fields.append('%(' + field + ')')
+			pg_fields.append('%(' + field + ')s')
 		
 		query_field_string = ', '.join(query_fields)
 		query_pg_string = ', '.join(pg_field)
