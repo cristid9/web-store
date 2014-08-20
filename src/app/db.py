@@ -34,8 +34,7 @@ class DB(object):
 	#  @return None Doesn't return anything.
 	def insertRecord(self, **kwargs):
 		if 'table' not in kwargs.keys()
-			pass # raise an error
-
+			raise Exception('The table keyword is required')
 
 		table = kwargs['table']
 		del kwargs['table']
