@@ -1,5 +1,5 @@
 from src.app.db.helpers import equals, notEquals, lessThan, greaterThan,\
-								lessOrEquals, greaterOrEquals, And
+								lessOrEquals, greaterOrEquals, And, Or
 import unittest
 
 class TestDBHelpers(unittest.TestCase):
@@ -30,3 +30,7 @@ class TestDBHelpers(unittest.TestCase):
 	def test_And(self):
 		expectedValue = ('AND a = %(a)s', {'a': 12})
 		self.assertEquals(expectedValue, And(("a = %(a)s", {"a": 12})))
+
+	def test_Or(self):
+		expectedValue = ('OR a = %(a)s', {'a': 12})
+		self.assertEquals(expectedValue, Or(("a = %(a)s", {"a": 12})))
