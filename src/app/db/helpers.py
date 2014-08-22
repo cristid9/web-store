@@ -2,6 +2,13 @@
 #
 #  This package will contains helpers for using the database
 
+def And(expr):
+	newExpr = list(expr)
+	newExpr[0] = "AND " + newExpr[0]
+	return tuple(newExpr)
+
+
+
 ##
 #
 #
