@@ -10,3 +10,7 @@ class TestDB(unittest.TestCase):
 			dbPort=5432 
 		)	
 		self.dbCur = self.dbConn()
+
+	def tearDown(self):
+		self.dbConn.close()
+		self.dbCur.close()
