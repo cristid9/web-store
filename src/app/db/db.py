@@ -115,6 +115,18 @@ class DB(object):
 
 		return self
 
-	
+	##
+	#
+	#
+	#
+	#
+	def deleteFrom(self, table):
+		query = "DELETE FROM " + table 
+
+		self.dbQuery = (query, {})
+		self.dbQueryType = self.DELETE
+
+		return self
+		
 	def __del__(self):
 		pass

@@ -44,7 +44,14 @@ class TestDB(unittest.TestCase):
 			
 		self.assertEqual(self.db.dbQuery, expectedValue)
 
+	def test_update(self):
+		self.db.update('test', a='b', c='d')
+		
+		expectedValue = ('UPDATE test SET a=%(a)s, c=%(c)s', {
+				"a": "b",
+				"c": "d"
+			}
+		)
 
-
-
+		self.assertEqual(expectedValue, self.db.dbQuery)
 
