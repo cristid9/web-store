@@ -55,3 +55,9 @@ class TestDB(unittest.TestCase):
 
 		self.assertEqual(expectedValue, self.db.dbQuery)
 
+	def test_delete(self):
+		self.db.deleteFrom('test')
+		
+		expectedValue = ('DELETE FROM test', {})
+		self.assertEqual(expectedValue, self.db.dbQuery)
+
