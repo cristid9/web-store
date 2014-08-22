@@ -42,8 +42,7 @@ class DB(object):
 	#
 	#  @return None Doesn't return anything.
 	def insertRecord(self, table, **kwargs):
-
-		query_fields = kwargs.keys()
+		query_fields = sorted(kwargs.keys())
 		pg_fields = []
 
 		for field in query_fields:
@@ -57,7 +56,19 @@ class DB(object):
 			kwargs
 		)
 
-		self.dbQueryType = INSERT
+		self.dbQueryType = self.INSERT
+
+		return self
+	
+	## Dockblock here
+	#
+	#
+	#
+	#
+	def select(self, table, *args):
+		query = "SELECT " + ", ".join(sorted(args)) + " FROM " + str(table)
+		self.dbQuery = (query, {})
+		self.dbQUeryType = self.SELECT
 
 		return self
 
