@@ -139,7 +139,16 @@ class DB(object):
 		self.dbQueryType = self.DELETE
 
 		return self
-		
+	##
+	#
+	#
+	def paginate(self, index, items):
+		self.dbQuery = list(self.dbQuery)
+		self.dbQuery[0] += "LIMIT " + str(index) + " OFFSET " + str(items)	
+		self.dbQuery = tuple(self.dbQuery)
+
+		return self
+	
 	def __del__(self):
 		self.cur.close()
 		self.conn.close()
