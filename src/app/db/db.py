@@ -68,7 +68,7 @@ class DB(object):
 	def select(self, table, *args):
 		query = "SELECT " + ", ".join(sorted(args)) + " FROM " + str(table)
 		self.dbQuery = (query, {})
-		self.dbQUeryType = self.SELECT
+		self.dbQueryType = self.SELECT
 
 		return self
 
@@ -95,10 +95,22 @@ class DB(object):
 	#
 	#
 	def perform(self):
+		returnValue = []
 		self.cur.execute(*self.dbQuery)
 		
 		if self.dbQueryType != self.SELECT:
 			self.conn.commit()
+
+		if self.dbQueryType == self.SELECT:
+			returnValue = self.cur.fetchall()
+		
+		self.dbQuery = None
+		self.dbQueryType = None
+
+		return returnValue
+		
+		
+
 	
 	##
 	#
@@ -129,4 +141,5 @@ class DB(object):
 		return self
 		
 	def __del__(self):
-		pass
+		self.cur.close()
+		self.conn.close()
