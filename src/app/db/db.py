@@ -100,5 +100,21 @@ class DB(object):
 		if self.dbQueryType != self.SELECT:
 			self.conn.commit()
 	
+	##
+	#
+	#
+	#
+	#
+	#
+	def update(self, table, **kwargs):
+		query = 'UPDATE ' + table + ' SET '
+		query += ", ".join(key + '=%(' + key + ')s' for key in kwargs.keys())
+		
+		self.dbQuery = (query, kwargs)
+		self.dbQueryType = self.UPDATE
+
+		return self
+
+	
 	def __del__(self):
 		pass
