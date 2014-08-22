@@ -31,3 +31,9 @@ def lessOrEquals(op1, op2):
 #
 def greaterThan(op1, op2):
 	return (str(op1) + " > %(" + str(op1) + ")s", {str(op1): str(op2)})
+
+##
+#
+#
+def greaterOrEquals(op1, op2):
+	return (str(op1) + " >= %(" + str(op1) + ")s", {str(op1): str(op2)})
