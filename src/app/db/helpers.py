@@ -23,7 +23,7 @@ def lessThan(op1, op2):
 ##
 #
 #
-def lessOrEqual(op1, op2):
+def lessOrEquals(op1, op2):
 	return (str(op1) + " <= %(" + str(op1) + ")s", {str(op1): str(op2)})
 
 ##
