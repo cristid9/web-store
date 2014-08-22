@@ -7,7 +7,7 @@ def And(expr):
 	newExpr[0] = "AND " + newExpr[0]
 	return tuple(newExpr)
 
-def Or(epxr):
+def Or(expr):
 	newExpr = list(expr)
 	newExpr[0] = "OR " + newExpr[0]
 	return tuple(newExpr)
