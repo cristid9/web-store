@@ -61,3 +61,14 @@ class TestDB(unittest.TestCase):
 		expectedValue = ('DELETE FROM test', {})
 		self.assertEqual(expectedValue, self.db.dbQuery)
 
+	def test_paginate(self):
+		self.db.dbQuery = ("", {})
+		self.db.paginate(1, 2)
+		
+		expectedValue = ("LIMIT 1 OFFSET 2", {})
+
+		self.assertEqual(expectedValue, self.db.dbQuery)
+
+
+		
+
