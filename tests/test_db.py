@@ -1,5 +1,5 @@
 import unittest
-from src.app.db import DB
+from src.app.db.db import DB
 
 class TestDB(unittest.TestCase):
 	def setUp(self):
