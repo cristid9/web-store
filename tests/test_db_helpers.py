@@ -1,4 +1,5 @@
-from src.app.db.helpers import equals, notEquals, lessThan, greaterThan
+from src.app.db.helpers import equals, notEquals, lessThan, greaterThan,\
+								lessOrEquals
 import unittest
 
 class TestDBHelpers(unittest.TestCase):
@@ -17,3 +18,7 @@ class TestDBHelpers(unittest.TestCase):
 	def test_greaterThan(self):
 		expectedValue =	 ('a > %(a)s', {'a': '12'}) 
 		self.assertEquals(expectedValue, greaterThan('a', 12))		
+
+	def test_lessOrEquals(self):
+		expectedValue = ('a <= %(a)s', {'a': '12'})
+		self.assertEquals(expectedValue, lessOrEquals('a', 12))
