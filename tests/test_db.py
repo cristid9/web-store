@@ -31,3 +31,20 @@ class TestDB(unittest.TestCase):
 		expectedValue = (queryString, {})
 
 		self.assertEqual(self.db.dbQuery, expectedValue)
+
+	def test_where(self):
+		self.db.dbQuery = ("", {})
+		self.db.where(("a = %(a)s", {"a": 2}), ("AND b = %(b)s", {"b": 2}))
+	
+		expectedValue = (" WHERE a = %(a)s AND b = %(b)s", {
+				"a": 2,
+				"b": 2
+			}
+		)
+			
+		self.assertEqual(self.db.dbQuery, expectedValue)
+
+
+
+
+
