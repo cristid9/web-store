@@ -17,6 +17,8 @@ class Product(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	price = db.Column(db.Float, nullable=False)
 	stock = db.Column(db.Integer, nullable=False)
+	comments = db.relationship('ProductComments', backref='product', 
+								lazy='dynamic')
 
 
 	def __init__(self, name, price, stock):
