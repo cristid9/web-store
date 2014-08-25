@@ -10,3 +10,9 @@ def index():
 @app.route('/login')
 def login():
 	pass
+
+@app.route('/singup')
+def singup():
+	pass
+
+
