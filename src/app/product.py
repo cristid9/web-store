@@ -4,35 +4,24 @@
 #
 #
 
+from main import db
+
 ##
 #
 #
 #
-class Product(object):
-	
-	def __init__(self, db, product_id):
-		self.db = db
-		self.name = None
-		self.pictures = None
-		self.price = None
-		self.availability = None
-		self.comments = None
-		self.product_id = None
-	
-	@staticmethod
-	def addProduct(self, name, pictures, price, stock):
-		# Add product to the products table
-		pass
+class Product(db.Model):
+	__tablename__ = 'product_table'
 
-	@staticmethod
-	def deleteProduct(self, product_id):
-		pass
+	id = db.Column(db.Integer, primary_key=True)
+	price = db.Column(db.Float, nullable=False)
+	stock = db.Column(db.Integer, nullable=False)
 
-	def loadProduct(self, product_id):
-		pass
 
-	def addProductCommnet(self, comment):
-		pass
+	def __init__(self, name, price, stock):
+		self.name = name
+		self.price = price
+		self.stock = stock
 
-	def paginateComments(self):
-		pass
+	def __repr__(self):
+		return "<Product(%r, %r, %)>" % (self.name, self.price, self.stock)
