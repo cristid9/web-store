@@ -4,35 +4,57 @@
 #
 #
 
+from main import db
+
 ##
 #
 #
 #
-class User(object):
-	
+class User(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	username = db.Column(db.Integer, nullable=False)
+	name = db.Column(db.String, nullable=False)
+	password = db.Column(db.String, nullable=False)
+	userData = db.relationship('UserData', backref='user', lazy='dynamic')
+
 	##
 	#
 	#
 	#
-	def __init__(self, db=None, user_id=None):
-		self.db = db
-		self.username = None
-		self.email = None
-		self.state = None
-		self.user_id = user_id
-		self.loadUser(user_id)
+	def __init__(self, username, name, password):
+		self.username = username
+		self.name = name
+		self.password = password
+		
+	def __repr__(self):
+		return "<User(%r, %r, %)>" % (self.username, self.name, self.password)
 
-	@staticmethod
-	def addUser( username, password, email):
-		# Add query to add a new record in the user table
-		pass
 
-	def loadUser(self, user_id):
-		# Add query to load a user from the database
-		pass
+class UserData(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	phone = db.Column(db.Integer)
+	email = db.Column(db.String)
+	region = db.Column(db.String)
+	city = db.Column(db.String)
+	address = db.Column(db.String)
 
-	@staticmethod	
-	def deleteUser(user_id):
-		# Delete a user using it's id
-		pass
-			
+	def __init__(self, phone=None, email=None, region=None, city=None,
+				 address=None):
+		self.phone = phone
+		self.email = email
+		self.region = region
+		self.city = city
+		self.address = address
+
+	def __repr__(self):
+		return "<UserData(%r, %r, %r, %r, %r)>" % (self.phone, self.email
+				self.region, self.city, self.address)
+
+
+
+
+
+
+
+
+
