@@ -21,9 +21,9 @@ class Cart(object):
 	def deleteFromCart(self, productId):
 		del self.items[productId]
 	
-	def updateQuantity(self, newQuantity):
-		pass
-	
+	def updateQuantity(self, productId, toAdd):
+		self.items[productId] += toAdd
+
 	def getTotal(self):
 		pass
 	
