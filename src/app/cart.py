@@ -3,9 +3,28 @@
 #
 #
 
+from main import db
+
 ##
 #
 #
 #
-class Chart(object):
+class Cart(object):
+	items = {}
+	
+	def __init__(self):
+		pass
+	
+	def addToCart(self, productId):
+		pass
+		
+	def deleteFromCart(self, productId):
+		pass
+	
+	def updateQuantity(self, newQuantity):
+		pass
+	
+	def getTotal(self):
+		pass
+	
 	
