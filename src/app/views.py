@@ -15,4 +15,6 @@ def login():
 def singup():
 	pass
 
-
+@app.route('/product_page/<product_id:int>')
+def product_page(product_id=1):
+	pass
