@@ -19,7 +19,7 @@ class Cart(object):
 		self.items[productId] = 0
 		
 	def deleteFromCart(self, productId):
-		pass
+		del self.items[productId]
 	
 	def updateQuantity(self, newQuantity):
 		pass
