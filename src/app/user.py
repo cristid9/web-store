@@ -36,7 +36,7 @@ class UserData(db.Model):
 	__tablename__ = 'userdata_table'
 
 	id = db.Column(db.Integer, primary_key=True)
-	phone = db.Column(db.Integer)
+	phone = db.Column(db.String)
 	email = db.Column(db.String)
 	region = db.Column(db.String)
 	city = db.Column(db.String)
