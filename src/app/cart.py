@@ -29,7 +29,8 @@ class Cart(object):
 
 	def getTotal(self):
 		total = 0
-		for item in items.keys():
-			db.session.query()
-	
+		for item in items:
+			total += item["qunatity"] * item["price"]
+		total += (24.0/100) * total
+		return total	
 	
