@@ -18,6 +18,8 @@ class User(db.Model):
 	name = db.Column(db.String, nullable=False)
 	password = db.Column(db.String, nullable=False)
 	userData = db.relationship('UserData', backref='user', lazy='dynamic')
+	productComments = db.relationship('ProductComments', backref='user', 
+										lazy='dynamic')
 
 	##
 	#
