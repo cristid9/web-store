@@ -15,9 +15,10 @@ class Product(db.Model):
 	__tablename__ = 'product_table'
 
 	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String, nullable=False)
 	price = db.Column(db.Float, nullable=False)
 	stock = db.Column(db.Integer, nullable=False)
-	comments = db.relationship('ProductComments', backref='product', 
+	comments = db.relationship('ProductComment', backref='product', 
 								lazy='dynamic')
 
 
@@ -30,26 +31,23 @@ class Product(db.Model):
 		return "<Product(%r, %r, %)>" % (self.name, self.price, self.stock)
 
 
-class ProductComments(db.Column):
-	__tablename__ = 'productcomments_table'
-
+class ProductComment(db.Model):
+	__tablename__ = 'product_comments_table'
 	id = db.Column(db.Integer, primary_key=True)
-	data = db.Column(db.DateTime, nullable=False)
 	comment = db.Column(db.String, nullable=False)
+	userId = db.Column(db.Integer, db.ForeignKey('user_table.id'))
 	productId = db.Column(db.Integer, db.ForeignKey('product_table.id'))
-	userId = db.Column(db.Integer, db.ForeignKey('productcomments_table.id'))
 
-	def __init__(self, user, product, comment):
-		self.user = user
-		self.product = product
-		self.comment = comment
-
-	def __repr__(self):
-		return "<ProductComment(%r, %r, %r)>" % (self.user, self.product, 
-					self.comment)
-
-
+	def __init__(self, comment, userId):
+		self.comment = comment	
+		self.userId = userId
 		
+	def __repr__(self):
+		return "<ProductComment(%r)>" % self.comment
+		
+		
+		
+			
 
 
 

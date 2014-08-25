@@ -14,12 +14,10 @@ class User(db.Model):
 	__tablename__ = 'user_table'
 
 	id = db.Column(db.Integer, primary_key=True)
-	username = db.Column(db.Integer, nullable=False)
+	username = db.Column(db.String, nullable=False)
 	name = db.Column(db.String, nullable=False)
 	password = db.Column(db.String, nullable=False)
 	userData = db.relationship('UserData', backref='user', lazy='dynamic')
-	productComments = db.relationship('ProductComments', backref='user', 
-										lazy='dynamic')
 
 	##
 	#
