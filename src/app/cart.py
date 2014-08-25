@@ -33,4 +33,31 @@ class Cart(object):
 			total += item["qunatity"] * item["price"]
 		total += (24.0/100) * total
 		return total	
+
+class Order(db.Model):
+	id = db.Column(db.Integer)
+	date = db.Column(db.DateTime)
+	total = db.Column(db.Float)
+	userId = db.Column(db.Integer, db.ForeignKey('user_table.id'))
+	buyedProductId = db.Column(db.Integer, db.ForeignKey('product_table.id'))
+
+	def __init__(self, total, userId, buyedProductId):
+		self.total = total
+		self.userId = userId
+		self.buyedProductId = buyedProductId
+
+	def __repr__(self):
+		return "<Order(%r)>" % self.total
+
+
+
+
+
+
+
+
+
+
+
+
 	
