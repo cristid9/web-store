@@ -19,12 +19,16 @@ def singup():
 	form = SingupForm(request.form)
 	
 	if request.method == 'POST' and form.validate():
-		newUser = User(name=form.name.data, username=form.username.data,
-					   password=md5(form.password.data).hexdigest())
+		if not User.query.filter_by(username=form.username.data).first():
+		
+			newUser = User(name=form.name.data, username=form.username.data,
+						   password=md5(form.password.data).hexdigest())
 
-		db.session.add(newUser)
-		db.session.commit()
-		flash("User " + form.name.data + " was added")
+			db.session.add(newUser)
+			db.session.commit()
+			flash("User " + form.name.data + " was added")
+		else:
+			flash("The username is already taken")
 	else:
 		flash("Form is invalid")
 
