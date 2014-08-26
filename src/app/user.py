@@ -7,10 +7,9 @@
 from main import db
 
 
-##
-#
-#
-#
+## Since there are 2 types of user: pending users and normal users, and both
+#  have the same attributes there must be a base user class and the other
+#  should extend this class.
 class BaseUser(db.Model):
 	__tablename__ = 'user_table'
 
@@ -20,10 +19,7 @@ class BaseUser(db.Model):
 	password = db.Column(db.String, nullable=False)
 	email = db.Column(db.String, nullable=False)
 
-	##
-	#
-	#
-	#
+	## Constructor method of the BaseUser class.
 	def __init__(self, username, name, password, email):
 		self.username = username
 		self.name = name
