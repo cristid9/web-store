@@ -1,11 +1,9 @@
 ## @package user
 #
-#
-#
-#
+#  This module contains all the classes related to a user, independet of it's
+#  state
 
 from main import db
-
 
 ## Since there are 2 types of user: pending users and normal users, and both
 #  have the same attributes there must be a base user class and the other
