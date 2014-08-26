@@ -1,6 +1,6 @@
 ## @package helper
 #
-#  This file will contain all the functions and decorator that aren't related
+#  This file will contain all the functions  that aren't related
 #  to a particular module and don't provide crucial functionality.
 
 from flask.ext.mail import Mail
