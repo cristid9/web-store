@@ -1,5 +1,6 @@
 from main import app
-from flask import render_template, redirect, session, url_for
+from flask import render_template, redirect, session, url_for, request
+from froms import SingupForm
 
 @app.route('/')
 @app.route('/index')
@@ -11,9 +12,17 @@ def index():
 def login():
 	pass
 
-@app.route('/singup')
+@app.route('/singup', methods=['GET', 'POST'])
 def singup():
-	pass
+	form = SingupForm(request.form)
+	
+	if request.method == 'POST' and form.validate():
+		pass
+
+	return render_template('singup.html',
+		form=form
+	)
+
 
 @app.route('/product_page/<product_id:int>')
 def product_page(product_id=1):
