@@ -15,3 +15,6 @@ def uniqueUser(form, field):
 def validEmail(form, field):
 	if parseaddr(field.data)[1] is None:
 		raise ValidationError('Email address is not correct')
+
+def validPassword(form, field):
+	pass # implement it later
