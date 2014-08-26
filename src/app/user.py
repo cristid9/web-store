@@ -33,8 +33,8 @@ class BaseUser(db.Model):
 class User(BaseUser):
 	userData = db.relationship('UserData', backref='user', lazy='dynamic')
 	
-	def __init__():
-		pass
+	def __init__(self, *args, **kwargs):
+		super(User, self).__init__(*args, **kwargs)
 
 
 
