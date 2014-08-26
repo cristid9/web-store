@@ -1,6 +1,8 @@
-from main import app
+from main import app, db
 from flask import render_template, redirect, session, url_for, request
 from froms import SingupForm
+from user import User
+from hashlib import md5
 
 @app.route('/')
 @app.route('/index')
@@ -17,7 +19,11 @@ def singup():
 	form = SingupForm(request.form)
 	
 	if request.method == 'POST' and form.validate():
-		pass
+		newUser = User(name=form.name.data, username=form.username.data,
+					   email=form.email.data, password=md5(form.password.data))
+
+		db.session.add(newUser)
+		db.session.commit()
 
 	return render_template('singup.html',
 		form=form
