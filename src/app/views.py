@@ -25,6 +25,8 @@ def singup():
 		db.session.add(newUser)
 		db.session.commit()
 		flash("User " + form.name.data + " was added")
+	else:
+		flash("Form is invalid")
 
 	return render_template('singup.html',
 		form=form
