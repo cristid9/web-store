@@ -8,7 +8,7 @@ from wtforms import TextField, PasswordField
 from wtforms.validators import Required, Email, EqualTo
 
 class SingupForm(Form):
-	name = TextField('name', [Rquired()])
+	name = TextField('name', [Required()])
 	username = TextField('username', [Required()])
 	email = TextField('email', [Required()])
 	password = PasswordField('password', [
