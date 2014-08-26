@@ -1,6 +1,6 @@
 from main import app, db
 from flask import render_template, redirect, session, url_for, request
-from froms import SingupForm
+from forms import SingupForm
 from user import User
 from hashlib import md5
 
