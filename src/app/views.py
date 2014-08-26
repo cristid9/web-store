@@ -37,3 +37,13 @@ def singup():
 @app.route('/product_page/<int:product_id>')
 def product_page(product_id=1):
 	pass
+
+
+@app.route('/validate/<pendingUserId>')
+def validateUser(pendingUserId):
+	pass
+
+
+
+
+
