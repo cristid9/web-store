@@ -12,7 +12,7 @@ class SingupForm(Form):
 	username = TextField('username', [Required()])
 	email = TextField('email', [Required()])
 	password = PasswordField('password', [
-		Required().
+		Required(),
 		EqualTo('confirm', message="Parolele nu se potrivesc")
 	])
 	confirm = PasswordField('repeat_password')
