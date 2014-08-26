@@ -4,6 +4,7 @@
 #  state
 
 from main import db
+from datetime import datetime
 
 ## Since there are 2 types of user: pending users and normal users, and both
 #  have the same attributes there must be a base user class and the other
@@ -36,6 +37,15 @@ class User(BaseUser):
 	def __init__(self, *args, **kwargs):
 		super(User, self).__init__(*args, **kwargs)
 
+## This class represents a user who hasn't validated his account yet.
+class PendingUser(BaseUser):
+	pendingId = db.Column(db.String, nullable=False, unique=True)
+	registrationDate = db.Column(db.DateTime, nullable=False)
+
+	def __init__(self, pendingIdi, *args, **kwargs):
+		super(PendingUser, self).__init__(*args, **kwargs)
+		self.pendingId = pendingId
+		self.registrationDate = datetime.utcnow()
 
 
 class UserData(db.Model):
