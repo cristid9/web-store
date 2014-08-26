@@ -2,11 +2,11 @@
 {% block content %}
 	<div class="container">
 		<form method="POST" action="">
-			{{ form.name }}
-			{{ form.username }}
-			{{ form.email }}
-			{{ form.password }}
-			{{ form.confirm }}
+			<p> Numele tau {{ form.name }} </p>
+			<p> Numele de utilizator {{ form.username }} </p>
+			<p> Adresa de email {{ form.email }} </p>
+			<p> Parola {{ form.password }} </p>
+			<p> Repeta parola {{ form.confirm }} </p>
 			<input type="submit">
 		</form>
 	</div>
