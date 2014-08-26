@@ -20,7 +20,7 @@ def singup():
 	
 	if request.method == 'POST' and form.validate():
 		newUser = User(name=form.name.data, username=form.username.data,
-					   email=form.email.data, password=md5(form.password.data))
+					   password=md5(form.password.data))
 
 		db.session.add(newUser)
 		db.session.commit()
