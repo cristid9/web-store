@@ -6,6 +6,13 @@
 	</head>
 
 	<body>
+		<div id="notification_bar">
+			{% with messages = get_flashed_messages() %}
+				{% for message in messages %}
+					<li> message </li>
+				{% endfor %}
+			{% endwith %}
+		</div>
 	
 		{% block content %}
 		{% endblock %}
