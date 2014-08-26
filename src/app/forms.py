@@ -5,7 +5,7 @@
 
 from flask.ext.wtf import Form
 from wtforms import TextField, PasswordField
-from wtforms.valiators import Required, Email, EqualTo
+from wtforms.validators import Required, Email, EqualTo
 
 class SingupForm(Form):
 	name = TextField('name', [Rquired()])
