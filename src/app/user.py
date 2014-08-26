@@ -17,16 +17,19 @@ class User(db.Model):
 	username = db.Column(db.String, nullable=False)
 	name = db.Column(db.String, nullable=False)
 	password = db.Column(db.String, nullable=False)
+	email = db.Column(db.String, nullable=False)
 	userData = db.relationship('UserData', backref='user', lazy='dynamic')
 
 	##
 	#
 	#
 	#
-	def __init__(self, username, name, password):
+	def __init__(self, username, name, password, email):
 		self.username = username
 		self.name = name
 		self.password = password
+		# An user should have a primary email address.
+		self.email = email
 		
 	def __repr__(self):
 		return "<User(%r, %r, %r)>" % (self.username, self.name, self.password)
