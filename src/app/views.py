@@ -1,5 +1,5 @@
 from main import app, db
-from flask import render_template, redirect, session, url_for, request
+from flask import render_template, redirect, session, url_for, request, flash
 from forms import SingupForm
 from user import User
 from hashlib import md5
@@ -24,6 +24,7 @@ def singup():
 
 		db.session.add(newUser)
 		db.session.commit()
+		flash("User " + form.name.data + " was added")
 
 	return render_template('singup.html',
 		form=form
