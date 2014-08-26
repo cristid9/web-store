@@ -6,11 +6,12 @@
 
 from main import db
 
+
 ##
 #
 #
 #
-class User(db.Model):
+class BaseUser(db.Model):
 	__tablename__ = 'user_table'
 
 	id = db.Column(db.Integer, primary_key=True)
@@ -18,7 +19,6 @@ class User(db.Model):
 	name = db.Column(db.String, nullable=False)
 	password = db.Column(db.String, nullable=False)
 	email = db.Column(db.String, nullable=False)
-	userData = db.relationship('UserData', backref='user', lazy='dynamic')
 
 	##
 	#
@@ -33,6 +33,15 @@ class User(db.Model):
 		
 	def __repr__(self):
 		return "<User(%r, %r, %r)>" % (self.username, self.name, self.password)
+
+		
+## Represents a normal user.
+class User(BaseUser):
+	userData = db.relationship('UserData', backref='user', lazy='dynamic')
+	
+	def __init__():
+		pass
+
 
 
 class UserData(db.Model):
