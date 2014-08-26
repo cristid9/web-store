@@ -3,7 +3,7 @@
 #  This file will contain all the logical representation of all the forms used
 #  in the aplication. 
 
-from flask.ext.wtforms import Form
+from flask.ext.wtf import Form
 from wtforms import TextField, PasswordField
 from wtforms.valiators import Required, Email, EqualTo
 
