@@ -30,6 +30,6 @@ def singup():
 	)
 
 
-@app.route('/product_page/<product_id:int>')
+@app.route('/product_page/<int:product_id')
 def product_page(product_id=1):
 	pass
