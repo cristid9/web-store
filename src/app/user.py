@@ -42,7 +42,7 @@ class PendingUser(BaseUser):
 	pendingId = db.Column(db.String, nullable=False, unique=True)
 	registrationDate = db.Column(db.DateTime, nullable=False)
 
-	def __init__(self, pendingIdi, *args, **kwargs):
+	def __init__(self, pendingId, *args, **kwargs):
 		super(PendingUser, self).__init__(*args, **kwargs)
 		self.pendingId = pendingId
 		self.registrationDate = datetime.utcnow()
