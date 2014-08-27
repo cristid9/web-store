@@ -3,7 +3,7 @@ from flask import render_template, redirect, session, url_for, request, flash
 from forms import SingupForm
 from user import User, PendingUser
 from hashlib import md5
-from helper import sendMail
+from helper import sendMail, generateUrl
 from uuid import uuid4
 
 @app.route('/')
@@ -21,7 +21,7 @@ def singup():
 	form = SingupForm(request.form)
 	
 	if request.method == 'POST' and form.validate():
-		newPendingUser = PendingUser(pendingId=uuid4(),
+		newPendingUser = PendingUser(pendingId=str(uuid4()),
 			name=form.name.data,
 			username=form.username.data,
 			password=md5(form.password.data).hexdigest(), 
@@ -31,21 +31,25 @@ def singup():
 		db.session.add(newPendingUser)
 		db.session.commit()
 		
+		mailUrl = generateUrl(    
+			route=url_for('validateUser', 
+				pendingUserId=newPendingUser.pendingId
+			),
+			hostname=request.host
+		)
+
 		sendMail(subject="Validation Mail",
 			sender=app.config['ADMINS'][0],
-			recipients=[newPendigUser.email],
-			messageBoddy=render_template("confirmation_mail_boddy.html", 
-				confirmationLink=url_for('validateUser', 
-					pendingUserId=newPendingUser.pendingId
-				)
+			recipients=[newPendingUser.email],
+			messageBody=render_template("confirmation_mail_body.html", 
+				confirmationLink=mailUrl			
 			),
-			messageBoddyHtml=render_template(
-				"confirmation_mail_html_boddy.html",
-				confirmationLink=url_for('validateUser', 
-					pendingUserId=newPendingUser.pendingId
-				)
+			messageHtmlBody=render_template(
+				"confirmation_mail_html_body.html",
+				confirmationLink=mailUrl
 			)
 		)
+		
 
 		flash("User " + form.name.data + " was added")
 
