@@ -9,7 +9,7 @@ from user import User
 from email.utils import parseaddr
 
 def uniqueUser(form, field):
-	if User.query.filter_by(username=field.data):
+	if User.query.filter_by(username=field.data).first():
 		raise ValidationError('Username is already taken')
 
 def validEmail(form, field):
