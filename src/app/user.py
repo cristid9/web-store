@@ -32,6 +32,8 @@ class BaseUser(db.Model):
 		
 ## Represents a normal user.
 class User(BaseUser):
+	__tablename__ = 'user_table'
+
 	userData = db.relationship('UserData', backref='user', lazy='dynamic')
 	
 	def __init__(self, *args, **kwargs):
@@ -39,6 +41,8 @@ class User(BaseUser):
 
 ## This class represents a user who hasn't validated his account yet.
 class PendingUser(BaseUser):
+	__tablename__ = 'pending_user_table'
+
 	pendingId = db.Column(db.String, nullable=False, unique=True)
 	registrationDate = db.Column(db.DateTime, nullable=False)
 
