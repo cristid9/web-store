@@ -9,7 +9,7 @@ from datetime import datetime
 ## Since there are 2 types of user: pending users and normal users, and both
 #  have the same attributes there must be a base user class and the other
 #  should extend this class.
-class BaseUser(db.Model):
+class User(db.Model):
 	__tablename__ = 'user_table'
 
 	id = db.Column(db.Integer, primary_key=True)
@@ -17,7 +17,8 @@ class BaseUser(db.Model):
 	name = db.Column(db.String, nullable=False)
 	password = db.Column(db.String, nullable=False)
 	email = db.Column(db.String, nullable=False)
-
+	userData = db.relationship('UserData', backref='user', lazy='dynamic')
+	
 	## Constructor method of the BaseUser class.
 	def __init__(self, username, name, password, email):
 		self.username = username
@@ -30,28 +31,28 @@ class BaseUser(db.Model):
 		return "<User(%r, %r, %r)>" % (self.username, self.name, self.password)
 
 		
-## Represents a normal user.
-class User(BaseUser):
-	__tablename__ = 'user_table'
-
-	userData = db.relationship('UserData', backref='user', lazy='dynamic')
-	
-	def __init__(self, *args, **kwargs):
-		super(User, self).__init__(*args, **kwargs)
-
 ## This class represents a user who hasn't validated his account yet.
-class PendingUser(BaseUser):
+class PendingUser(db.Model):
 	__tablename__ = 'pending_user_table'
-
+	
+	id = db.Column(db.Integer, primary_key=True)
+	username = db.Column(db.String, nullable=False)
+	name = db.Column(db.String, nullable=False)
+	password = db.Column(db.String, nullable=False)
+	email = db.Column(db.String, nullable=False)
 	pendingId = db.Column(db.String, nullable=False, unique=True)
 	registrationDate = db.Column(db.DateTime, nullable=False)
-
-	def __init__(self, pendingId, *args, **kwargs):
-		super(PendingUser, self).__init__(*args, **kwargs)
+	
+	def __init__(self, pendingId, username, name, password, email):
+		self.username = username
+		self.name = name
+		self.password = password
+		# An user should have a primary email address.
+		self.email = email
 		self.pendingId = pendingId
 		self.registrationDate = datetime.utcnow()
 
-
+	
 class UserData(db.Model):
 	__tablename__ = 'userdata_table'
 
