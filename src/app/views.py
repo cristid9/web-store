@@ -11,11 +11,6 @@ from uuid import uuid4
 def index():
 	return render_template('index.html')
 
-
-@app.route('/login')
-def login():
-	pass
-
 @app.route('/singup', methods=['GET', 'POST'])
 def singup():
 	form = SingupForm(request.form)
