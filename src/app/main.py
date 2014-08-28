@@ -24,6 +24,7 @@ mail = Mail(app)
 # Initialize the login manager.
 lm = LoginManager()
 lm.init_app(app)
+lm.login_view = 'login'
 
 db = SQLAlchemy(app)
 

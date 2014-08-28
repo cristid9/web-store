@@ -1,10 +1,17 @@
-from main import app, db
-from flask import render_template, redirect, session, url_for, request, flash
+from main import app, db, lm
+from flask import render_template, redirect, session, url_for, request, flash,\
+					g
 from forms import SingupForm
 from user import User, PendingUser
 from hashlib import md5
 from helper import sendMail, generateUrl
 from uuid import uuid4
+from flask.ext.login import login_user, logout_user, current_user,\
+							 login_required
+
+@app.before_request
+def before_request():
+	g.user = current_user
 
 @app.route('/')
 @app.route('/index')
@@ -86,9 +93,20 @@ def validateUser(pendingUserId):
 		username=user.username
 	)
 
-@app.route('/login')
+@lm.user_loader
+def load_user(id):
+	return User.query.get(int(id))
+
+@app.route('/login', methods=['GET', 'POST'])
+@lm.loginhandler
 def login():
 	pass
+
+@app.route('/logout')
+def logout():
+	logout_user()
+	return "logout link"
+	
 
 
 
