@@ -1,19 +1,26 @@
-<table border="1px">
+<table cellspacing="7">
 	<tr>
-		<td>
-			{{ product.name }}
+		<td rowspan="2">  
+			<img width="150px" height="150px 
+				"src="{{product.pictures[0].link}}" />
+		</td>
+		<td colspan="2">
+			<p>
+				{{ product.description }}
+			</p>
 		</td>
 	</tr>
 	<tr>
-		<td>
-			{{ product.price  }}
-		</td>
 		<td>
 			{% if product.stock %}
 				available
-			{% else  %}
+			{% else %}
 				not available
-			{% endif %}		
+			{% endif %}
+		</td>
+		<td>
+			buy now
 		</td>
 	</tr>
+
 <table>
