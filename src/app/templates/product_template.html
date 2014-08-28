@@ -1,0 +1,19 @@
+<table border="1px">
+	<tr>
+		<td>
+			{{ product.name }}
+		</td>
+	</tr>
+	<tr>
+		<td>
+			{{ product.price  }}
+		</td>
+		<td>
+			{% if product.stock %}
+				available
+			{% else  %}
+				not available
+			{% endif %}		
+		</td>
+	</tr>
+<table>
