@@ -105,7 +105,7 @@ def login():
 		flash('User logged in')
 		return redirect(url_for('index'))
 	
-	flashErrors(form.erros, flash)
+	flashErrors(form.errors, flash)
 	return render_template("login.html",
 		form=form
 	)
