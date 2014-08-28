@@ -17,12 +17,16 @@ class Product(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	category = db.Column(db.String, nullable=False)
 	description = db.Column(db.String, nullable=False)
-
 	name = db.Column(db.String, nullable=False)
 	price = db.Column(db.Float, nullable=False)
 	stock = db.Column(db.Integer, nullable=False)
+
 	comments = db.relationship('ProductComment', backref='product', 
-								lazy='dynamic')
+								lazy='dynamic'
+	)
+	pictures = db.relationship('ProductPictures', backref='product',
+								lazy='dynamic'
+	)
 
 
 	def __init__(self, name, price, stock):
@@ -32,6 +36,22 @@ class Product(db.Model):
 
 	def __repr__(self):
 		return "<Product(%r, %r, %)>" % (self.name, self.price, self.stock)
+
+class ProductPictures(db.Model):
+	__tablename__ = "product_pictures_table"
+
+	id = db.Column(db.Integer, primary_key=True)
+	link = db.Column(db.String, nullable=False)
+	date = db.Column(db.DateTime, nullable=False)
+	productId = db.Column(db.Integer, db.ForeignKey('product_table.id'))
+
+	def __init__(self, link, productId):
+		self.link = link
+		self.productId = productId
+		self.date = datetime.utcnow()
+	
+	def __repr__(self):
+		return "<ProductPicures(%r)>" % self.link
 
 
 class ProductComment(db.Model):
