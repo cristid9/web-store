@@ -73,7 +73,23 @@ def product_page(product_id=1):
 
 @app.route('/validate/<pendingUserId>')
 def validateUser(pendingUserId):
-	pass
+	pendingUser = PendingUser.query.filter_by(pendingId=pendingUserId).first()
+	if pendingUser is None:
+		return render_template("invalid_activation_link.html")
+
+	user = User(name=pendingUser.name,
+		email=pendingUser.email,
+		password=pendingUser.password,
+		username=pendingUser.username
+	)
+
+	db.session.add(user)
+	db.session.delete(pendingUser)
+	db.session.commit()
+
+	return render_template("successfull_activation.html", 
+		username=user.username
+	)
 
 
 
