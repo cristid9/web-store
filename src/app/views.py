@@ -1,7 +1,7 @@
 from main import app, db, lm
 from flask import render_template, redirect, session, url_for, request, flash,\
 					g
-from forms import SingupForm
+from forms import SingupForm, LoginForm
 from user import User, PendingUser
 from hashlib import md5
 from helper import sendMail, generateUrl
@@ -98,9 +98,18 @@ def load_user(id):
 	return User.query.get(int(id))
 
 @app.route('/login', methods=['GET', 'POST'])
-@lm.loginhandler
 def login():
-	pass
+	form =  LoginForm()
+	if request.method == "POST" and form.validate():
+		user = User.query.filter_by(username=form.username.data, 
+			password=md5(form.password.data).hexdigest()
+		)
+		login_user(user)
+		flash('User logged in')
+		return redirect(url_for('index'))
+	return render_template("login.html",
+		form=form
+	)
 
 @app.route('/logout')
 def logout():
