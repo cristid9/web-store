@@ -15,6 +15,7 @@ class Product(db.Model):
 	__tablename__ = 'product_table'
 
 	id = db.Column(db.Integer, primary_key=True)
+	category = db.Column(db.String, nullable=False)
 	name = db.Column(db.String, nullable=False)
 	price = db.Column(db.Float, nullable=False)
 	stock = db.Column(db.Integer, nullable=False)
