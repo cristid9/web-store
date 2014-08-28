@@ -103,7 +103,7 @@ def login():
 	if request.method == "POST" and form.validate():
 		user = User.query.filter_by(username=form.username.data, 
 			password=md5(form.password.data).hexdigest()
-		)
+		).first()
 		login_user(user)
 		flash('User logged in')
 		return redirect(url_for('index'))
