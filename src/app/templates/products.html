@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 	<div class="conatiner">
+		{% for product in products.items %}
+			{% include "product_template.html" %}
+		{% endfor %}
 	</div>
 {% endblock %}

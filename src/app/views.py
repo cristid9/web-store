@@ -1,8 +1,9 @@
-from main import app, db, lm
+from main import app, db, lm, PRODUCTS_PER_PAGE
 from flask import render_template, redirect, session, url_for, request, flash,\
 					g
 from forms import SingupForm, LoginForm
 from user import User, PendingUser
+from product import Product
 from hashlib import md5
 from helper import sendMail, generateUrl, flashErrors
 from uuid import uuid4
@@ -115,6 +116,21 @@ def logout():
 	logout_user()
 	return "logout link"
 	
+@app.route('/categories/<string:category>/<int:page>')
+def categories(category, page):
+	products = Product.query.filter_by(category=category).paginate(page, 
+		PRODUCTS_PER_PAGE, False
+	)
+
+	return render_template("products.html",
+		products=products
+	)
+
+
+
+
+
+
 
 
 

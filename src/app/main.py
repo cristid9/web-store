@@ -28,4 +28,4 @@ lm.login_view = 'login'
 
 db = SQLAlchemy(app)
 
-
+PRODUCTS_PER_PAGE = 10
