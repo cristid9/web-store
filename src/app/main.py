@@ -1,6 +1,7 @@
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.mail import Mail
+from flask.ext.login import LoginManager
 
 app = Flask(__name__)
 app.debug = True
@@ -19,6 +20,10 @@ app.config['ADMINS'] = ['magazin.licenta@gmail.com']
 
 # Create the mai object
 mail = Mail(app)
+
+# Initialize the login manager.
+lm = LoginManager()
+lm.init_app(app)
 
 db = SQLAlchemy(app)
 
