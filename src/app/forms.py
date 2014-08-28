@@ -17,3 +17,7 @@ class SingupForm(Form):
 		EqualTo('confirm', message="Parolele nu se potrivesc")
 	])
 	confirm = PasswordField('repeat_password')
+
+class LoginForm(Form):
+	username = TextField('username', [Required()])
+	password = PasswordField('password', [Required()])
