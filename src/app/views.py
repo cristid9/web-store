@@ -4,7 +4,7 @@ from flask import render_template, redirect, session, url_for, request, flash,\
 from forms import SingupForm, LoginForm
 from user import User, PendingUser
 from hashlib import md5
-from helper import sendMail, generateUrl
+from helper import sendMail, generateUrl, flashErrors
 from uuid import uuid4
 from flask.ext.login import login_user, logout_user, current_user,\
 							 login_required
@@ -59,10 +59,7 @@ def singup():
 			 email=form.email.data
 		)
 
-	for error in form.errors:
-		for fieldError in form.errors[error]:
-			flash(error + fieldError)
-
+	flashErrors(form.errors, flash)
 	return render_template('singup.html',
 		form=form
 	)
@@ -107,6 +104,8 @@ def login():
 		login_user(user)
 		flash('User logged in')
 		return redirect(url_for('index'))
+	
+	flashErrors(form.erros, flash)
 	return render_template("login.html",
 		form=form
 	)
