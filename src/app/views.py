@@ -91,7 +91,9 @@ def validateUser(pendingUserId):
 		username=user.username
 	)
 
-
+@app.route('/login')
+def login():
+	pass
 
 
 
