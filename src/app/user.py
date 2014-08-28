@@ -19,6 +19,19 @@ class User(db.Model):
 	email = db.Column(db.String, nullable=False)
 	userData = db.relationship('UserData', backref='user', lazy='dynamic')
 	
+
+	def is_authenticated(self):
+		return True
+
+	def is_active(self):
+		return True
+
+	def is_anoymous(self):
+		return False
+	
+	def get_id(self):
+		return unicode(self.id)
+
 	## Constructor method of the BaseUser class.
 	def __init__(self, username, name, password, email):
 		self.username = username
