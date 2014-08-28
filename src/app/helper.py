@@ -17,3 +17,14 @@ def sendMail(subject, sender, recipients, messageBody, messageHtmlBody):
 #  in this case the http://.
 def generateUrl(hostname, route):
 	return "http://" + hostname + route
+
+## Since the process of flashing all the errors raised when validating a form
+#  takes quite more lines of code, a helper that does that for us is a very
+#  convinient sollution.
+# 
+#  @param errors Dictionary of the form `<field>:<errors>`.
+#  @param flash The function used to flash errors.
+def flashErrors(errors, flash):
+	for field in errors:
+		for error in errors[field]:
+			flash(error)
