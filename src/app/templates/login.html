@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 	<div class="conatiner">
+		<form method="POST" action="">
+			{{ form.hidden_tag() }}
+			<p> Your username {{ form.username.data }} </p>
+			<p> Your Pasword {{ form.password.data }} </p>
+			<input type="submit">
+		</form>
 	</div>
 {% endblock %}
