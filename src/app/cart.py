@@ -42,7 +42,9 @@ class Cart(object):
 		session["cart"] = self.items
 
 class Order(db.Model):
-	id = db.Column(db.Integer)
+	__tablename__ = "order_table"
+
+	id = db.Column(db.Integer, primary_key=True)
 	date = db.Column(db.DateTime)
 	total = db.Column(db.Float)
 	userId = db.Column(db.Integer, db.ForeignKey('user_table.id'))
