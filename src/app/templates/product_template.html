@@ -1,26 +1,37 @@
-<table cellspacing="7">
-	<tr>
-		<td rowspan="2">  
-			<img width="150px" height="150px 
-				"src="{{product.pictures[0].link}}" />
-		</td>
-		<td colspan="2">
-			<p>
-				{{ product.description }}
-			</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			{% if product.stock %}
-				available
-			{% else %}
-				not available
-			{% endif %}
-		</td>
-		<td>
-			buy now
-		</td>
-	</tr>
-
-<table>
+<div id="{{ product.id }}">
+	<table cellspacing="7">
+		<tr>
+			<td rowspan="2">  
+				<img width="150px" height="150px 
+					"src="{{product.pictures[0].link}}" />
+			</td>
+			<td colspan="2">
+				<p>
+					{{ product.description }}
+				</p>
+			</td>
+		</tr>
+		<tr>
+			<td class="price">
+				Pret: 
+				<span class="product_price" >
+					{{ product.price }} 
+				</span> 
+				<span class="curency">
+				</span>
+			</td>
+			<td>
+				{% if product.stock %}
+					available
+				{% else %}
+					not available
+				{% endif %}
+			</td>
+			<td>
+				<button type="button" class="add_to_cart">
+					add to cart
+				</button>
+			</td>
+		</tr>
+	<table>
+</div>
