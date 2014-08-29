@@ -4,6 +4,7 @@
 #
 
 from main import db
+from flask import session
 
 ##
 #
@@ -13,14 +14,17 @@ class Cart(object):
 	items = {}
 	
 	def __init__(self):
-		pass
+		if "cart" in session.keys():
+			self.items = session["cart"]
+		else:
+			session["cart"] = {}
 	
 	def addToCart(self, productId, price):
 		self.items[productId] = {
 			"price": price,
 			"quantity": 0
 		}
-		
+	
 	def deleteFromCart(self, productId):
 		del self.items[productId]
 	
@@ -33,6 +37,9 @@ class Cart(object):
 			total += item["qunatity"] * item["price"]
 		total += (24.0/100) * total
 		return total	
+
+	def __del__(self):
+		session["cart"] = self.items
 
 class Order(db.Model):
 	id = db.Column(db.Integer)
