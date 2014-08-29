@@ -4,6 +4,7 @@ from flask import render_template, redirect, session, url_for, request, flash,\
 from forms import SingupForm, LoginForm
 from user import User, PendingUser
 from product import Product
+from cart import Cart
 from hashlib import md5
 from helper import sendMail, generateUrl, flashErrors
 from uuid import uuid4
@@ -13,6 +14,7 @@ from flask.ext.login import login_user, logout_user, current_user,\
 @app.before_request
 def before_request():
 	g.user = current_user
+	g.cart = Cart()
 
 @app.route('/')
 @app.route('/index')
