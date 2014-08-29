@@ -1,6 +1,6 @@
 from main import app, db, lm, PRODUCTS_PER_PAGE
 from flask import render_template, redirect, session, url_for, request, flash,\
-					g
+					g, jsonify
 from forms import SingupForm, LoginForm
 from user import User, PendingUser
 from product import Product
@@ -128,8 +128,15 @@ def categories(category, page):
 		products=products
 	)
 
+@app.route('/add_to_cart', methods=['POST'])
+def addToCart():
+	productId = request.form["productId"]
+	productPrice = request.form["productPrice"]
 
+	g.cart.addToCart(int(productId), float(productPrice))
 
+	print session		
+	return jsonify(status="success") 
 
 
 
