@@ -68,10 +68,12 @@ def singup():
 	)
 
 
-@app.route('/product_page/<int:product_id>')
-def productPage(product_id=1):
-	pass
-
+@app.route('/product_page/<int:productId>')
+def productPage(productId=1):
+	product = Product.query.get(productId)
+	return render_template("product_page.html",
+		product=product
+	)
 
 @app.route('/validate/<pendingUserId>')
 def validateUser(pendingUserId):

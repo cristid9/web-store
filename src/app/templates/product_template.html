@@ -1,5 +1,10 @@
 <div id="{{ product.id }}">
 	<table cellspacing="7">
+		<th colspan="5">
+			<a href="{{ url_for('productPage', productId=product.id) }}">
+				{{ product.name }}
+			</a>
+		</th>
 		<tr>
 			<td rowspan="2">  
 				<img width="150px" height="150px 

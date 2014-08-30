@@ -1,5 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
 	<div class="conatiner">
+		{% for picture in product.pictures %}
+			<img src="{{ picture.link }}" width="150" height="150"/>
+		{% endfor %}
+		
+		{% for comment in product.comments %}
+			{{ comment.comment }}				
+		{% endfor  %}
+
 	</div>
 {% endblock %}
