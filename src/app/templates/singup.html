@@ -1,16 +1,60 @@
 {% extends "base.html" %}
 {% block content %}
 	<div class="container">
-		<form name="singup" method="POST" action="">
-			{{ form.hidden_tag() }}
-
-			<p> Numele tau {{ form.name }} </p>
-			<p> Numele de utilizator {{ form.username }} </p>
-			<p> Adresa ta de email {{ form.email  }} </p>
-			<p> Parola {{ form.password }} </p>
-			<p> Repeta parola {{ form.confirm }} </p>
-			<input type="submit">
-		</form>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3>
+					<span class="glyphicon glyphicon-user"></span>
+					Creazat-ti un cont
+				</h3>
+			</div>
+			<div class="panel-body">
+				<form name="singup" method="POST" action="">
+					{{ form.hidden_tag() }}
+					
+					<div class="row">
+						<div class="col-xs-2"> Numele tau </div>
+						<div class="col-xs-4"> {{ 
+							form.name(class="form-control", 
+							placeholder="numele tau") }} </div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-xs-2"> Numele de utilizator </div> 
+						<div class="col-xs-4"> 
+							{{ form.username(class="form-control", 
+							placeholder="usernameul pe care	il doresti") }}
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-xs-2"> Adresa ta de email </div> 
+						<div class="col-xs-4">{{ 
+							form.email(class="form-control",
+							placeholder="email")  }} </div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-xs-2"> Parola </div> 
+						<div class="col-xs-4"> {{ 
+							form.password(class="form-control",
+							placeholder="parola") }} </div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-xs-2"> Repeta parola </div>
+						<div class="col-xs-4"> {{ 
+							form.confirm(class="form-control",
+							placeholder="confirma parola") }} </div>
+					</div>
+					<br>
+					<button type="submit" class="btn btn-primary btn-md">
+						Creeaza cont
+						<span class="glyphicon glyphicon-user"></span>
+					</button>
+				</form>
+			</div>
+		</div>
 	</div>
 {% endblock %}
 

@@ -1,11 +1,25 @@
 {% extends "base.html" %}
 {% block content %}
 	<div class="container">
-		<h3> 
-			Un email cu linkul de activare al contului a fost trimis la 
-			adresa {{ email }}. Daca linkul nu este accesat in decurs de 30 de
-			zile va fi necesara reluarea procesului de inregistrare.
-		</h3>
-
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3>
+					<span class="glyphicon glyphicon-envelope"></span>
+					Ti-am trimis un mail
+				</h3>
+			</div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-xs-10">
+						<h4> 
+						Un email cu linkul de activare al contului a fost trimis la 
+						adresa {{ email }}. Daca linkul nu este accesat in decurs 
+						de <span class="badge">30</span> de zile va fi necesara 
+						reluarea procesului de inregistrare.
+						</h4>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 {% endblock %}

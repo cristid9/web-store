@@ -8,7 +8,7 @@ app.debug = True
 app.secret_key = 'kjsdhfssdkf'
 app.csrf_enabled = True
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://cristi:1234@localhost/"\
-										"test_web_store_db"
+							"test_web_store_db"
 # Setting needed for mail server.
 app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
 app.config['MAIL_PORT'] = 465
@@ -29,3 +29,16 @@ lm.login_view = 'login'
 db = SQLAlchemy(app)
 
 PRODUCTS_PER_PAGE = 10
+
+
+
+
+
+
+
+
+
+
+
+
+

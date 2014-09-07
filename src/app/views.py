@@ -118,7 +118,7 @@ def login():
 @app.route('/logout')
 def logout():
 	logout_user()
-	return "logout link"
+	return redirect(url_for('index'))
 	
 @app.route('/categories/<string:category>/<int:page>')
 def categories(category, page):

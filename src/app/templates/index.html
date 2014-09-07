@@ -1,6 +1,98 @@
 {% extends "base.html" %}
 {% block content %}
+	<!-- carousel -->
+	<div id="carousel-example-generic" class="carousel slide" 
+		data-ride="carousel">
+		<ol class="carousel-indicators">
+			<li data-target="#carousel-example-generic" data-slide-to="0"
+				class="active"></li>
+			<li data-target="#carousel-example-generic" data-slide-to="1">
+			</li>
+			<li data-target="#carousel-example-generic" data-slide-to="2">
+			</li>	
+		</ol>
+		
+		<div class="carousel-inner">
+			<div class="item active">
+				<img src="{{ url_for('static', 
+					filename="images/shopping-bag.png") }}">
+				<div class="carousel-caption">
+					<h1>sdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdMERGE?</h1>
+				</div>
+			</div>
+			<div class="item">
+				<center>
+					<img src="{{ url_for('static', 
+						filename="images/placeholder1.jpg")}}" >
+				</center>
+				<div class="carousel-caption">
+					<h1> Morena sicuta, coptura albena </h1>
+					<p> reducere de nu ai cuvinte </p>
+				</div>
+			</div>
+		</div>	
+
+		<a class="left carousel-control" href="#carousel-example-generic"
+			role="button" data-slide="prev">
+			<span class="glyphicon glyphicon-chevron-left"></span>
+		</a>
+		<a class="right carousel-control" href="#carousel-example-generic"
+			role="button" data-slide="next">
+			<span class="glyphicon glyphicon-chevron-right"></span>
+		</a>	
+	</div>
+
+	<br>
+	<br>
+
 	<div class="container">
-		<h3> Index Page  </h3>
+		<div class="row">
+			<div class="col-xs-4">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div class="col-xs-6">
+							<img src="{{ url_for('static', 
+								filename="images/placeholder1.jpg") }}" 
+								width="100px" height="100px">
+						</div>
+						<div class="col-xs-6">
+							<p> Lorem Ipsum </p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-4">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div class="col-xs-6">
+							<img src="{{ url_for('static', 
+								filename="images/placeholder1.jpg") }}" 
+								width="100px" height="100px">
+						</div>
+						<div class="col-xs-6">
+							<p> Lorem ipsum </p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-4">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div class="col-xs-6">
+							<img src="{{ url_for('static', 
+								filename="images/placeholder1.jpg") }}" 
+								width="100px" height="100px">
+						</div>
+						<div class="col-xs-6">
+							<p> Lorem ipsum </p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 {% endblock %}
+
+
+
+

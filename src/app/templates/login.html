@@ -1,11 +1,44 @@
 {% extends "base.html" %}
 {% block content %}
-	<div class="conatiner">
-		<form method="POST" action="">
-			{{ form.hidden_tag() }}
-			<p> Your username {{ form.username }} </p>
-			<p> Your Pasword {{ form.password }} </p>
-			<input type="submit">
-		</form>
+	<div class="container">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3>
+					<span class="glyphicon glyphicon-user"></span>
+					Logheaza-te
+				</h3>
+			</div>
+			<div class="panel-body">
+				<form method="POST" action="">
+					{{ form.hidden_tag() }}
+				
+					<div class="row"> 
+						<div class="col-xs-2">
+							Your username 
+						</div> 
+						<div class="col-xs-4">
+							{{ form.username(class="form-control", 
+								placeholder="username") }}
+						</div>	
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-xs-2">
+							Your Pasword
+						</div>	
+						<div class="col-xs-4">
+							{{ form.password(class="form-control", 
+								placeholder="password") }}
+						</div>	
+					</div>
+					<br>
+					<button type="submit" class="btn btn-primary btn-md">
+						Logheaza-te  
+						<span class="glyphicon glyphicon-log-in">
+						</span>
+					</button>
+				</form>
+			</div>
+		</div>
 	</div>
 {% endblock %}
