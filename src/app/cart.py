@@ -5,6 +5,7 @@
 
 from main import db
 from flask import session
+from product import Product
 
 ##
 #
@@ -24,7 +25,11 @@ class Cart(object):
 			"price": price,
 			"quantity": 0
 		}
-	
+		session["cart"] = self.items
+		print "-" * 40
+		print self.items
+		print session
+
 	def deleteFromCart(self, productId):
 		del self.items[productId]
 	
@@ -37,9 +42,15 @@ class Cart(object):
 			total += item["qunatity"] * item["price"]
 		total += (24.0/100) * total
 		return total	
+	
+	## Because I can't perform queries from templates I need a list with all 
+	#  products buyed by the user.
+	def getProductData(self):
+		data = []
+		for id in self.items:
+			data.append(Product.query.get(id))
 
-	def __del__(self):
-		session["cart"] = self.items
+		return data
 
 class Order(db.Model):
 	__tablename__ = "order_table"

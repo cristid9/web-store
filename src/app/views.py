@@ -107,10 +107,12 @@ def login():
 		user = User.query.filter_by(username=form.username.data, 
 			password=md5(form.password.data).hexdigest()
 		).first()
-		login_user(user)
-		flash('User logged in')
-		return redirect(url_for('index'))
-	
+	        if not user is None:
+                    login_user(user)
+		    flash('Te-ai logat cu succes')
+		    return redirect(url_for('index'))
+	        else:
+                    flash("Numele de utilizator sau parola nu sunt corecte!")
 	flashErrors(form.errors, flash)
 	return render_template("login.html",
 		form=form
@@ -122,7 +124,7 @@ def logout():
 	return redirect(url_for('index'))
 	
 @app.route('/categories/<string:category>/<int:page>')
-def categories(category, page=1):
+def categories(category, page):
 	products = Product.query.filter_by(category=category).paginate(page, 
 		PRODUCTS_PER_PAGE, False
 	)
@@ -133,14 +135,23 @@ def categories(category, page=1):
 
 @app.route('/add_to_cart', methods=['POST'])
 def addToCart():
-	productId = request.form["productId"]
+        import pdb; pdb.set_trace()
+        productId = request.form["productId"]
+        print "merge ?"
 	productPrice = request.form["productPrice"]
 
+        print "merge cacatu asta?"
 	g.cart.addToCart(int(productId), float(productPrice))
 
 	print session		
 	return jsonify(status="success") 
 
+@app.route('/cart')
+def cart():
+    #import pdb; pdb.set_trace()
+    return render_template("products_in_cart.html", 
+            cart=g.cart.getProductData()
+    )
 
 
 

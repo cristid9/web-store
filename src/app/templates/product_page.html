@@ -1,13 +1,114 @@
 {% extends "base.html" %}
 {% block content %}
-	<div class="conatiner">
-		{% for picture in product.pictures %}
-			<img src="{{ picture.link }}" width="150" height="150"/>
-		{% endfor %}
-		
-		{% for comment in product.comments %}
-			{{ comment.comment }}				
-		{% endfor  %}
+	<div class="container">
+		<div class="row">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="col-xs-3">
+						<div id="carousel-example-generic" class="carousel slide" 
+							data-ride="carousel">
+							<ol class="carousel-indicators">
+								{% set counter = 0 %}
+								{% for picture in product.pictures %}
+									{% if counter == 0 %}
+										<li data-target="#carousel-generic active"
+											data-slide-to="{{ counter }}">
+										</li>
+									{% else %}
+										<li data-target="#carousel-example-generic" 
+											data-slide-to="{{ counter}}">
+										</li>
+									{% endif %}
+									{% set counter = counter + 1 %}
+								{% endfor %}
+							</ol>
+							<div class="carousel-inner">
+								{% set counter = 0 %}
+								{% for picture in product.pictures %}
+									{% if counter == 0 %}
+										<div class="item active">
+									{% else %}
+										<div class="item">
+									{% endif %}
+											<center>
+											<img src="{{ picture.link }}" 
+												width="150"	height="150">
+											</center>
+										</div>
+									{% set counter = counter + 1 %}
+								{% endfor %}
+							</div>
 
+							<a class="left carousel-control" 
+								href="#carousel-example-generic" 
+								role="button" data-slide="prev">
+								<span class="glyphicon glyphicon-chevron-left">
+								</span>
+							</a>
+							<a class="right carousel-control" 
+								href="#carousel-example-generic" role="button" 
+								data-slide="next">
+								<span class="glyphicon glyphicon-chevron-right">
+								</span>
+							</a>
+						</div>
+					</div>
+					<div class="col-xs-4">
+						<div class="row">
+							<h3> 
+								<strong> {{ product.name }} </strong> 
+							</h3>
+						</div>
+						<div class="row">
+							<p> {{ product.description }} </p>
+						</div>
+						<div class="row">
+							<button type="button" class="btn btn-success btn-md
+								add_to_cart">
+								Adauga 
+								<span 
+									class="glyphicon glyphicon-shopping-cart">
+								</span>
+							</button>						
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Specificatiile produsului
+				</div>
+				<div class="panel-body">
+					{% set counter = 0 %}
+					{% for specification in product.specifications %}
+						{% if counter % 2 == 0 %}
+							<div class="row">
+						{% endif %}
+							<div class="col-xs-4">
+								<h5> 
+									{{ specification.name }}: 
+									{{ specification.data }} 
+								</h5>
+							</div>
+						{% if counter % 2 != 0 %}
+							</div>
+						{% endif %}
+						{% set counter = counter + 1 %}
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Comentarii 
+				</div>
+				<div class="panel-body">
+					support pentru comentarii va fi adaugat mai tarziu
+				</div>
+			</div>
+		</div>
 	</div>
 {% endblock %}

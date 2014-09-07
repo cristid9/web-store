@@ -3,8 +3,11 @@
 		<div class="panel-body center-block">
 			<div class="row">
 				<div class="col-xs-5">
-					<img width="150px" height="150px 
-						"src="{{product.pictures[0].link}}">
+					<a href="{{ url_for('productPage', 
+						productId=product.id) }}">
+						<img width="150px" height="150px 
+							"src="{{product.pictures[0].link}}">
+					</a>
 				</div>
 				<div class="col-xs-6">
 					<div class="row">	

@@ -27,6 +27,10 @@ class Product(db.Model):
 	pictures = db.relationship('ProductPictures', backref='product',
 								lazy='dynamic'
 	)
+	specifications = db.relationship('ProductSpecifications', 
+			backref='product',
+			lazy='dynamic'
+	)
 
 
 	def __init__(self, name, price, stock):
@@ -73,11 +77,26 @@ class Categories(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String, nullable=True)
 
-		
+	def __init__(self, name):
+		self.name = name
+	
+	def __repr__(self):
+		return "Categories(%r)" % self.name
+
+class ProductSpecifications(db.Model):
+	__tablename__ = 'product_specification_table'
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String, nullable=False)
+	data = db.Column(db.String, nullable=False)
+	productId = db.Column(db.Integer, db.ForeignKey('product_table.id'))
 			
+	def __init__(self, productId, name, data):
+		self.productId = productId
+		self.name = name
+		self.data = data
 
-
-
+	def __repr__(self):
+		return "ProductSpecfication(%r)" % self.name
 
 
 
