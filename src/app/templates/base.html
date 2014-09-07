@@ -72,7 +72,14 @@
 								produse <span class="caret"></span>
 							</a>
 							<ul class="dropdown-menu" role="menu">
-								<li><a href="#"> Action </a></li>
+								{% for category in g.categories %}
+									<li>
+									<a href="{{ url_for('categories',
+										category=category.name, page=1) }}">
+											{{ category.name }}
+										</a>
+									</li>
+								{% endfor %}
 							</ul>
 						</li>
 					</ul>

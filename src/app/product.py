@@ -68,7 +68,11 @@ class ProductComment(db.Model):
 	def __repr__(self):
 		return "<ProductComment(%r)>" % self.comment
 		
-		
+class Categories(db.Model):
+	__tablename__ = 'categories_table'
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String, nullable=True)
+
 		
 			
 

@@ -1,9 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
 	<div class="conatiner">
+		{% set counter = 0 %}
 		{% for product in products.items %}
-			{% include "product_template.html" %}
+			{% if counter % 2 == 0 %}
+				<div class="row">
+					<!-- filler div -->
+					<div class="col-xs-1"></div>
+			{% endif %}
+			
+					<div class="col-xs-4">	
+						{% include "product_template.html" %}
+					</div>
+			{% if counter % 2 != 0 %}
+				</div>
+			{% endif %}
+			{% set counter = counter + 1 %}
 		{% endfor %}
+		
 		<script type="text/javascript">
 			$(document).ready(function() {
 				$(".add_to_cart").click(function(event) {

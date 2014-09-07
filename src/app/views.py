@@ -3,7 +3,7 @@ from flask import render_template, redirect, session, url_for, request, flash,\
 					g, jsonify
 from forms import SingupForm, LoginForm
 from user import User, PendingUser
-from product import Product
+from product import Product, Categories
 from cart import Cart
 from hashlib import md5
 from helper import sendMail, generateUrl, flashErrors
@@ -15,6 +15,7 @@ from flask.ext.login import login_user, logout_user, current_user,\
 def before_request():
 	g.user = current_user
 	g.cart = Cart()
+        g.categories = Categories.query.all()
 
 @app.route('/')
 @app.route('/index')
@@ -121,7 +122,7 @@ def logout():
 	return redirect(url_for('index'))
 	
 @app.route('/categories/<string:category>/<int:page>')
-def categories(category, page):
+def categories(category, page=1):
 	products = Product.query.filter_by(category=category).paginate(page, 
 		PRODUCTS_PER_PAGE, False
 	)
