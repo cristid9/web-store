@@ -39,7 +39,7 @@ class Product(db.Model):
 		self.stock = stock
 
 	def __repr__(self):
-		return "<Product(%r, %r, %)>" % (self.name, self.price, self.stock)
+		return "<Product(%r, %r, %r)>" % (self.name, self.price, self.stock)
 
 class ProductPictures(db.Model):
 	__tablename__ = "product_pictures_table"

@@ -22,13 +22,10 @@
 			$(document).ready(function() {
 				$(".add_to_cart").click(function(event) {
 					var id = $(event.target).closest("div").attr("id");
-					var price = $(event.target).closest("tr").
-						find(".product_price").text();
 					$.post("{{ url_for('addToCart') }}", {
 						productId: id,
-						productPrice: price
 					}).done(function(data) {
-						alert(data.status)
+						alert("Produsul a fost adaugat cu success")
 					});				
 				});
 			});

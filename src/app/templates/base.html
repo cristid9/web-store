@@ -7,6 +7,8 @@
 			bootstrap.min.js"></script>
 		<script src="{{ url_for('static', filename="js/helpers.js") 
 			}}"></script>
+		<script src="{{ url_for('static', 
+			filename='js/jquery.hc-sticky.js') }}"></script>
 		<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.
 			com/bootstrap/3.2.0/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="{{ 
@@ -65,7 +67,7 @@
 								Acasa 
 							</a>
 						</li>
-						<li><a href="#"> contact </a></li>
+						<li><a href="{{ url_for('contact') }}"> contact </a></li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" 
 								data-toggle="dropdown">
@@ -83,9 +85,11 @@
 							</ul>
 						</li>
 					</ul>
-					<form class="navbar-form navbar-left" role="search">
+					<form class="navbar-form navbar-left" role="search"
+						action="{{ url_for('search') }}" method="POST">
 						<div class="form-group">
-							<input type="text" class="form-control" 
+							<input type="text" name="search" 
+								class="form-control" 
 								placeholder="Cauta produsul">
 						</div>
 						<button type="submit" class="btn btn-default">
@@ -94,7 +98,6 @@
 					</form>
 					<ul class="nav navbar-nav navbar-right">
 						{% if g.user.is_authenticated() %}
-							<li><a href="#"> Contul meu </a></li>
 							<li>
 								<a href="{{ url_for('logout')}}">
 									Delogare
@@ -115,9 +118,6 @@
 										<a href="{{ url_for('cart') }}">
 										   	Produse cumparate 
 										</a>
-									</li>
-									<li>
-										<a href="#"> Tranzzactiile mele </a>
 									</li>
 								</ul>
 							</li>
@@ -144,7 +144,21 @@
 
 		{% block content %}
 		{% endblock %}
+		<nav class="navbar navbar-default navbar-fixed-bottom" 
+			role"navigation" id="footer">
+			<div class="container">
+				<br>
+				<p> Creat de <strong> Davind Laurentiu </strong>. </p>
+			</div>
+		</nav>
 
+		<script type="text/javascript">
+
+			$(document).ready(function() {
+
+				$('#footer').hcSticky();
+		  });
+		</script>
 	</body>
 </html>
 

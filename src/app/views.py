@@ -1,10 +1,10 @@
 from main import app, db, lm, PRODUCTS_PER_PAGE
 from flask import render_template, redirect, session, url_for, request, flash,\
-					g, jsonify
-from forms import SingupForm, LoginForm
-from user import User, PendingUser
+		    g, jsonify, make_response
+from forms import SingupForm, LoginForm, AddressForm, ContactForm
+from user import User, PendingUser, UserData
 from product import Product, Categories
-from cart import Cart
+from cart import Cart, ShippingMethods, Order
 from hashlib import md5
 from helper import sendMail, generateUrl, flashErrors
 from uuid import uuid4
@@ -13,14 +13,48 @@ from flask.ext.login import login_user, logout_user, current_user,\
 
 @app.before_request
 def before_request():
+	print session
 	g.user = current_user
-	g.cart = Cart()
-        g.categories = Categories.query.all()
+	if not "cart" in session:
+		session["cart"] = {}
+        if not "shipping" in session:
+            session["shipping"] = {"name": None, "price": 0} 
+        g.cart = Cart(session["cart"], session["shipping"]["price"])
+	g.categories = Categories.query.all()
+	g.shippingMethods = ShippingMethods.query.all()
 
 @app.route('/')
 @app.route('/index')
 def index():
-	return render_template('index.html')
+    promotionalProducts = Product.query.paginate(1, 3, False)    
+    return render_template('index.html', 
+            promotionalProducts=promotionalProducts)
+
+@app.route('/search', methods=['POST'])
+def search():
+    products = Product.query.all()
+    productsToRender = []
+    for product in products:
+        if request.form["search"] in product.name: 
+            productsToRender.append(product)
+    return render_template('search_page.html', products=productsToRender)
+
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    form = ContactForm()
+    if request.method == 'POST' and form.validate():
+        sendMail(subject='Conact', 
+            sender=app.config['ADMINS'][0],
+            recipients=app.config['ADMINS'],
+            messageBody='-----',
+            messageHtmlBody=render_template('contact_mail.html',
+                email=form.email.data,
+                name=form.name.data,
+                message=form.message.data)
+        )
+        return render_template('message_send_successfully.html') 
+        
+    return render_template('contact.html', form=form)
 
 @app.route('/singup', methods=['GET', 'POST'])
 def singup():
@@ -121,6 +155,8 @@ def login():
 @app.route('/logout')
 def logout():
 	logout_user()
+        del session["cart"]
+        del session["shipping"]
 	return redirect(url_for('index'))
 	
 @app.route('/categories/<string:category>/<int:page>')
@@ -135,25 +171,126 @@ def categories(category, page):
 
 @app.route('/add_to_cart', methods=['POST'])
 def addToCart():
-        import pdb; pdb.set_trace()
-        productId = request.form["productId"]
-        print "merge ?"
-	productPrice = request.form["productPrice"]
+        product = Product.query.get(int(request.form["productId"]))
 
-        print "merge cacatu asta?"
-	g.cart.addToCart(int(productId), float(productPrice))
+	g.cart.addToCart(product.id, product.price)
+        session["cart"] = g.cart.items
 
 	print session		
 	return jsonify(status="success") 
 
 @app.route('/cart')
 def cart():
-    #import pdb; pdb.set_trace()
+    form = AddressForm()
     return render_template("products_in_cart.html", 
-            cart=g.cart.getProductData()
+            cart=g.cart.getProductData(),
+            form=form
     )
 
+@app.route('/update_cart', methods=['GET', 'POST'])
+def updateCart():
+    # I think the server should send the total value  to the client. In my
+    # opinion the client shouldn't be trusted, even for a small job like
+    # this one.
+    
+    g.cart.updateQuantity(int(request.form["id"]), 
+            int(request.form["quantity"])
+    )
+    session["cart"] = g.cart.items
+    session.modified = True
+    app.save_session(session, make_response("dummy"))
+
+    # It's safer to query the database for the product's price.
+    product = Product.query.get(int(request.form["id"]))
+    return jsonify(total=product.price * 
+            int(request.form["quantity"])
+    ) # placeholder for real message
+
+@app.route('/check_stock', methods=['GET', 'POST'])
+def checkStock():
+    product = Product.query.get(int(request.form["id"]))
+    return jsonify(stock=product.stock)
+
+@app.route('/get_cart_total', methods=['GET', 'POST'])
+def getCartTotal():
+	total=g.cart.getTotal()
+	return jsonify(total=round(total, 2))
+
+@app.route('/delete_from_cart', methods=['POST'])
+def deleteFromCart():
+	g.cart.deleteFromCart(int(request.form['id']))
+	session["cart"] = g.cart.items
+	return jsonify(status="ok")
+
+@app.route('/set_shipping_method', methods=['POST'])
+def setShippingMethod():
+    # the user will send the method name, update the cart value using the name 
+    # of the shiping method
+
+    for shippingMethod in g.shippingMethods:
+        if shippingMethod.name == request.form["name"]:
+            g.cart.updateShipping(shippingMethod.price)
+            session["shipping"]["price"] = g.cart.shipping
+            session["shipping"]["name"] = request.form["name"]
+            return jsonify(status="ok")
+    return jsonify(status="fail")
+
+@app.route('/get_shipping_method', methods=["POST"])
+def getShippingMethod():
+    return jsonify(name=session["shipping"]["name"])
+	
+@app.route('/place_order', methods=["POST"])
+def placeOrder():
+    form = AddressForm(request.form)
+    if form.errors:
+        return jsonify(status='fail', errors=form.errors)
+    
+    for shippingMethod in g.shippingMethods:
+        if shippingMethod.name == request.form["shipping"]:
+            g.cart.updateShipping(shippingMethod.price)
+    userData = UserData(phone=form.phone.data,
+            email=form.email.data, 
+            region=form.region.data, 
+            city=form.city.data, 
+            address=form.address.data)
+    userData.userId = g.user.id
+    db.session.add(userData)
+    db.session.commit()
+    # The third argument was an architerchtural mistake.
+    order = Order(g.cart.getTotal(), g.user.id, 1) 
+    order.address = userData.id
+    db.session.add(order)
+    db.session.commit()
+
+    cart = []
+    for item in g.cart.items:
+        cart.append({
+            'quantity': g.cart.items[item]['quantity'],
+            'name': Product.query.get(item).name,
+            'price': g.cart.items[item]['price']
+        })
+
+    sendMail(subject='Factura',
+        sender=app.config['ADMINS'][0],
+        recipients=[form.email.data, app.config['ADMINS'][0]],
+        messageBody='----',
+        messageHtmlBody=render_template('bill.html',
+            cart=cart, 
+            name=g.user.name,
+            total=g.cart.getTotal(),
+            phone=form.phone.data,
+            region=form.region.data,
+            city=form.city.data,
+            address=form.address.data,
+            shipping=request.form['shipping'],
+            shippingCost=ShippingMethods.query.filter_by(
+                name=request.form['shipping']).first().price)
+        )
 
 
+    # Reset the cart.
+    session["cart"] = {}
+
+    return jsonify(status="ok")
 
 

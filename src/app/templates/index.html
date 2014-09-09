@@ -13,23 +13,19 @@
 		</ol>
 		
 		<div class="carousel-inner">
-			<div class="item active">
-				<img src="{{ url_for('static', 
-					filename="images/shopping-bag.png") }}">
-				<div class="carousel-caption">
-					<h1>sdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdMERGE?</h1>
+			{% for product in promotionalProducts.items %}
+				<div class="item active" alt="">
+					<center>
+						<img src="{{ product.pictures[0].link }}" width="400px"
+							height="300px">
+					</center>
+					<div class="carousel caption">
+						<center>
+							<h3> {{ product.description }} </h3>
+						</center>
+					</div>
 				</div>
-			</div>
-			<div class="item">
-				<center>
-					<img src="{{ url_for('static', 
-						filename="images/placeholder1.jpg")}}" >
-				</center>
-				<div class="carousel-caption">
-					<h1> Morena sicuta, coptura albena </h1>
-					<p> reducere de nu ai cuvinte </p>
-				</div>
-			</div>
+			{% endfor %}
 		</div>	
 
 		<a class="left carousel-control" href="#carousel-example-generic"
@@ -46,50 +42,27 @@
 	<br>
 
 	<div class="container">
+		{% for product in promotionalProducts.items %}
 		<div class="row">
 			<div class="col-xs-4">
 				<div class="panel panel-default">
 					<div class="panel-body">
 						<div class="col-xs-6">
-							<img src="{{ url_for('static', 
-								filename="images/placeholder1.jpg") }}" 
-								width="100px" height="100px">
+							<a href="{{url_for('productPage',
+									productId=product.id)}}">
+								<img src="{{ product.pictures[0].link }}" 
+									width="100px" height="100px">
+							</a>
 						</div>
 						<div class="col-xs-6">
-							<p> Lorem Ipsum </p>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-xs-4">
-				<div class="panel panel-default">
-					<div class="panel-body">
-						<div class="col-xs-6">
-							<img src="{{ url_for('static', 
-								filename="images/placeholder1.jpg") }}" 
-								width="100px" height="100px">
-						</div>
-						<div class="col-xs-6">
-							<p> Lorem ipsum </p>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-xs-4">
-				<div class="panel panel-default">
-					<div class="panel-body">
-						<div class="col-xs-6">
-							<img src="{{ url_for('static', 
-								filename="images/placeholder1.jpg") }}" 
-								width="100px" height="100px">
-						</div>
-						<div class="col-xs-6">
-							<p> Lorem ipsum </p>
+							<p> {{ product.description }} </p>
+							<strong> {{ product.price }}</strong>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		{% endfor %}
 	</div>
 {% endblock %}
 

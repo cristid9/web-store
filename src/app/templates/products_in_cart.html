@@ -1,7 +1,324 @@
 {% extends "base.html" %}
 {% block content %}
-	{% for product in cart %}	
-		{{ product.name }}
-	{% endfor %}
-	{{ cart }}
+	<div class="row">
+		<div class="col-xs-2"></div> <!-- filler -->
+		<div class="col-xs-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4>
+						<span class="glyphicon glyphicon-shopping-cart"> 
+						</span>
+						Produsele din cos
+					</h4>
+				</div>
+				<div class="panel-body">
+					<div class="media">
+						{% for product in cart %}
+							<a class="pull-left" href="#">
+								<img src="{{ product.pictures[0].link }}" 
+									width="100" height="100">
+							</a>
+								<div class="row" id="{{ product.id }}">
+									<div class="col-xs-3">
+										<div class="media-body">
+											<h4 class="media heading"> 
+												<strong> 
+													{{ product.name }}
+												</strong>
+												<div class="row pret_produs">
+													<div class="col-xs-4">
+														Pret:
+													</div>
+													<div class="col-xs-6">	
+														<span class="badge">
+															{{ product.price }}
+														</span>
+													</div>
+												</div>
+												<div class="row product_total">
+													<div class="col-xs-4">
+														Total:
+													</div>
+													<div class="col-xs-6">
+														<span class="badge">
+														{{ g.cart.items
+														   [product.id].
+														   quantity	*
+														   product.price
+														}}
+														</span>
+													</div>
+												</div>
+											</h4>
+										</div>
+									</div>
+									<div class="col-xs-2">
+										<input type="number" 
+											class="form-control 
+											product_quantity" 
+											value="{{ g.cart.
+												items[product.id].quantity }}"
+												min="1" max="{{ product.stock
+											   	}}">
+									</div>
+									<div class="col-xs-2">
+										<button type="button" 
+											class="btn btn-default btn-sm
+											update_cart">
+											Actualizeaza	
+										</button>
+									</div>
+									<div class="col-xs-2">
+										<button type="button"
+											class="btn btn-danger btn-sm
+											delete_from_cart">
+											Sterge
+										</button>
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+				<div class="panel-footer">
+					{% for shippingMethod in g.shippingMethods %}
+						<div class="row">
+							<div class="radio">
+								<label>
+									<input type="radio" name="shipping" 
+										value="{{ shippingMethod.name }}">
+									<div class="col-xs-6">
+										Transport: {{ shippingMethod.name }}
+									</div>
+									<div class="col-xs-3">
+										Pret: {{ shippingMethod.price }}
+									</div>
+									<div class="col-xs-3">
+										{{ shippingMethod.area }}
+									</div>
+								</label>
+							</div>
+						</div>
+					{% endfor %}
+					<div class="row">
+						<div class="col-xs-8">
+							Total: 
+							<span class="badge order_total">
+								0
+							</span>
+							(TVA inclus)
+						</div>
+						<div class="col-xs-4">
+							<button type="submit" class="btn btn-success btn-md
+								place_order">
+								Plaseaza comanda
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="order_details">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true"> &times; </span>
+						<span class="sr-only"> Close </span>
+					</button>
+				</div>
+				<br>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-xs-3">
+							Telefon:
+						</div>
+						<div class="col-xs-8">
+							{{ form.phone(class='form-control', 
+								placeholder='numarul tau de telefon', 
+								id='phone') }}
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-xs-3">
+							Email:
+						</div>
+						<div class="col-xs-8">
+							{{ form.email(class='form-control', 
+								placeholder='adresa de email', 
+								id='email') }}
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-xs-3">
+							Judet:
+						</div>
+						<div class="col-xs-8">
+							{{ form.region(class='form-control', 
+								placeholder='judetul in care stai', 
+								id='region') }}
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-xs-3">
+							Oras:
+						</div>
+						<div class="col-xs-8">
+							{{ form.city(class='form-control', 
+								placeholder='orasul unde vom livra comanda',
+								id='city') }}
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-xs-3">
+							Address
+						</div>
+						<div class="col-xs-8">
+							{{ form.address(class='form-control', 
+								placeholder='Adresa ta', id_='address') }}
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" 
+						data-dismiss="modal">
+						Renunta
+					</button>
+					<button type="button" id="send_order" 
+						class="btn btn-primary">
+						Trimite comanda
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="modal_status">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true"> &times; </span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<h4> Un email cu factura a fost trimis </h4>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" 
+						data-dismiss="modal">
+						Close
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		function updateTotal() {
+			$.post('get_cart_total', {}).done(function(data) {
+				$('.order_total').text(data.total);
+			});
+		}
+
+		$(document).ready(function() {
+			// update the cart when load te page;
+			updateTotal();
+			$('.update_cart').click(function(event) {
+				var quantity = $(event.target).closest('div.row').
+					find('input[type="number"].product_quantity').val();
+				var productId = $(event.target).closest('div.row').attr('id');
+				var stock;
+
+				// It's safer to ask the server about the stock of this 
+				// product.
+				$.post('check_stock', {id: productId}).done(function(data) {
+					stock = data.stock;
+				});
+
+				if(quantity > stock) {
+					alert("Cantitatea aleasa este prea mare!");		
+				}
+				else {
+					$.ajax({
+						url: 'http://' + document.domain + ':' + 
+							location.port + '/update_cart',
+						type: "POST",
+						data: {
+							id: productId,
+							quantity: quantity
+						},
+						xhrFields: {
+							withCredentials: true
+						}
+					})
+					.done(function(data) {
+						// Now update the total price of that product
+						$(event.target).closest('div.row').
+							find('div.product_total').
+							find('span').text(data.total);
+						alert("Cantitatea a fost modificata cu succes");
+					});	
+					updateTotal();
+				}
+			});
+			$('.delete_from_cart').click(function(event) {
+				var productId = $(event.target).closest('div.row').attr('id');
+				$.post('delete_from_cart', {id: productId}).done(function() {
+					alert('Produsul a fost sters cu success');	
+				});
+						
+			});
+			$('input:radio[name="shipping"]').click(function(event) {
+				$.post('set_shipping_method', {
+					name: $(event.target).val()
+				}).done(function(data) {
+					updateTotal();
+					if(data.status === "ok") {
+						alert('Metoda de livrare setata cu success'); 
+					}
+				});
+			});
+
+			$('.place_order').click(function(event) {
+				if($('input:radio[name="shipping"]:checked').val() 
+					=== undefined) 
+				{
+					alert("Inainte sa plasezi comanda selecteaza modalitatea \
+						de transport");
+				}
+				else {
+					$('#order_details').modal();
+				}
+			});
+
+			$('#send_order').click(function(event) {
+				$.post('place_order', {
+					phone: $('#phone').val(),
+					email: $('#email').val(),
+					region: $('#region').val(),
+					city: $('#city').val(),
+					address: $('#address').val(),
+					shipping: $('input:radio[name="shipping"]:checked').val()
+				}).done(function(data) {
+					if(data.errors === undefined) {
+						$('#order_details').modal('hide');
+						$('#modal_status').modal()
+						$('#modal_status').on('hidden.bs.modal', function() {
+							location.reload();
+						});
+					}
+					else {
+						alert(data.errors);
+					}
+				});
+			});
+
+					
+		});
+	</script>
 {% endblock %}

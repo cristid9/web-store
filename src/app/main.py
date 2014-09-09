@@ -2,8 +2,15 @@ from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.mail import Mail
 from flask.ext.login import LoginManager
+from flask_kvsession import KVSessionExtension
+from simplekv.fs import FilesystemStore
+from flask.ext.script import Manager
+from flask.ext.migrate import Migrate, MigrateCommand
+
+store = FilesystemStore('./data')
 
 app = Flask(__name__)
+KVSessionExtension(store, app)
 app.debug = True
 app.secret_key = 'kjsdhfssdkf'
 app.csrf_enabled = True
@@ -27,6 +34,10 @@ lm.init_app(app)
 lm.login_view = 'login'
 
 db = SQLAlchemy(app)
+
+migrate = Migrate(app, db)
+manager = Manager(app)
+manager.add_command('db', MigrateCommand)
 
 PRODUCTS_PER_PAGE = 10
 

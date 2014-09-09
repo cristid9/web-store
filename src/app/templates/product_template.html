@@ -10,7 +10,7 @@
 					</a>
 				</div>
 				<div class="col-xs-6">
-					<div class="row">	
+					<div class="row product-name">	
 						{{ product.name }}
 					</div>
 					<div class="row">
@@ -19,7 +19,7 @@
 					<div class="row">
 						<strong> {{ product.price }} </strong>
 					</div>
-					<div class="row">
+					<div class="row" id="{{ product.id }}">
 						{% if product.stock %}
 							<button type="button" class="btn 
 								btn-success btn-sm add_to_cart" >
