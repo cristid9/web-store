@@ -13,42 +13,42 @@ from datetime import datetime
 #
 #
 class Cart(object):
-        
-            
 	def __init__(self, cart, shipping):
 		self.items = cart
-		self.shipping =float(shipping)
+		self.shipping = float(shipping)
 
 	def addToCart(self, productId, price):
-            self.items[productId] = {
-                "price": price,
-                "quantity": 1
-            }
-            
+		self.items[productId] = {
+			"price": price,
+			"quantity": 1
+		}
+
 	def deleteFromCart(self, productId):
 		del self.items[productId]
-	
+
 	def updateQuantity(self, productId, newQuantity):
 		self.items[productId]["quantity"] = newQuantity
 
 	def getTotal(self):
-	    total = 0
-	    for item in self.items:
-		total += self.items[item]["quantity"] * \
-                    self.items[item]["price"]
-	    return total + float(self.shipping)	
-	
-	## Because I can't perform queries from templates I need a list with all 
-	#  products buyed by the user.
-	def getProductData(self):
-	    data = []
-	    for id in self.items:
-		data.append(Product.query.get(id))
+		total = 0
+		for item in self.items:
+			total += self.items[item]["quantity"] * \
+					 self.items[item]["price"]
+		return total + float(self.shipping)
 
-	    return data
+	## Because I can't perform queries from templates I need a list with all
+	# products buyed by the user.
+
+	def getProductData(self):
+		data = []
+		for id in self.items:
+			data.append(Product.query.get(id))
+
+		return data
 
 	def updateShipping(self, price):
 		self.shipping = price
+
 
 class Order(db.Model):
 	__tablename__ = "order_table"
@@ -65,8 +65,10 @@ class Order(db.Model):
 		self.userId = userId
 		self.buyedProductId = buyedProductId
 		date = datetime.utcnow()
+
 	def __repr__(self):
 		return "<Order(%r)>" % self.total
+
 
 class ShippingMethods(db.Model):
 	__tablename__ = 'shipping_methods_table'
@@ -84,7 +86,7 @@ class ShippingMethods(db.Model):
 		self.area = area
 
 	def __repr__():
-		return "ShippingMethods(%r)" % self.name 
+		return "ShippingMethods(%r)" % self.name
 
 
 

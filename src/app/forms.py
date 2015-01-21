@@ -18,9 +18,12 @@ class SingupForm(Form):
 	])
 	confirm = PasswordField('repeat_password')
 
+
 class LoginForm(Form):
 	username = TextField('username', [Required()])
 	password = PasswordField('password', [Required()])
+
+
 class AddressForm(Form):
 	phone = TextField('phone', [Required()])
 	email = TextField('email', [Required()])
@@ -28,7 +31,15 @@ class AddressForm(Form):
 	city = TextField('city', [Required()])
 	address = TextField('address', [Required()])
 
+
 class ContactForm(Form):
 	name = TextField('name', [Required()])
 	email = TextField('email', [Required()])
 	message = TextAreaField('message', [Required(), length(max=500)])
+
+class AddNewProductForm(Form):
+	name = TextField('name', [Required()])
+	price = TextField('price', [Required()])
+	stock = TextField('stock', [Required()])
+	description = TextAreaField('description', [Required()])
+	category = TextField('category', [Required()])

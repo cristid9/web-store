@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel panel-heading">
+                <h3>
+                    <span class="glyphicon glyphicon-list-alt"> </span>
+                    Adauga noul produs
+                </h3>
+            </div>
+            <div class="panel panel-body">
+                <form method="POST" action="">
+                    {{ form.hidden_tag() }}
+
+                    <div class="row">
+                        <div class="col-xs-2">
+                            Product Name
+                        </div>
+
+                        <div class="col-xs-4">
+                            {{ form.name(class="form-control",
+                                placeholder="name") }}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            Product Price
+                        </div>
+
+                        <div class="col-xs-3">
+                            {{ form.price(class="form-control",
+                                placeholder="price in lei") }}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            Product Stock
+                        </div>
+
+                        <div class="col-xs-2">
+                            {{ form.stock(class="form-control",
+                                placeholder="stock") }}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            Product Category
+                        </div>
+
+                        <div class="col-xs-4">
+                            {{ form.category(class="form-control",
+                                placeholder="category") }}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            Product Description
+                        </div>
+
+                        <div class="col-xs-4">
+                            {{ form.description(class="form-control",
+                                placeholder="description", rows="2") }}
+                        </div>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-success btn-md">
+                        Add the product
+                        <span class="glyphicon glyphicon-ok">
+                        </span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
