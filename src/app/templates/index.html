@@ -4,22 +4,21 @@
 	<div id="carousel-example-generic" class="carousel slide" 
 		data-ride="carousel">
 		<ol class="carousel-indicators">
-			<li data-target="#carousel-example-generic" data-slide-to="0"
-				class="active"></li>
-			<li data-target="#carousel-example-generic" data-slide-to="1">
-			</li>
-			<li data-target="#carousel-example-generic" data-slide-to="2">
-			</li>	
+			{% for product in promotionalProducts.items %}
+				<li data-target="#carousel-example-generic" data-slide-to="{{ loop.index - 1 }}"
+					class="active"></li>
+			{% endfor %}
+
 		</ol>
 		
 		<div class="carousel-inner">
 			{% for product in promotionalProducts.items %}
-				<div class="item active" alt="">
+				<div class="item {{ 'active' if loop.first else ''}}" alt="">
 					<center>
 						<img src="{{ product.pictures[0].link }}" width="400px"
-							height="300px">
+							height="300px" />
 					</center>
-					<div class="carousel caption">
+					<div class="carousel-caption">
 						<center>
 							<h3> {{ product.description }} </h3>
 						</center>
