@@ -43,3 +43,4 @@ class AddNewProductForm(Form):
 	stock = TextField('stock', [Required()])
 	description = TextAreaField('description', [Required()])
 	category = TextField('category', [Required()])
+	pictures = TextField('pictures', [Required()])

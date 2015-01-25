@@ -9,7 +9,7 @@
                 </h3>
             </div>
             <div class="panel panel-body">
-                <form method="POST" action="">
+                <form method="POST" action="" id="image_uploading_form">
                     {{ form.hidden_tag() }}
 
                     <div class="row">
@@ -67,7 +67,24 @@
                         </div>
                     </div>
                     <br>
-                    <button type="submit" class="btn btn-success btn-md">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            {{ form.pictures(id="pictures") }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            Product Pictures
+                        </div>
+
+                        <div class="col-xs-4">
+                            <button type="button" class="btn btn-primary bt-md" id="add_images_button">
+                                Add images
+                            </button>
+                        </div>
+                    </div>
+                    <br>
+                    <button type="button" class="btn btn-success btn-md" id="add_the_product">
                         Add the product
                         <span class="glyphicon glyphicon-ok">
                         </span>
@@ -75,5 +92,143 @@
                 </form>
             </div>
         </div>
+        <div class="modal fade" id="add_images_dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"> Adauga imagini </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="links_container">
+                            <div class="row">
+                                <div class="col-xs-7">
+                                    <input type="text" placeholder="link here"  class="form-control"/>
+                                </div>
+                                <div class="col-xs-1">
+                                    <button type="button" class="close">
+                                        <span class="close"> &times; </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <button type="button" class="btn btn-primary btn-md" id="add_another_image">
+                                    Another image
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="finish_adding_images">Add images</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var fieldCounter = 1; // because id 0 is assigned to the first text field.
+            var imageLinks = [];
+
+            $("#add_images_button").on('click', function() {
+                $("#add_images_dialog").modal("show");
+            });
+
+            $("#add_another_image").on('click', function() {
+                $("#links_container").append('\
+                    <div class="row">\
+                        <br>\
+                        <div class="col-xs-7">\
+                            <input type="text" placeholder="link here" class="form-control" />\
+                        </div>\
+                        <div class="col-xs-1">\
+                            <button type="button" class="close">\
+                                <span class="close"> &times; </span>\
+                            </button>\
+                        </div>\
+                    </div>');
+                fieldCounter++;
+            });
+
+            $("#finish_adding_images").on('click', function() {
+
+                // Verify if there are two identical values
+                var identicalElements = 0;
+                $("#links_container").find("input").each(function(index, element) {
+                    $("#links_container").find("input").each(function(index2, element2) {
+                        if(index === index2) {
+                            return false;
+                        }
+                        if($(element).val() === $(element2).val()) {
+                            identicalElements++;
+                                return true;
+                        }
+                        return true;
+                    });
+
+                });
+
+                if(identicalElements > 0) {
+                    alert("Ai introdus doua linkuri cu aceeasi valoare");
+                    return;
+                }
+
+                $("#links_container").find("input").each(function(index) {
+                    imageLinks.push(this.value + "|"); // It is easier to split links by the | character
+                });
+
+                // Before hiding the dialog we must also check if all the boxes are not empty.
+                var allFieldsAreCompleted = false;
+                $("#links_container").find("input[type=text]").each(function(index, element) {
+                    console.log($(element));
+                    allFieldsAreCompleted = $(element).val() !== "";
+                });
+
+                if(allFieldsAreCompleted) {
+                    $("#add_images_dialog").modal("hide");
+                }
+                else {
+                    alert("You haven't completed all the fields");
+                }
+
+            });
+
+            $('#links_container').on('click', function(event) {
+                if($(event.target).hasClass("close")) {
+                    for(var i = 0; i < imageLinks.length; i++) {
+                        // The last charachter is a "|" and we need to get rid of it.
+                        if(imageLinks[i].slice(0, -1) === $(event.target).closest("div.row").find("input[type=text]").
+                            val()) {
+                            imageLinks.splice(i, 1);
+                        }
+                    }
+                    console.log(imageLinks);
+                    $(event.target).closest("div.row").remove();
+                    $(event.target).remove();
+                    fieldCounter--;
+                    if(fieldCounter === 0) {
+                        $("#add_images_dialog").modal("hide");
+                    }
+                }
+            });
+
+            $("#add_the_product").on('click', function() {
+                if(imageLinks.length === 0) {
+                    // 1 hidden input is added by wtforms.
+                    alert("You haven't added any image. Please add at least one image and submit the form after");
+                }
+                else {
+                    $("#pictures").val(imageLinks);
+                    $("#image_uploading_form").submit();
+                }
+
+            });
+        });
+    </script>
 {% endblock %}

@@ -3,7 +3,7 @@ from flask import render_template, redirect, session, url_for, request, flash, \
     g, jsonify, make_response
 from forms import SingupForm, LoginForm, AddressForm, ContactForm, AddNewProductForm
 from user import User, PendingUser, UserData
-from product import Product, Categories
+from product import Product, Categories, ProductPictures
 from cart import Cart, ShippingMethods, Order
 from hashlib import md5
 from helper import sendMail, generateUrl, flashErrors
@@ -193,19 +193,31 @@ def addNewProduct():
         db.session.add(newProduct)
         db.session.commit()
 
+        # Now add the images.
+        pictures = form.pictures.data.split('|')
+        del pictures[-1]
+
+        for pictureLink in pictures:
+            db.session.add(ProductPictures(pictureLink, newProduct.id))
+        db.session.commit()
+
         # Now that the product has an id we can add the rest of the components.
         # First, if the product's category is not already in the database we should add it.
-
         if Categories.query.filter_by(name=newProduct.category).first() is None:
             newCategory = Categories(newProduct.category)
             db.session.add(newCategory)
             db.session.commit()
 
-        return str(Categories.query.filter_by(name=newProduct.category).first())
+        return redirect(url_for('productAddedSuccessfully', name=newProduct.name))
 
     flashErrors(form.errors, flash)
     return render_template('add_new_product.html',
                            form=form)
+
+@app.route('/product_added_successfully/<string:name>', methods=['GET'])
+def productAddedSuccessfully(name):
+    return render_template('product_added_successfully.html',
+                           name=name)
 
 @app.route('/add_to_cart', methods=['POST'])
 def addToCart():
