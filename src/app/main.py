@@ -22,7 +22,7 @@ app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = 'magazin.licenta@gmail.com'
-app.config['MAIL_PASSWORD'] = 'licenta123'
+app.config['MAIL_PASSWORD'] = 'Licenta1234'
 app.config['ADMINS'] = ['magazin.licenta@gmail.com']
 
 # Create the mai object

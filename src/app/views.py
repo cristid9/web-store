@@ -6,6 +6,7 @@ from user import User, PendingUser, UserData
 from product import Product, Categories, ProductPictures
 from cart import Cart, ShippingMethods, Order
 from hashlib import md5
+from decorators import isAdmin
 from helper import sendMail, generateUrl, flashErrors
 from uuid import uuid4
 from flask.ext.login import login_user, logout_user, current_user, \
@@ -124,6 +125,7 @@ def validateUser(pendingUserId):
 
     user = User(name=pendingUser.name,
                 email=pendingUser.email,
+                state="normal",
                 password=pendingUser.password,
                 username=pendingUser.username
     )
@@ -181,6 +183,8 @@ def categories(category, page):
 
 
 @app.route('/add_new_product', methods=['GET', 'POST'])
+@login_required
+@isAdmin(desiredState="admin", route="onlyAdmins")
 def addNewProduct():
     form = AddNewProductForm()
     if request.method == "POST" and form.validate():
@@ -213,6 +217,10 @@ def addNewProduct():
     flashErrors(form.errors, flash)
     return render_template('add_new_product.html',
                            form=form)
+
+@app.route('/only_admins', methods=['GET'])
+def onlyAdmins():
+    return render_template('only_admins.html')
 
 @app.route('/product_added_successfully/<string:name>', methods=['GET'])
 def productAddedSuccessfully(name):
