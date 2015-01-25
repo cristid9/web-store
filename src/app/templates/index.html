@@ -41,27 +41,32 @@
 	<br>
 
 	<div class="container">
-		{% for product in promotionalProducts.items %}
 		<div class="row">
-			<div class="col-xs-4">
-				<div class="panel panel-default">
-					<div class="panel-body">
-						<div class="col-xs-6">
-							<a href="{{url_for('productPage',
-									productId=product.id)}}">
-								<img src="{{ product.pictures[0].link }}" 
-									width="100px" height="100px">
-							</a>
-						</div>
-						<div class="col-xs-6">
-							<p> {{ product.description }} </p>
-							<strong> {{ product.price }}</strong>
+			{% for product in promotionalProducts.items %}
+				<div class="col-xs-4">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="col-xs-6">
+								<a href="{{url_for('productPage',
+										productId=product.id)}}">
+									<img src="{{ product.pictures[0].link }}"
+										width="100px" height="100px">
+								</a>
+							</div>
+							<div class="col-xs-6">
+								<p>
+									<a href="{{ url_for('productPage', productId=product.id) }}">
+										{{ product.description }}
+									</a>
+								</p>
+								<strong> {{ product.price }}</strong>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+
+			{% endfor %}
 		</div>
-		{% endfor %}
 	</div>
 {% endblock %}
 
