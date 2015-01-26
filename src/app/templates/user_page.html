@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-xs-2">
+        <!-- filler -->
+    </div>
+
+    <div class="col-xs-8">
+        <div class="panel panel-default">
+
+            <div class="panel-heading">
+                <h3>
+                    <span class="glyphicon glyphicon-user"></span>
+                    Pagina utilizatorului
+                </h3>
+            </div>
+
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-1">
+                        <!-- filler -->
+                    </div>
+
+                    <div class="col-xs-2">
+                        <h4> Name: </h4>
+                    </div>
+                    <div class="col-xs-4">
+                        <h4> {{ user.name }} </h4>
+                    </div>
+                    <div class="col-xs-2">
+                        <button type="button" class="btn btn-primary btn-sm" id="change_name">
+                            change
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-1">
+                        <!-- filler -->
+                    </div>
+
+                    <div class="col-xs-2">
+                        <h4> Email: </h4>
+                    </div>
+                    <div class="col-xs-4">
+                        <h4> {{ user.email }} </h4>
+                    </div>
+                    <div class="col-xs-2">
+                        <button type="button" class="btn btn-primary btn-sm" id="change_email">
+                            change
+                        </button>
+                    </div>
+                </div>
+
+                {% if g.user.name == user.name %}
+                    <div class="row">
+                        <div class="col-xs-1">
+                            <!-- filler -->
+                        </div>
+                        <div class="col-xs-2">
+                            <h4> Password: </h4>
+                        </div>
+                        <div class="col-xs-4">
+                            <h4> ******* </h4>
+                        </div>
+                        <div class="col-xs-2">
+                            <button type="button" class="btn btn-primary btn-sm" id="change_password">
+                                change
+                            </button>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="row">
+                    <div class="col-xs-1">
+                        <!-- filler -->
+                    </div>
+                    <div class="col-xs-2">
+                        <h4> Username: </h4>
+                    </div>
+                    <div class="col-xs-4">
+                        <h4> {{ user.username }} </h4>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="change_name_modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <h4> New name </h4>
+                        </div>
+                        <div class="col-xs-4">
+                            <input type="text" placeholder="new name" class="form-control" id="new_name" />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="done_changing_name">
+                        Save changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='js/user_page.js') }}" />
+
+ {% endblock %}

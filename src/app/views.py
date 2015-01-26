@@ -108,6 +108,12 @@ def singup():
                            form=form
     )
 
+@app.route('/user_page/<string:user_name>', methods=['GET'])
+def user_page(user_name):
+    user = User.query.filter_by(username=user_name).first()
+
+    return render_template('user_page.html',
+                           user=user)
 
 @app.route('/product_page/<int:productId>')
 def productPage(productId=1):
@@ -358,5 +364,14 @@ def placeOrder():
     session["cart"] = {}
 
     return jsonify(status="ok")
+
+@app.route('/change_user_name', methods=['POST'])
+def change_user_name():
+        g.user.name = request.form["newName"]
+
+        db.session.add(g.user)
+        db.session.commit()
+
+        return jsonify(status="ok")
 
 

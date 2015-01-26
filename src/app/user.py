@@ -33,6 +33,11 @@ class User(db.Model):
     def get_id(self):
         return unicode(self.id)
 
+    def is_admin(self):
+        if self.state == "admin":
+            return True
+        return False
+
     ## Constructor method of the BaseUser class.
     def __init__(self, username, name, state, password, email):
         self.username = username
