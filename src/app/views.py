@@ -367,6 +367,7 @@ def placeOrder():
 
 @app.route('/change_user_name', methods=['POST'])
 def change_user_name():
+    if g.user.is_authenticated():
         g.user.name = request.form["newName"]
 
         db.session.add(g.user)
@@ -374,4 +375,39 @@ def change_user_name():
 
         return jsonify(status="ok")
 
+    return jsonify(status="not authenticated")
 
+@app.route('/change_user_email', methods=['POST'])
+def change_user_email():
+    # This condition is to prevent people to send json with the new
+    # email, even if the account is not theirs
+    if g.user.is_authenticated():
+        g.user.email = request.form['newEmail']
+
+        db.session.add(g.user)
+        db.session.commit()
+
+        return jsonify(status="ok")
+
+    return jsonify(status="not authenticated")
+
+@app.route('/check_password', methods=['POST'])
+def check_password():
+    if g.user.is_authenticated():
+        if g.user.password != md5(request.form["currentPassword"]).hexdigest():
+            return jsonify(status="wrong")
+        return jsonify(status="correct")
+
+    return jsonify(status="not authenticated")
+
+@app.route('/change_password', methods=['POST'])
+def change_password():
+    if g.user.is_authenticated():
+        g.user.password = md5(request.form["newPassword"]).hexdigest()
+
+        # Save the changes to the database.
+        db.session.add(g.user)
+        db.session.commit()
+
+        return jsonify(status="ok")
+    return jsonify(status="not authenticated")

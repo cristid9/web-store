@@ -30,7 +30,7 @@ def isAdmin(**kwargs):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            if g.user.is_admin():
+            if not g.user.is_admin():
                 return redirect(url_for(route))
             return func(*args, **kwargs)
 
