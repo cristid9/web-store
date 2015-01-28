@@ -55,22 +55,36 @@
 					</div>
 					<div class="col-xs-4">
 						<div class="row">
-							<h3> 
-								<strong> {{ product.name }} </strong> 
-							</h3>
+							<div class="col-xs-3">
+								<h3>
+									<strong> {{ product.name }} </strong>
+								</h3>
+							</div>
 						</div>
 						<div class="row">
-							<p> {{ product.description }} </p>
-							<p> <strong> {{ product.price }} lei</strong> </p>
+							<div class="col-xs-3">
+								<p> {{ product.description }} </p>
+								<p> <strong> {{ product.price }} lei</strong> </p>
+							</div>
 						</div>
 						<div class="row">
-							<button type="button" class="btn btn-success btn-md
+							<div class="col-xs-4">
+								<button type="button" class="btn btn-success btn-md
 								add_to_cart">
-								Adauga 
-								<span 
-									class="glyphicon glyphicon-shopping-cart">
+									Adauga
+								<span
+										class="glyphicon glyphicon-shopping-cart">
 								</span>
-							</button>						
+								</button>
+							</div>
+							{% if g.user.is_authenticated() and g.user.is_admin() %}
+								<div class="col-xs-3">
+									<button type="button" class="btn btn-danger btn-md"
+											id="delete_product">
+										Sterge
+									</button>
+								</div>
+							{% endif %}
 						</div>
 					</div>
 				</div>
@@ -112,4 +126,52 @@
 			</div>
 		</div>
 	</div>
+	{% if g.user.is_authenticated() and  g.user.is_admin()%}
+		<div class="modal fade" id="delete_product_dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-xs-2">
+								<!--filler-->
+							</div>
+							<div class="col-xs-8">
+								<h4>
+									Esti sigur ca vrei sa stergi produsul {{ product.name }}?
+								</h4>
+								<hr/>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-2">
+								<!--filler-->
+							</div>
+							<div class="col-xs-5">
+								<button type="button" class="btn btn-danger btn-md" id="yes_delete">
+									Delete the product
+								</button>
+							</div>
+							<div class="col-xs-5">
+								<button type="button" class="btn btn-info btn-md" id="no_delete">
+									Don't delete it
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			// It is easier to retrieve product data saving them in a js object.
+			var productData = {
+				id: {{ product.id }},
+				// To this page will be redirected the user after the product is deleted
+				redirectPage: "{{ url_for('product_deleted_successfully') }}"
+			};
+		</script>
+
+		<script type="text/javascript" src="{{ url_for('static', filename='js/product_page_admin.js') }}"></script>
+	{% endif %}
+</div>
 {% endblock %}

@@ -3,7 +3,7 @@ from flask import render_template, redirect, session, url_for, request, flash, \
     g, jsonify, make_response
 from forms import SingupForm, LoginForm, AddressForm, ContactForm, AddNewProductForm
 from user import User, PendingUser, UserData
-from product import Product, Categories, ProductPictures
+from product import Product, Categories, ProductPictures, ProductComment, ProductSpecifications
 from cart import Cart, ShippingMethods, Order
 from hashlib import md5
 from decorators import isAdmin
@@ -118,6 +118,8 @@ def user_page(user_name):
 @app.route('/product_page/<int:productId>')
 def productPage(productId=1):
     product = Product.query.get(productId)
+    if product is None:
+        return render_template("product_does_not_exists.html")
     return render_template("product_page.html",
                            product=product
     )
@@ -411,3 +413,47 @@ def change_password():
 
         return jsonify(status="ok")
     return jsonify(status="not authenticated")
+
+@app.route("/delete_product", methods=["Post"])
+def delete_product():
+    if g.user.is_authenticated() and g.user.is_admin():
+        # We just have to delete the product seen by the user
+        # But, since the data of the produt is stored in multiple tables we just
+        # have to delete each entry from that tables that matches the product informations
+
+        # First the comments.
+        product_comments = ProductComment.query.filter_by(
+            productId=int(request.form["productId"])).all()
+
+        # The the pictures.
+        product_pictures = ProductPictures.query.filter_by(
+            productId=int(request.form["productId"])).all()
+
+        product_specifications = ProductSpecifications.query.filter_by(
+            productId=int(request.form["productId"])).all()
+
+        product = Product.query.get(int(request.form["productId"]))
+
+        for product_comment in product_comments:
+            db.session.delete(product_comment)
+
+        for product_picture in product_pictures:
+            db.session.delete(product_picture)
+
+        for product_specification in product_specifications:
+            db.session.delete(product_specifications)
+
+        db.session.delete(product)
+
+        db.session.commit()
+
+        return jsonify(status="ok")
+    return jsonify(status="not authenticated or not admin")
+
+@app.route("/product_deleted_successfully", methods=["GET"])
+def product_deleted_successfully():
+    return render_template("product_deleted_successfully.html")
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("404.html"), 404
