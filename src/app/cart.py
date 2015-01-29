@@ -86,7 +86,7 @@ class ShippingMethods(db.Model):
         self.deliveryTime = deliveryTime
         self.area = area
 
-    def __repr__():
+    def __repr__(self):
         return "ShippingMethods(%r)" % self.name
 
 

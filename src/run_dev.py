@@ -1,7 +1,7 @@
-import app.views
+from app.views import *
 from app.main import app
 
-app.dbug = True
+app.debug = True
 
 if __name__ == '__main__':
 	app.run()

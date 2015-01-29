@@ -1,46 +1,49 @@
 ## @package forms
-#  
+#
 #  This file will contain all the logical representation of all the forms used
 #  in the aplication. 
 
 from flask.ext.wtf import Form
-from wtforms import TextField, PasswordField, TextAreaField
-from wtforms.validators import Required, Email, EqualTo, length
+from wtforms import TextField, PasswordField, TextAreaField, StringField
+from wtforms.validators import Required, Email, EqualTo, length, DataRequired
 from validators import uniqueUser, validEmail
 
+
 class SingupForm(Form):
-	name = TextField('name', [Required()])
-	username = TextField('username', [Required(), uniqueUser])
-	email = TextField('email', [validEmail])
-	password = PasswordField('password', [
-		Required(),
-		EqualTo('confirm', message="Parolele nu se potrivesc")
-	])
-	confirm = PasswordField('repeat_password')
+    name = StringField('name', [DataRequired()])
+    username = StringField('username', [DataRequired(), uniqueUser])
+    email = StringField('email', [validEmail])
+    password = PasswordField('password', [
+        DataRequired(),
+        EqualTo('confirm', message="Parolele nu se potrivesc")
+    ])
+    confirm = PasswordField('repeat_password')
 
 
 class LoginForm(Form):
-	username = TextField('username', [Required()])
-	password = PasswordField('password', [Required()])
+    username = StringField('username', [DataRequired()])
+    password = PasswordField('password', [DataRequired()])
 
 
 class AddressForm(Form):
-	phone = TextField('phone', [Required()])
-	email = TextField('email', [Required()])
-	region = TextField('region', [Required()])
-	city = TextField('city', [Required()])
-	address = TextField('address', [Required()])
+    phone = StringField('phone', [DataRequired()])
+    email = StringField('email', [DataRequired()])
+    region = StringField('region', [DataRequired()])
+    city = StringField('city', [DataRequired()])
+    address = StringField('address', [DataRequired()])
 
 
 class ContactForm(Form):
-	name = TextField('name', [Required()])
-	email = TextField('email', [Required()])
-	message = TextAreaField('message', [Required(), length(max=500)])
+    name = StringField('name', [DataRequired()])
+    email = StringField('email', [DataRequired()])
+    message = TextAreaField('message', [DataRequired(), length(max=500)])
+
 
 class AddNewProductForm(Form):
-	name = TextField('name', [Required()])
-	price = TextField('price', [Required()])
-	stock = TextField('stock', [Required()])
-	description = TextAreaField('description', [Required()])
-	category = TextField('category', [Required()])
-	pictures = TextField('pictures', [Required()])
+    name = StringField('name', [DataRequired()])
+    price = StringField('price', [DataRequired()])
+    stock = StringField('stock', [StringField()])
+    description = TextAreaField('description', [DataRequired()])
+    category = StringField('category', [DataRequired()])
+    pictures = StringField('pictures', [DataRequired()])
+    specifications = StringField('specifications', [DataRequired()])

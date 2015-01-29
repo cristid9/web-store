@@ -108,12 +108,14 @@ def singup():
                            form=form
     )
 
+
 @app.route('/user_page/<string:user_name>', methods=['GET'])
 def user_page(user_name):
     user = User.query.filter_by(username=user_name).first()
 
     return render_template('user_page.html',
                            user=user)
+
 
 @app.route('/product_page/<int:productId>')
 def productPage(productId=1):
@@ -226,14 +228,17 @@ def addNewProduct():
     return render_template('add_new_product.html',
                            form=form)
 
+
 @app.route('/only_admins', methods=['GET'])
 def onlyAdmins():
     return render_template('only_admins.html')
+
 
 @app.route('/product_added_successfully/<string:name>', methods=['GET'])
 def productAddedSuccessfully(name):
     return render_template('product_added_successfully.html',
                            name=name)
+
 
 @app.route('/add_to_cart', methods=['POST'])
 def addToCart():
@@ -367,6 +372,7 @@ def placeOrder():
 
     return jsonify(status="ok")
 
+
 @app.route('/change_user_name', methods=['POST'])
 def change_user_name():
     if g.user.is_authenticated():
@@ -378,6 +384,7 @@ def change_user_name():
         return jsonify(status="ok")
 
     return jsonify(status="not authenticated")
+
 
 @app.route('/change_user_email', methods=['POST'])
 def change_user_email():
@@ -393,6 +400,7 @@ def change_user_email():
 
     return jsonify(status="not authenticated")
 
+
 @app.route('/check_password', methods=['POST'])
 def check_password():
     if g.user.is_authenticated():
@@ -401,6 +409,7 @@ def check_password():
         return jsonify(status="correct")
 
     return jsonify(status="not authenticated")
+
 
 @app.route('/change_password', methods=['POST'])
 def change_password():
@@ -414,12 +423,13 @@ def change_password():
         return jsonify(status="ok")
     return jsonify(status="not authenticated")
 
+
 @app.route("/delete_product", methods=["Post"])
 def delete_product():
     if g.user.is_authenticated() and g.user.is_admin():
         # We just have to delete the product seen by the user
-        # But, since the data of the produt is stored in multiple tables we just
-        # have to delete each entry from that tables that matches the product informations
+        # But, since the data of the product is stored in multiple tables we just
+        # have to delete each entry from that tables that matches the product information.
 
         # First the comments.
         product_comments = ProductComment.query.filter_by(
@@ -441,7 +451,7 @@ def delete_product():
             db.session.delete(product_picture)
 
         for product_specification in product_specifications:
-            db.session.delete(product_specifications)
+            db.session.delete(product_specification)
 
         db.session.delete(product)
 
@@ -450,9 +460,11 @@ def delete_product():
         return jsonify(status="ok")
     return jsonify(status="not authenticated or not admin")
 
+
 @app.route("/product_deleted_successfully", methods=["GET"])
 def product_deleted_successfully():
     return render_template("product_deleted_successfully.html")
+
 
 @app.errorhandler(404)
 def page_not_found(e):
