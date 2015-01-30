@@ -1,3 +1,4 @@
+import json
 from main import app, db, lm, PRODUCTS_PER_PAGE
 from flask import render_template, redirect, session, url_for, request, flash, \
     g, jsonify, make_response
@@ -175,7 +176,7 @@ def login():
 
 @app.route('/logout')
 def logout():
-    logout_user()
+    logout()
     del session["cart"]
     del session["shipping"]
     return redirect(url_for('index'))
@@ -205,6 +206,21 @@ def addNewProduct():
         newProduct.description = form.description.data
 
         db.session.add(newProduct)
+        db.session.commit()
+
+        # We should, also, add the product specifications.
+        # Specifications are sent as a json string. We do this because it
+        # is really hard to generate dynamic for fields on the client with wtforms.
+        # The solution is to have a single string field generated with wtforms and
+        # to simulate the rest of the string fields on the client, when the client
+        # will submit the form, the values of that fields will be collected and saved
+        # in that master field. We use a javascript object on the client to track
+        # the fields an their values, so at the submission the master field will
+        # contain the json representation of that object.
+        specifications = json.loads(form.specifications.data)
+
+        for spec_name, spec_value in specifications.iteritems():
+            db.session.add(ProductSpecifications(newProduct.id, spec_name, spec_value))
         db.session.commit()
 
         # Now add the images.
