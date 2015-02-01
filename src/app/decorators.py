@@ -25,8 +25,6 @@ def async(func):
 #         it doesn't have that desired state.
 def isAdmin(**kwargs):
     route = kwargs['route']
-    state = kwargs['desiredState']
-
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):

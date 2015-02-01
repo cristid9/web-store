@@ -195,7 +195,7 @@ def categories(category, page):
 
 @app.route('/add_new_product', methods=['GET', 'POST'])
 @login_required
-@isAdmin(desiredState="admin", route="onlyAdmins")
+@isAdmin(route="onlyAdmins")
 def addNewProduct():
     form = AddNewProductForm()
     if request.method == "POST" and form.validate():
@@ -481,7 +481,20 @@ def delete_product():
 def product_deleted_successfully():
     return render_template("product_deleted_successfully.html")
 
-
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template("404.html"), 404
+
+@app.route("/edit_product/<int:product_id>", methods=['GET'])
+@login_required
+@isAdmin(route="onlyAdmins")
+def edit_product(product_id):
+    product = Product.query.get(product_id)
+    form = AddNewProductForm()
+
+    if request.method == "POST" and form.validate():
+        pass
+
+    return render_template("edit_product.html",
+                           form = form,
+                           product = product)

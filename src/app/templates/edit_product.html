@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel panel-heading">
+                <h3>
+                    <span class="glyphicon glyphicon-list-alt"> </span>
+                    Editeaza produsul
+                </h3>
+            </div>
+            <div class="panel panel-body">
+                <form method="POST" action="" id="image_uploading_form">
+                    {{ form.hidden_tag() }}
+
+                    <div class="row">
+                        <div class="col-xs-2">
+                            Product Name
+                        </div>
+
+                        <div class="col-xs-4">
+                            {{ form.name(class="form-control",
+                                placeholder=product.name) }}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            Product Price
+                        </div>
+
+                        <div class="col-xs-3">
+                            {{ form.price(class="form-control",
+                                placeholder=product.price) }}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            Product Stock
+                        </div>
+
+                        <div class="col-xs-2">
+                            {{ form.stock(class="form-control",
+                                placeholder=product.stock) }}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            Product Category
+                        </div>
+
+                        <div class="col-xs-4">
+                            {{ form.category(class="form-control",
+                                placeholder=product.category) }}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            Product Description
+                        </div>
+
+                        <div class="col-xs-4">
+                            {{ form.description(class="form-control",
+                                placeholder=product.description, rows="2") }}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row hidden">
+                        <div class="col-xs-4">
+                            {{ form.pictures(id="pictures") }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            Product Pictures
+                        </div>
+
+                        <div class="col-xs-4">
+                            <button type="button" class="btn btn-primary bt-md" id="edit_images_button">
+                                Add images
+                            </button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row hidden">
+                        <div class="col-xs-4">
+                            {{ form.specifications(id="specifications") }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            Product Specifications
+                        </div>
+                        <div class="col-xs-4">
+                            <button type="button" class="btn btn-primary btn-md" id="add_specifications">
+                                Add specifications
+                            </button>
+                        </div>
+                    </div>
+                    <br>
+                    <button type="button" class="btn btn-success btn-md" id="add_the_product">
+                        Add the product
+                        <span class="glyphicon glyphicon-ok">
+                        </span>
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="modal fade" id="edit_images_dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"> Adauga imagini </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <div id="previewPanel">
+                                    <div id="imageCollection">
+
+                                    </div>
+                                    <div id="imageCollectionControl">
+                                        <div class="row">
+                                            <div class="col-xs-4"></div>
+                                            <div class="col-xs-4">
+                                                <button type="button" class="btn btn-default btn-sm" id="addImage">
+                                                    <span class="glyphicon glyphicon-plus"></span>
+                                                </button>
+                                            </div>
+                                            <div class="col-xs-4"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-8">
+                                <div id="main">
+                                    <div id="mainImage">
+
+                                    </div>
+                                    <br>
+                                    <div id="imageControls">
+                                        <div class="row">
+                                            <div class="col-xs-4">
+                                                <button type="button" class="btn btn-primary btn-md" id="editImage">
+                                                    <span class="glyphicon glyphicon-picture"></span>
+                                                    Modifica
+                                                </button>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <!--filler-->
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <button type="button" class="btn btn-danger btn-md" id="removeImage">
+                                                    <span class="glyphicon glyphicon-remove"></span>
+                                                    Sterge
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="button" class="btn btn-primary" id="finish_editing_images">
+                            Add images
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="add_specifications_modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"> Adauga specificatii </h4>
+                </div>
+                <div class="modal-body">
+                    <div id="specifications_container">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <div class="form-group">
+                                    <input type="text" class="form-control specification-name"
+                                           placeholder="nume specificatie"/>
+                                </div>
+                            </div>
+                            <div class="col-xs-7">
+                                <div class="form-group">
+                                    <input class="form-control specification-value" type="text"
+                                           placeholder="specifications"/>
+                                </div>
+                            </div>
+                            <div class="col-xs-1">
+                                <button type="button" class="close">
+                                    <span class="close"> &times; </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <button type="button" class="btn btn-primary btn-md" id="add_new_specification">
+                                Add new specification
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="finish_adding_specifications">Add specs</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var collectionItems = [];
+        var placeholder = "{{ url_for('static', filename='images/placeholder.png') }}";
+
+        {% for picture in product.pictures %}
+            collectionItems.push("{{ picture.link }}")
+        {% endfor %}
+    </script>
+
+    <script src="{{ url_for('static', filename='js/product_gallery.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/edit_product.js') }}"> </script>
+{% endblock %}
