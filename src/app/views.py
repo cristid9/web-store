@@ -485,7 +485,7 @@ def product_deleted_successfully():
 def page_not_found(e):
     return render_template("404.html"), 404
 
-@app.route("/edit_product/<int:product_id>", methods=['GET'])
+@app.route("/edit_product/<int:product_id>", methods=['GET', 'POST'])
 @login_required
 @isAdmin(route="onlyAdmins")
 def edit_product(product_id):
@@ -493,8 +493,43 @@ def edit_product(product_id):
     form = AddNewProductForm()
 
     if request.method == "POST" and form.validate():
-        pass
+        product.name = form.name.data
+        product.price = form.price.data
+        product.stock = form.stock.data
+        product.category = form.category.data
+        product.description = form.description.data
 
+        # Delete the old images.
+        for picture in product.pictures:
+            db.session.delete(picture)
+        db.session.commit()
+
+        # Now add the new ones.
+        new_pictures_urls = json.loads(form.pictures.data)
+        for picture_url in new_pictures_urls:
+            db.session.add(ProductPictures(picture_url, product.id))
+        db.session.commit()
+
+        # Delete the old specifications.
+        for spec in product.specifications:
+            db.session.delete(spec)
+        db.session.commit()
+
+        # Now add the new ones.
+        new_specs = json.loads(form.specifications.data)
+        for spec_name, spec_val in new_specs.iteritems():
+            db.session.add(ProductSpecifications(product.id, spec_name, spec_val))
+        db.session.commit()
+
+        return redirect('product_edited_successfully')
+
+    # It is impossible to set the value of a text area at
+    # render time.
+    form.description.data = product.description
     return render_template("edit_product.html",
                            form = form,
                            product = product)
+
+@app.route("/product_edited_successfully", methods=["GET"])
+def product_edited_successfully():
+    return render_template("product_edited_successfully.html")

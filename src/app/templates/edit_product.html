@@ -9,7 +9,7 @@
                 </h3>
             </div>
             <div class="panel panel-body">
-                <form method="POST" action="" id="image_uploading_form">
+                <form method="POST" action="" id="edit_product_form">
                     {{ form.hidden_tag() }}
 
                     <div class="row">
@@ -19,7 +19,7 @@
 
                         <div class="col-xs-4">
                             {{ form.name(class="form-control",
-                                placeholder=product.name) }}
+                                value=product.name) }}
                         </div>
                     </div>
                     <br>
@@ -30,7 +30,7 @@
 
                         <div class="col-xs-3">
                             {{ form.price(class="form-control",
-                                placeholder=product.price) }}
+                                value=product.price) }}
                         </div>
                     </div>
                     <br>
@@ -41,7 +41,7 @@
 
                         <div class="col-xs-2">
                             {{ form.stock(class="form-control",
-                                placeholder=product.stock) }}
+                                value=product.stock) }}
                         </div>
                     </div>
                     <br>
@@ -52,7 +52,7 @@
 
                         <div class="col-xs-4">
                             {{ form.category(class="form-control",
-                                placeholder=product.category) }}
+                                value=product.category) }}
                         </div>
                     </div>
                     <br>
@@ -62,8 +62,7 @@
                         </div>
 
                         <div class="col-xs-4">
-                            {{ form.description(class="form-control",
-                                placeholder=product.description, rows="2") }}
+                            {{ form.description(class="form-control", rows="2") }}
                         </div>
                     </div>
                     <br>
@@ -94,13 +93,13 @@
                             Product Specifications
                         </div>
                         <div class="col-xs-4">
-                            <button type="button" class="btn btn-primary btn-md" id="add_specifications">
+                            <button type="button" class="btn btn-primary btn-md" id="edit_specifications">
                                 Add specifications
                             </button>
                         </div>
                     </div>
                     <br>
-                    <button type="button" class="btn btn-success btn-md" id="add_the_product">
+                    <button type="button" class="btn btn-success btn-md" id="add_the_edits">
                         Add the product
                         <span class="glyphicon glyphicon-ok">
                         </span>
@@ -119,9 +118,8 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-xs-4">
-                                <div id="previewPanel">
-                                    <div id="imageCollection">
-
+                                <div id="previewPanel" style="overflow-y:auto; height: 300px; overflow-x:hidden;">
+                                    <div id="imageCollection" >
                                     </div>
                                     <div id="imageCollectionControl">
                                         <div class="row">
@@ -178,7 +176,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="add_specifications_modal">
+    <div class="modal fade" id="edit_specifications_modal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -188,25 +186,7 @@
                 </div>
                 <div class="modal-body">
                     <div id="specifications_container">
-                        <div class="row">
-                            <div class="col-xs-4">
-                                <div class="form-group">
-                                    <input type="text" class="form-control specification-name"
-                                           placeholder="nume specificatie"/>
-                                </div>
-                            </div>
-                            <div class="col-xs-7">
-                                <div class="form-group">
-                                    <input class="form-control specification-value" type="text"
-                                           placeholder="specifications"/>
-                                </div>
-                            </div>
-                            <div class="col-xs-1">
-                                <button type="button" class="close">
-                                    <span class="close"> &times; </span>
-                                </button>
-                            </div>
-                        </div>
+
                     </div>
                     <br>
                     <div class="row">
@@ -220,7 +200,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="finish_adding_specifications">Add specs</button>
+                    <button type="button" class="btn btn-primary" id="finish_editing_specifications">
+                        Add specs
+                    </button>
                 </div>
             </div>
         </div>
@@ -233,8 +215,15 @@
         {% for picture in product.pictures %}
             collectionItems.push("{{ picture.link }}")
         {% endfor %}
+
+        var specifications = {};
+        {% for specification in product.specifications %}
+            specifications["{{ specification.name }}"] = "{{ specification.data }}";
+        {% endfor %}
+
     </script>
 
+    <script src="{{ url_for('static', filename='js/specifications_box.js') }}"></script>
     <script src="{{ url_for('static', filename='js/product_gallery.js') }}"></script>
     <script src="{{ url_for('static', filename='js/edit_product.js') }}"> </script>
 {% endblock %}
