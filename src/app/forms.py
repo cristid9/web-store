@@ -4,7 +4,7 @@
 #  in the application.
 
 from flask_wtf import Form
-from wtforms import PasswordField, TextAreaField, StringField
+from wtforms import PasswordField, TextAreaField, StringField, IntegerField
 from wtforms.validators import EqualTo, length, InputRequired
 from validators import uniqueUser, validEmail
 
@@ -47,3 +47,10 @@ class AddNewProductForm(Form):
     category = StringField('category', [InputRequired()])
     pictures = StringField('pictures', [InputRequired()])
     specifications = StringField('specifications', [InputRequired(message="Completeaza ba specificatiile")])
+
+
+class AddShippingMethodForm(Form):
+    name = StringField('name', [InputRequired()])
+    price = IntegerField('price', [InputRequired()])
+    delivery_time = StringField('delivery_time', [InputRequired()])
+    area = StringField('area', [InputRequired()])

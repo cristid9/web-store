@@ -2,7 +2,7 @@ import json
 from main import app, db, lm, PRODUCTS_PER_PAGE
 from flask import render_template, redirect, session, url_for, request, flash, \
     g, jsonify, make_response
-from forms import SingupForm, LoginForm, AddressForm, ContactForm, AddNewProductForm
+from forms import SingupForm, LoginForm, AddressForm, ContactForm, AddNewProductForm, AddShippingMethodForm
 from user import User, PendingUser, UserData
 from product import Product, Categories, ProductPictures, ProductComment, ProductSpecifications
 from cart import Cart, ShippingMethods, Order
@@ -533,3 +533,30 @@ def edit_product(product_id):
 @app.route("/product_edited_successfully", methods=["GET"])
 def product_edited_successfully():
     return render_template("product_edited_successfully.html")
+
+@app.route("/add_shipping_method", methods=["GET", "POST"])
+@login_required
+@isAdmin(route="onlyAdmins")
+def add_shipping_method():
+    form = AddShippingMethodForm()
+
+    if request.method == "POST" and form.validate():
+        new_shipping_method = ShippingMethods(form.name.data,
+                                              form.price.data,
+                                              form.delivery_time.data,
+                                              form.area.data)
+
+        db.session.add(new_shipping_method)
+        db.session.commit()
+
+        return redirect(url_for('shipping_method_added_successfully'))
+
+    else:
+        flashErrors(form.errors, flash)
+
+    return render_template("add_shipping_method.html",
+                           form=form)
+
+@app.route("/shipping_method_added_successfully", methods=["GET"])
+def shipping_method_added_successfully():
+    return render_template("shipping_method_added_successfully.html")

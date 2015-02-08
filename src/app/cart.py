@@ -77,13 +77,11 @@ class ShippingMethods(db.Model):
     price = db.Column(db.String, nullable=False)
     deliveryTime = db.Column(db.Float, nullable=False)
     area = db.Column(db.String, nullable=False)
-    # deprecated
-    address = db.Column(db.Integer, db.ForeignKey('userdata_table.id'))
 
-    def __init__(self, name, price, deliveryTime, area):
+    def __init__(self, name, price, delivery_time, area):
         self.name = name
         self.price = price
-        self.deliveryTime = deliveryTime
+        self.deliveryTime = delivery_time
         self.area = area
 
     def __repr__(self):

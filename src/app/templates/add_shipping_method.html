@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="row">
+        <div class="col-xs-2">
+            <!--filler-->
+        </div>
+        <div class="col-xs-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3>
+                        <span class="glyphicon glyphicon-pencil"></span>
+                        Adauga o modalitate de transport
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-1">
+                            <!--filler-->
+                        </div>
+                        <div class="col-xs-8">
+                            <!--main content-->
+                            <form method="POST">
+                                {{ form.hidden_tag() }}
+                                <div class="row">
+                                    <div class="col-xs-2">
+                                        Nume:
+                                    </div>
+                                    <div class="col-xs-4">
+                                        {{ form.name(placeholder="nume",
+                                            class="form-control") }}
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row">
+                                    <div class="col-xs-2">
+                                        Pret
+                                    </div>
+                                    <div class="col-xs-4">
+                                        {{ form.price(placeholder="pret",
+                                            class="form-control") }}
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row">
+                                    <div class="col-xs-2">
+                                        Timp de livrare
+                                    </div>
+                                    <div class="col-xs-4">
+                                        {{ form.delivery_time(placeholder="timp de livrare",
+                                            class="form-control") }}
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row">
+                                    <div class="col-xs-2">
+                                        Zona
+                                    </div>
+                                    <div class="col-xs-4">
+                                        {{ form.area(placeholder="zona de livrare",
+                                            class="form-control") }}
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row">
+                                    <div class="col-xs-2">
+                                        <!--filler-->
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <button type="submit" class="btn btn-primary btn-md">
+                                            Salveaza
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
