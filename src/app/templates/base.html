@@ -101,6 +101,13 @@
 					<ul class="nav navbar-nav navbar-right">
 						{% if g.user.is_authenticated() %}
 							<li>
+								<a href="{{ url_for('user_page', user_name=g.user.username) }}">
+									<span class="glyphicon glyphicon-user"></span>
+									<!--show only the first 8 letters of an user's name-->
+									{{ g.user.username|truncate(8) }}
+								</a>
+							</li>
+							<li>
 								<a href="{{ url_for('logout')}}">
 									Delogare
 									<span class="glyphicon glyphicon-log-out">

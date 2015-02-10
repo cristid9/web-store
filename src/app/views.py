@@ -176,7 +176,7 @@ def login():
 
 @app.route('/logout')
 def logout():
-    logout()
+    logout_user()
     del session["cart"]
     del session["shipping"]
     return redirect(url_for('index'))
@@ -418,14 +418,11 @@ def change_user_email():
 
 
 @app.route('/check_password', methods=['POST'])
+@login_required
 def check_password():
-    if g.user.is_authenticated():
-        if g.user.password != md5(request.form["currentPassword"]).hexdigest():
-            return jsonify(status="wrong")
-        return jsonify(status="correct")
-
-    return jsonify(status="not authenticated")
-
+    if g.user.password != md5(request.form["currentPassword"]).hexdigest():
+        return jsonify(status="wrong")
+    return jsonify(status="correct")
 
 @app.route('/change_password', methods=['POST'])
 def change_password():
@@ -560,3 +557,37 @@ def add_shipping_method():
 @app.route("/shipping_method_added_successfully", methods=["GET"])
 def shipping_method_added_successfully():
     return render_template("shipping_method_added_successfully.html")
+
+@app.route("/ban_user", methods=["POST"])
+@login_required
+@isAdmin(route="onlyAdmins")
+def ban_user():
+    username = request.form["user"]
+    admin = request.form["admin"]
+    user = User.query.filter_by(username=username).first()
+
+    # Send an email to the user and tell him that you have
+    # deleted his account.
+
+    sendMail(subject="Your account has been deleted",
+             sender=app.config['ADMINS'][0],
+             recipients=[user.email],
+             messageBody=render_template('deleted_account.txt',
+                                         user=user.name,
+                                         admin=admin),
+             messageHtmlBody=render_template('deleted_account.html',
+                                             user=user.name,
+                                             admin=admin))
+
+    # Now delete the user.
+    db.session.delete(user)
+    db.session.commit()
+
+    return jsonify(status="ok",
+                   redirectPage=url_for('user_deleted_successfully'))
+
+@app.route('/user_deleted_successfully', methods=["GET"])
+@login_required
+@isAdmin(route="onlyAdmins")
+def user_deleted_successfully():
+    return render_template('user_deleted_successfully.html')

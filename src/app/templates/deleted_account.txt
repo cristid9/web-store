@@ -1,0 +1,8 @@
+Draga {{ user }},
+
+    Dorim sa va informam ca administratorul {{ admin }} v-a
+sters contul. Daca considerati ca sunteti subiectul unui abuz
+va recomandam sa luati legatura staff-ul siteului.
+
+Cu respect,
+web-store

@@ -88,6 +88,20 @@
                     </div>
                 </div>
 
+                {% if g.user.is_admin() and g.user.id != user.id %}
+                    <!--an admin can't ban himself-->
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <!--filler-->
+                        </div>
+                        <div class="col-xs-2">
+                            <button type="button" class="btn btn-danger btn-lg" id="ban_user">
+                                Ban the user
+                            </button>
+                        </div>
+                    </div>
+                {% endif %}
+
             </div>
         </div>
     </div>
@@ -194,9 +208,39 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="check_password_modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <h4> Current password </h4>
+                        </div>
+                        <div class="col-xs-4">
+                            <input type="password" class="form-control" id="check_current_password" />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="done_checking_password">
+                        Check
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
-{% if g.user.is_admin() %}
+{% if g.user.is_admin() and g.user.id == user.id %}
     <div class="row">
         <div class="col-xs-2">
             <!-- Filler -->
@@ -220,7 +264,20 @@
                         </div>
                         <div class="col-xs-4">
                             <a href="{{ url_for('addNewProduct') }}" class="btn btn-success btn-md">
-                                Adauga produs
+                                Adauga
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-1">
+                            <!--filler-->
+                        </div>
+                        <div class="col-xs-3">
+                            <h4> Metode de transport </h4>
+                        </div>
+                        <div class="col-xs-4">
+                            <a href="{{ url_for('add_shipping_method') }}" class="btn btn-success btn-md">
+                                Adauga
                             </a>
                         </div>
                     </div>
@@ -232,6 +289,16 @@
 
     {% if g.user.id == user.id%}
         <script type="text/javascript" src="{{ url_for('static', filename='js/user_page.js') }}" />
+    {% endif %}
+
+    {% if g.user.is_admin() and not user.is_admin() and g.user.id != user.id %}
+        <!--and user can ban other users but not other admins-->
+        <script>
+            // config vars
+            var username = "{{ user.username }}";
+            var admin = "{{ g.user.username }}";
+        </script>
+        <script src="{{ url_for('static', filename='js/ban_user.js') }}" />
     {% endif %}
 
 {% endblock %}
