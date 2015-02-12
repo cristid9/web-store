@@ -19,8 +19,8 @@ class Cart(object):
 
     def addToCart(self, productId, price):
         self.items[productId] = {
-        "price": price,
-        "quantity": 1
+            "price": price,
+            "quantity": 1
         }
 
     def deleteFromCart(self, productId):
@@ -49,6 +49,11 @@ class Cart(object):
     def updateShipping(self, price):
         self.shipping = price
 
+    def get_products_ids(self):
+        return self.items.keys()
+
+    def get_quantity_by_id(self, product_id):
+        return self.items[product_id]["quantity"]
 
 class Order(db.Model):
     __tablename__ = "order_table"
@@ -56,18 +61,39 @@ class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime)
     total = db.Column(db.Float)
-    userId = db.Column(db.Integer, db.ForeignKey('user_table.id'))
-    buyedProductId = db.Column(db.Integer, db.ForeignKey('product_table.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user_table.id'))
     address = db.Column(db.Integer, db.ForeignKey('userdata_table.id'))
+    products = db.relationship('ProductsInOrder',
+                               backref='order',
+                               lazy='dynamic')
 
-    def __init__(self, total, userId, buyedProductId):
+    def __init__(self, total, user_id, address):
         self.total = total
-        self.userId = userId
-        self.buyedProductId = buyedProductId
-        date = datetime.utcnow()
+        self.user_id = user_id
+        self.date = datetime.utcnow()
+        self.address = address
 
     def __repr__(self):
         return "<Order(%r)>" % self.total
+
+
+class ProductsInOrder(db.Model):
+
+    __tablename__ = "products_in_order_table"
+
+    id = db.Column(db.Integer, primary_key=True)
+    quantity = db.Column(db.Integer, nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('product_table.id'))
+    order_id = db.Column(db.Integer, db.ForeignKey('order_table.id'))
+    product = db.relationship('Product')
+
+    def __init__(self, product_id, order_id, quantity):
+        self.product_id = product_id
+        self.order_id = order_id
+        self.quantity = quantity
+
+    def __repr__(self):
+        return "<ProductsInOrder(%r)>" % self.product_id
 
 
 class ShippingMethods(db.Model):

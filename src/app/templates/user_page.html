@@ -74,6 +74,23 @@
                             </button>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-xs-1">
+                            <!--filler-->
+                        </div>
+                        <div class="col-xs-2">
+                            <h4> Produse Cumparate: </h4>
+                        </div>
+                        <div class="col-xs-4">
+                            <!--filler-->
+                        </div>
+                        <div class="col-xs-2">
+                            <a href="{{ url_for('bought_products', username=g.user.username) }}"
+                                    class="btn btn-primary btn-sm" >
+                                View
+                            </a>
+                        </div>
+                    </div>
                 {% endif %}
 
                 <div class="row">

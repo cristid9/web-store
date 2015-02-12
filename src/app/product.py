@@ -22,16 +22,15 @@ class Product(db.Model):
     stock = db.Column(db.Integer, nullable=False)
 
     comments = db.relationship('ProductComment', backref='product',
-                                lazy='dynamic'
+                               lazy='dynamic'
     )
     pictures = db.relationship('ProductPictures', backref='product',
-                                lazy='dynamic'
+                               lazy='dynamic'
     )
     specifications = db.relationship('ProductSpecifications',
-            backref='product',
-            lazy='dynamic'
+                                     backref='product',
+                                     lazy='dynamic'
     )
-
 
     def __init__(self, name, price, stock):
         self.name = name
@@ -40,6 +39,7 @@ class Product(db.Model):
 
     def __repr__(self):
         return "<Product(%r, %r, %r)>" % (self.name, self.price, self.stock)
+
 
 class ProductPictures(db.Model):
     __tablename__ = "product_pictures_table"

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+    {% for order in orders %}
+        <div class="container">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>
+                        <span class="glyphicon glyphicon-calendar"></span>
+                        {{ order.date.strftime("%d:%m:%Y %H:%M") }}
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <div id="products">
+                        {% for product_in_order in order.products %}
+                            <div class="row">
+                                <div class="col-xs-2">
+                                    <img src="{{ product_in_order.product.pictures[0].link }}"
+                                         width="30%"/>
+                                </div>
+                                <div class="col-xs-2">
+                                    <h5> Nume: {{ product_in_order.product.name }} </h5>
+                                </div>
+                                <div class="col-xs-2">
+                                    <h5> Cantitate: {{ product_in_order.quantity }} </h5>
+                                </div>
+                                <div class="col-xs-2">
+                                    <h5> Pret unitar: {{ product_in_order.product.price }} </h5>
+                                </div>
+                                <div class="col-xs-3">
+                                    <h5> Pret: {{ product_in_order.quantity *
+                                        product_in_order.product.price }} </h5>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <h4> Total: {{ order.total }} </h4>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

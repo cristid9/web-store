@@ -5,7 +5,7 @@ from flask import render_template, redirect, session, url_for, request, flash, \
 from forms import SingupForm, LoginForm, AddressForm, ContactForm, AddNewProductForm, AddShippingMethodForm
 from user import User, PendingUser, UserData
 from product import Product, Categories, ProductPictures, ProductComment, ProductSpecifications
-from cart import Cart, ShippingMethods, Order
+from cart import Cart, ShippingMethods, Order, ProductsInOrder
 from hashlib import md5
 from decorators import isAdmin
 from helper import sendMail, generateUrl, flashErrors
@@ -258,6 +258,9 @@ def productAddedSuccessfully(name):
 
 @app.route('/add_to_cart', methods=['POST'])
 def addToCart():
+    print "*" * 70
+    print request.form["productId"]
+    print "*" * 70
     product = Product.query.get(int(request.form["productId"]))
 
     g.cart.addToCart(product.id, product.price)
@@ -351,10 +354,16 @@ def placeOrder():
     userData.userId = g.user.id
     db.session.add(userData)
     db.session.commit()
-    # The third argument was an architerchtural mistake.
-    order = Order(g.cart.getTotal(), g.user.id, 1)
-    order.address = userData.id
+
+    order = Order(g.cart.getTotal(), g.user.id, userData.id)
     db.session.add(order)
+    db.session.commit()
+
+    # Now add the products in the cart.
+    for product_id in g.cart.get_products_ids():
+        db.session.add(ProductsInOrder(product_id,
+                                       order.id,
+                                       g.cart.get_quantity_by_id(product_id)))
     db.session.commit()
 
     cart = []
@@ -591,3 +600,19 @@ def ban_user():
 @isAdmin(route="onlyAdmins")
 def user_deleted_successfully():
     return render_template('user_deleted_successfully.html')
+
+@app.route('/bought_products/<string:username>', methods=['GET'])
+@login_required
+def bought_products(username):
+    user = User.query.filter_by(username=username).first()
+
+    if user is None:
+        return render_template('no_access.html')
+
+    if user.id != g.user.id:
+        return render_template('no_access.html')
+
+    orders = Order.query.filter_by(user_id=user.id).all()
+
+    return render_template('bought_products.html',
+                           orders=orders)
