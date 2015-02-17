@@ -20,6 +20,10 @@ class Product(db.Model):
     name = db.Column(db.String, nullable=False)
     price = db.Column(db.Float, nullable=False)
     stock = db.Column(db.Integer, nullable=False)
+    # When we delete a product we actually make is unavailable, thus
+    # keeping the integrity of all the references to that product, like
+    # orders, for example.
+    available = db.Column(db.Boolean, nullable=False, default=True)
 
     comments = db.relationship('ProductComment', backref='product',
                                lazy='dynamic'
@@ -76,6 +80,10 @@ class Categories(db.Model):
     __tablename__ = 'categories_table'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=True)
+    # If we delete delete all the products in a category, it doesn't
+    # make any sense to keep that category available, since there are
+    # no products in it.
+    available = db.Column(db.Boolean, nullable=True, default=True)
 
     def __init__(self, name):
         self.name = name

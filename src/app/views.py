@@ -23,21 +23,22 @@ def before_request():
     if not "shipping" in session:
         session["shipping"] = {"name": None, "price": 0}
     g.cart = Cart(session["cart"], session["shipping"]["price"])
-    g.categories = Categories.query.all()
+    g.categories = Categories.query.filter(Categories.available == True).all()
     g.shippingMethods = ShippingMethods.query.all()
 
 
 @app.route('/')
 @app.route('/index')
 def index():
-    promotionalProducts = Product.query.paginate(1, 3, False)
+    product_query = Product.query.filter(Product.available == True)
+    promotional_products = product_query.paginate(1, 3, False)
     return render_template('index.html',
-                           promotionalProducts=promotionalProducts)
+                           promotionalProducts=promotional_products)
 
 
 @app.route('/search', methods=['POST'])
 def search():
-    products = Product.query.all()
+    products = Product.query.filter(Product.available == True).all()
     productsToRender = []
     for product in products:
         if request.form["search"].lower() in product.name.lower() \
@@ -106,9 +107,7 @@ def singup():
 
     flashErrors(form.errors, flash)
     return render_template('singup.html',
-                           form=form
-    )
-
+                           form=form)
 
 @app.route('/user_page/<string:user_name>', methods=['GET'])
 def user_page(user_name):
@@ -184,14 +183,12 @@ def logout():
 
 @app.route('/categories/<string:category>/<int:page>')
 def categories(category, page):
-    products = Product.query.filter_by(category=category).paginate(page,
-                                                                   PRODUCTS_PER_PAGE, False
-    )
+    query = Product.query.filter(Product.category == category,
+                                 Product.available == True)
+    products = query.paginate(page, PRODUCTS_PER_PAGE, False)
 
     return render_template("products.html",
-                           products=products
-    )
-
+                           products=products)
 
 @app.route('/add_new_product', methods=['GET', 'POST'])
 @login_required
@@ -233,9 +230,17 @@ def addNewProduct():
 
         # Now that the product has an id we can add the rest of the components.
         # First, if the product's category is not already in the database we should add it.
-        if Categories.query.filter_by(name=newProduct.category).first() is None:
+        category = Categories.query.filter_by(name=newProduct.category).first()
+        if category is None:
             newCategory = Categories(newProduct.category)
             db.session.add(newCategory)
+            db.session.commit()
+
+        # The product category may exist, but is unavailable, because there
+        # are no products available left in it. We should make it available.
+        if not category.available:
+            category.available = True
+            db.session.add(category)
             db.session.commit()
 
         return redirect(url_for('productAddedSuccessfully', name=newProduct.name))
@@ -447,41 +452,29 @@ def change_password():
 
 
 @app.route("/delete_product", methods=["Post"])
+@login_required
+@isAdmin(route='onlyAdmins')
 def delete_product():
-    if g.user.is_authenticated() and g.user.is_admin():
-        # We just have to delete the product seen by the user
-        # But, since the data of the product is stored in multiple tables we just
-        # have to delete each entry from that tables that matches the product information.
+    product = Product.query.get(int(request.form["productId"]))
+    product.available = False
 
-        # First the comments.
-        product_comments = ProductComment.query.filter_by(
-            productId=int(request.form["productId"])).all()
+    db.session.add(product)
+    db.session.commit()
 
-        # The the pictures.
-        product_pictures = ProductPictures.query.filter_by(
-            productId=int(request.form["productId"])).all()
+    products_in_category = Product.query.filter_by(category=product.category,
+                                                   available=True)
+    num_products_in_category = len(products_in_category.all())
+    if num_products_in_category == 0:
+        category = Categories.query.filter_by(name=product.category).first()
+        category.available = False
 
-        product_specifications = ProductSpecifications.query.filter_by(
-            productId=int(request.form["productId"])).all()
-
-        product = Product.query.get(int(request.form["productId"]))
-
-        for product_comment in product_comments:
-            db.session.delete(product_comment)
-
-        for product_picture in product_pictures:
-            db.session.delete(product_picture)
-
-        for product_specification in product_specifications:
-            db.session.delete(product_specification)
-
-        db.session.delete(product)
-
+        db.session.add(category)
         db.session.commit()
 
-        return jsonify(status="ok")
-    return jsonify(status="not authenticated or not admin")
+    # \todo do a migrate
+    # \todo check the availability of an product and a category before using it.
 
+    return jsonify(status="ok")
 
 @app.route("/product_deleted_successfully", methods=["GET"])
 def product_deleted_successfully():
