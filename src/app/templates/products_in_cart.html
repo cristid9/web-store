@@ -271,7 +271,8 @@
 			$('.delete_from_cart').click(function(event) {
 				var productId = $(event.target).closest('div.row').attr('id');
 				$.post('delete_from_cart', {id: productId}).done(function() {
-					alert('Produsul a fost sters cu success');	
+					alert('Produsul a fost sters cu success');
+					location.reload();
 				});
 						
 			});
