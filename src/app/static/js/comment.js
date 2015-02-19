@@ -1,3 +1,4 @@
+"use strict";
 function Comment(poster,
                  content,
                  $container) {
@@ -7,7 +8,7 @@ function Comment(poster,
     this.$container = $container;
     this.minLength = 10;
     // Ajax route to post the message to the server.
-    this.route = '/publish_message';
+    this.route = '/publish_comment';
 }
 
 Comment.prototype.isValid = function() {

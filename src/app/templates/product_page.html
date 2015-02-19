@@ -141,7 +141,7 @@
 							<div class="col-xs-2">
 								<button type="button"
 										class="btn btn-success btn-md"
-										id="publih_comment">
+										id="publish_comment">
 									Publica
 								</button>
 							</div>
@@ -201,6 +201,16 @@
 		<script type="text/javascript" src="{{ url_for('static', filename='js/product_page_admin.js') }}"></script>
 	{% endif %}
 
-	<script type="text/javascript" src="{{ url_for('static', filename='js/product_page.js') }}"></script>
+	{% if g.user.is_authenticated() %}
+		<script type="text/javascript">
+			var userData = {
+				name: "{{ g.user.username }}"
+			};
+		</script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/comment.js') }}">
+		</script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/product_page.js') }}"></script>
+	{% endif %}
+
 </div>
 {% endblock %}
