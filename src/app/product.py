@@ -1,16 +1,12 @@
 ## @package product
 #
-#
-#
-#
+#  This module contains the implementation of the \ref Product
+#  class and of different classes related to \ref Product.
 
 from main import db
 from datetime import datetime
 
-##
-#
-#
-#
+## Used to represent an product.
 class Product(db.Model):
     __tablename__ = 'product_table'
 
@@ -26,15 +22,14 @@ class Product(db.Model):
     available = db.Column(db.Boolean, nullable=False, default=True)
 
     comments = db.relationship('ProductComment', backref='product',
-                               lazy='dynamic'
-    )
+                               lazy='dynamic')
+
     pictures = db.relationship('ProductPictures', backref='product',
-                               lazy='dynamic'
-    )
+                               lazy='dynamic')
+
     specifications = db.relationship('ProductSpecifications',
                                      backref='product',
-                                     lazy='dynamic'
-    )
+                                     lazy='dynamic')
 
     def __init__(self, name, price, stock):
         self.name = name
@@ -45,6 +40,7 @@ class Product(db.Model):
         return "<Product(%r, %r, %r)>" % (self.name, self.price, self.stock)
 
 
+## Use to represent the pictures of a product.
 class ProductPictures(db.Model):
     __tablename__ = "product_pictures_table"
 
@@ -62,6 +58,7 @@ class ProductPictures(db.Model):
         return "<ProductPicures(%r)>" % self.link
 
 
+## Used to represent the comments of an product.
 class ProductComment(db.Model):
     __tablename__ = 'product_comments_table'
     id = db.Column(db.Integer, primary_key=True)
@@ -79,6 +76,9 @@ class ProductComment(db.Model):
     def __repr__(self):
         return "<ProductComment(%r)>" % self.comment
 
+
+## Used to represent the categories that a product can belong
+#  to.
 class Categories(db.Model):
     __tablename__ = 'categories_table'
     id = db.Column(db.Integer, primary_key=True)
@@ -94,6 +94,8 @@ class Categories(db.Model):
     def __repr__(self):
         return "Categories(%r)" % self.name
 
+
+## Used to represent the specifications of a product.
 class ProductSpecifications(db.Model):
     __tablename__ = 'product_specification_table'
     id = db.Column(db.Integer, primary_key=True)
@@ -108,6 +110,3 @@ class ProductSpecifications(db.Model):
 
     def __repr__(self):
         return "ProductSpecfication(%r)" % self.name
-
-
-
