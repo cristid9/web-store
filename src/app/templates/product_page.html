@@ -204,7 +204,8 @@
 	{% if g.user.is_authenticated() %}
 		<script type="text/javascript">
 			var userData = {
-				name: "{{ g.user.username }}"
+				name: "{{ g.user.username }}",
+				productId: "{{ product.id }}"
 			};
 		</script>
 		<script type="text/javascript" src="{{ url_for('static', filename='js/comment.js') }}">

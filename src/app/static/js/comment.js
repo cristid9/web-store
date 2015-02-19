@@ -1,7 +1,8 @@
 "use strict";
 function Comment(poster,
                  content,
-                 $container) {
+                 $container,
+                 productId) {
 
     this.poster = poster;
     this.content = content;
@@ -9,6 +10,8 @@ function Comment(poster,
     this.minLength = 10;
     // Ajax route to post the message to the server.
     this.route = '/publish_comment';
+    // Id of the commented product.
+    this.productId = productId;
 }
 
 Comment.prototype.isValid = function() {
@@ -22,7 +25,8 @@ Comment.prototype.isValid = function() {
 Comment.prototype.__sendToServer = function() {
     $.post(this.route, {
         poster: this.poster,
-        content: this.content
+        content: this.content,
+        productId: this.productId
     });
 };
 

@@ -607,3 +607,22 @@ def bought_products(username):
 
     return render_template('bought_products.html',
                            orders=orders)
+
+
+@app.route('/publish_comment', methods=['POST'])
+@login_required
+def publish_comments():
+    user_name = request.form['poster']
+    user = User.query.filter_by(username=user_name).first()
+
+    if g.user.id == user.id:
+        content = request.form["content"]
+        product_id = request.form["productId"]
+        comment = ProductComment(content, user.id)
+        comment.productId = product_id
+
+        db.session.add(comment)
+        db.session.commit()
+
+        return jsonify(status="success")
+    return jsonify(status="user_dont_match")
