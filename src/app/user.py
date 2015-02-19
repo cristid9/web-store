@@ -20,19 +20,26 @@ class User(db.Model):
     email = db.Column(db.String, nullable=False)
     userData = db.relationship('UserData', backref='user', lazy='dynamic')
 
-
+    ## Method required by flask-login.
     def is_authenticated(self):
         return True
 
+    ## Method required by flask-login.
     def is_active(self):
         return True
 
+    ## Method required by flask-login.
     def is_anoymous(self):
         return False
 
+    ## Method required by flask-login.
     def get_id(self):
         return unicode(self.id)
 
+    ## Use this method to check if an user is admin.
+    #
+    # @return bool It returns `True` if the user is admin or
+    #         `False` otherwise.
     def is_admin(self):
         if self.state == "admin":
             return True
@@ -73,6 +80,7 @@ class PendingUser(db.Model):
         self.registrationDate = datetime.utcnow()
 
 
+## Used to represent shiping informations of an user.
 class UserData(db.Model):
     __tablename__ = 'userdata_table'
 
@@ -93,14 +101,8 @@ class UserData(db.Model):
         self.address = address
 
     def __repr__(self):
-        return "<UserData(%r, %r, %r, %r, %r)>" % (self.phone, self.email,
-                                                   self.region, self.city, self.address)
-
-
-
-
-
-
-
-
-
+        return "<UserData(%r, %r, %r, %r, %r)>" % (self.phone,
+                                                   self.email,
+                                                   self.region,
+                                                   self.city,
+                                                   self.address)
