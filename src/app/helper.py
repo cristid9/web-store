@@ -5,7 +5,9 @@
 
 from flask.ext.mail import Message
 from main import mail
+from src.app.decorators import async
 
+@async
 def sendMail(subject, sender, recipients, messageBody, messageHtmlBody):
 	msg = Message(subject, sender=sender, recipients=recipients)
 	msg.body = messageBody
