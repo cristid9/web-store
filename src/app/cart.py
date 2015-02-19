@@ -41,8 +41,8 @@ class Cart(object):
 
     def getProductData(self):
         data = []
-        for id in self.items:
-            data.append(Product.query.get(id))
+        for product_id in self.items:
+            data.append(Product.query.get(product_id))
 
         return data
 

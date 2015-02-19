@@ -68,7 +68,6 @@ class ProductComment(db.Model):
     comment = db.Column(db.String, nullable=False)
     userId = db.Column(db.Integer, db.ForeignKey('user_table.id'))
     productId = db.Column(db.Integer, db.ForeignKey('product_table.id'))
-
     def __init__(self, comment, userId):
         self.comment = comment
         self.userId = userId

@@ -7,8 +7,7 @@
 			bootstrap.min.js"></script>
 		<script src="{{ url_for('static', filename="js/helpers.js") 
 			}}"></script>
-		<script src="{{ url_for('static', 
-			filename='js/jquery.hc-sticky.js') }}"></script>
+
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/
 			underscore.js/1.7.0/underscore-min.js"></script>
 		<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.
@@ -19,155 +18,165 @@
 	</head>
 
 	<body>
-		<div id="notification_bar">
-			{% with messages = get_flashed_messages() %}
-				{% if messages|count %}
-					<div class="alert alert-warning alert-dismissible" 
-						role="alert" id="status_bar">
-						<button type="button" class="close" 
-							data-dismiss="alert">
-							<span aria-hidden="true"> &times; </span>
-							<span class="sr-only"> Close </span>
-						</button>
-						{% for message in messages %}
-							{{ message }} 
-						{% endfor %}
-					</div>
-					<script type="text/javascript">
-						$(document).ready(function() {
-							setInterval(function() {
-								hideStatusBar('status_bar')
-							}, 2000);
-						});
-					</script>
-				{% endif %}
-			{% endwith %}
-		</div>
-	
-		<nav class="navbar navbar-default" role="navigation">
-			<div class="container-fluid">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed"
-						data-toggle="collapse" 
-						data-target="#bs-example-navbar-collapse-1">
-						<span class="sr-only"> Toggle navigation </span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand" href="{{ url_for('index') }}"> 
-						<img id="store_logo" src="{{ url_for('static', 
-							filename="images/shopping-bag.png") }}">
-						Magazin Licenta 
-					</a>	
-				</div>
-				<div class="collapse navbar-collapse" 
-					id="bs-example-navbar-collapse-1">
-					<ul class="nav navbar-nav">
-						<li class="active">
-							<a href="{{ url_for('index') }}"> 
-								Acasa 
-							</a>
-						</li>
-						<li><a href="{{ url_for('contact') }}"> contact </a></li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" 
-								data-toggle="dropdown">
-								produse <span class="caret"></span>
-							</a>
-							<ul class="dropdown-menu" role="menu">
-								{% for category in g.categories %}
-									<li>
-									<a href="{{ url_for('categories',
-										category=category.name, page=1) }}">
-											{{ category.name }}
-										</a>
-									</li>
-								{% endfor %}
-							</ul>
-						</li>
-					</ul>
-					<form class="navbar-form navbar-left" role="search"
-						action="{{ url_for('search') }}" method="POST">
-						<div class="form-group">
-							<input type="text" name="search" 
-								class="form-control" 
-								placeholder="Cauta produsul">
+		<div id="wrapper">
+			<div id="notification_bar">
+				{% with messages = get_flashed_messages() %}
+					{% if messages|count %}
+						<div class="alert alert-warning alert-dismissible"
+							role="alert" id="status_bar">
+							<button type="button" class="close"
+								data-dismiss="alert">
+								<span aria-hidden="true"> &times; </span>
+								<span class="sr-only"> Close </span>
+							</button>
+							{% for message in messages %}
+								{{ message }}
+							{% endfor %}
 						</div>
-						<button type="submit" class="btn btn-default">
-							Cauta
+						<script type="text/javascript">
+							$(document).ready(function() {
+								setInterval(function() {
+									hideStatusBar('status_bar')
+								}, 2000);
+							});
+						</script>
+					{% endif %}
+				{% endwith %}
+			</div>
+
+			<nav class="navbar navbar-default" role="navigation">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed"
+							data-toggle="collapse"
+							data-target="#bs-example-navbar-collapse-1">
+							<span class="sr-only"> Toggle navigation </span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
 						</button>
-					</form>
-					<ul class="nav navbar-nav navbar-right">
-						{% if g.user.is_authenticated() %}
-							<li>
-								<a href="{{ url_for('user_page', user_name=g.user.username) }}">
-									<span class="glyphicon glyphicon-user"></span>
-									<!--show only the first 8 letters of an user's name-->
-									{{ g.user.username|truncate(8) }}
+						<a class="navbar-brand" href="{{ url_for('index') }}">
+							<img id="store_logo" src="{{ url_for('static',
+								filename="images/shopping-bag.png") }}">
+							Magazin Licenta
+						</a>
+					</div>
+					<div class="collapse navbar-collapse"
+						id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav">
+							<li  {% if active_page == url_for('index')  %} class="active" {% endif %}>
+								<a href="{{ url_for('index') }}">
+									Acasa
 								</a>
 							</li>
-							<li>
-								<a href="{{ url_for('logout')}}">
-									Delogare
-									<span class="glyphicon glyphicon-log-out">
-									</span>
-								</a>
+							<li {% if active_page == url_for('contact')  %} class="active" {% endif %}>
+								<a href="{{ url_for('contact') }}"> contact </a>
 							</li>
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" 
+							<li
+									{% if active_page == "categories" %}
+										class="dropdown active"
+									{% else %}
+										class="dropdown"
+									{% endif %}
+									>
+								<a href="#" class="dropdown-toggle"
 									data-toggle="dropdown">
-									Cos 
-									<span class="glyphicon 
-										glyphicon-shopping-cart">
-									</span>
+									produse <span class="caret"></span>
 								</a>
 								<ul class="dropdown-menu" role="menu">
-									<li>
-										<a href="{{ url_for('cart') }}">
-										   	Produse cumparate 
-										</a>
-									</li>
+									{% for category in g.categories %}
+										<li>
+										<a href="{{ url_for('categories',
+											category=category.name, page=1) }}">
+												{{ category.name }}
+											</a>
+										</li>
+									{% endfor %}
 								</ul>
 							</li>
-						{% else %}
-							<li>
-								<a href="{{url_for('singup')}}">
-									Creaza-ti cont
-									<span class="glyphicon glyphicon-pencil">
-									</span>
-								</a>
-							</li>
-							<li>
-								<a href="{{ url_for('login') }}">
-									Logheaza-te
-									<span class="glyphicon glyphicon-log-in">
-									</span>
-								</a>
-							</li>
-						{% endif %}
-					</ul>
+						</ul>
+						<form class="navbar-form navbar-left" role="search"
+							action="{{ url_for('search') }}" method="POST">
+							<div class="form-group">
+								<input type="text" name="search"
+									class="form-control"
+									placeholder="Cauta produsul">
+							</div>
+							<button type="submit" class="btn btn-default">
+								Cauta
+							</button>
+						</form>
+						<ul class="nav navbar-nav navbar-right">
+							{% if g.user.is_authenticated() %}
+								<li
+										{% if active_page == url_for('user_page', user_name=g.user.username) %}
+											class="active"
+										{% endif %}>
+									<a href="{{ url_for('user_page', user_name=g.user.username) }}">
+										<span class="glyphicon glyphicon-user"></span>
+										<!--show only the first 8 letters of an user's name-->
+										{{ g.user.username|truncate(8) }}
+									</a>
+								</li>
+								<li>
+									<a href="{{ url_for('logout')}}">
+										Delogare
+										<span class="glyphicon glyphicon-log-out">
+										</span>
+									</a>
+								</li>
+								<li
+										{% if active_page == url_for('cart') %}
+											class="dropdown active"
+										{% else %}
+											class="dropdown"
+										{% endif %}>
+									<a href="#" class="dropdown-toggle"
+										data-toggle="dropdown">
+										Cos
+										<span class="glyphicon
+											glyphicon-shopping-cart">
+										</span>
+									</a>
+									<ul class="dropdown-menu" role="menu">
+										<li>
+											<a href="{{ url_for('cart') }}">
+												Produse cumparate
+											</a>
+										</li>
+									</ul>
+								</li>
+							{% else %}
+								<li>
+									<a href="{{url_for('singup')}}">
+										Creaza-ti cont
+										<span class="glyphicon glyphicon-pencil">
+										</span>
+									</a>
+								</li>
+								<li>
+									<a href="{{ url_for('login') }}">
+										Logheaza-te
+										<span class="glyphicon glyphicon-log-in">
+										</span>
+									</a>
+								</li>
+							{% endif %}
+						</ul>
+					</div>
 				</div>
-			</div>
-		</nav>
+			</nav>
 
-		{% block content %}
-		{% endblock %}
-		<nav class="navbar navbar-default navbar-fixed-bottom" 
-			role"navigation" id="footer">
-			<div class="container">
-				<br>
-				<p> Creat de <strong> Davind Laurentiu </strong>. </p>
-			</div>
-		</nav>
-
-		<script type="text/javascript">
-
-			$(document).ready(function() {
-
-				$('#footer').hcSticky();
-		  });
-		</script>
+			{% block content %}
+			{% endblock %}
+			<nav class="navbar navbar-default navbar-fixed-bottom"
+				 id="footer" height="60px">
+				<div class="container">
+					<br>
+					Creat de <strong> Davind Laurentiu </strong>
+				</div>
+			</nav>
+		</div>
 	</body>
 </html>
 

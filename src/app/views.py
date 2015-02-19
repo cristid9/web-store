@@ -18,9 +18,9 @@ from flask.ext.login import login_user, logout_user, current_user, \
 def before_request():
     print session
     g.user = current_user
-    if not "cart" in session:
+    if "cart" not in session:
         session["cart"] = {}
-    if not "shipping" in session:
+    if "shipping" not in session:
         session["shipping"] = {"name": None, "price": 0}
     g.cart = Cart(session["cart"], session["shipping"]["price"])
     g.categories = Categories.query.filter(Categories.available == True).all()
@@ -33,7 +33,8 @@ def index():
     product_query = Product.query.filter(Product.available == True)
     promotional_products = product_query.paginate(1, 3, False)
     return render_template('index.html',
-                           promotionalProducts=promotional_products)
+                           promotionalProducts=promotional_products,
+                           active_page=url_for('index'))
 
 
 @app.route('/search', methods=['POST'])
@@ -62,7 +63,9 @@ def contact():
         )
         return render_template('message_send_successfully.html')
 
-    return render_template('contact.html', form=form)
+    return render_template('contact.html',
+                           form=form,
+                           active_page=url_for('contact'))
 
 
 @app.route('/singup', methods=['GET', 'POST'])
@@ -74,8 +77,7 @@ def singup():
                                      name=form.name.data,
                                      username=form.username.data,
                                      password=md5(form.password.data).hexdigest(),
-                                     email=form.email.data
-        )
+                                     email=form.email.data)
 
         db.session.add(newPendingUser)
         db.session.commit()
@@ -113,8 +115,10 @@ def singup():
 def user_page(user_name):
     user = User.query.filter_by(username=user_name).first()
 
+    active_page = url_for('user_page', user_name=user_name)
     return render_template('user_page.html',
-                           user=user)
+                           user=user,
+                           active_page=active_page)
 
 
 @app.route('/product_page/<int:productId>')
@@ -187,8 +191,11 @@ def categories(category, page):
                                  Product.available == True)
     products = query.paginate(page, PRODUCTS_PER_PAGE, False)
 
+    # The content doesn't really matter, he important thing is
+    # to make sure if we are indeed on this page.
     return render_template("products.html",
-                           products=products)
+                           products=products,
+                           active_page="categories")
 
 @app.route('/add_new_product', methods=['GET', 'POST'])
 @login_required
@@ -280,9 +287,8 @@ def cart():
     form = AddressForm()
     return render_template("products_in_cart.html",
                            cart=g.cart.getProductData(),
-                           form=form
-    )
-
+                           form=form,
+                           active_page=url_for('cart'))
 
 @app.route('/update_cart', methods=['GET', 'POST'])
 def updateCart():
@@ -300,21 +306,17 @@ def updateCart():
     # It's safer to query the database for the product's price.
     product = Product.query.get(int(request.form["id"]))
     return jsonify(total=product.price *
-                         int(request.form["quantity"])
-    )  # placeholder for real message
-
+                   int(request.form["quantity"]))
 
 @app.route('/check_stock', methods=['GET', 'POST'])
 def checkStock():
     product = Product.query.get(int(request.form["id"]))
     return jsonify(stock=product.stock)
 
-
 @app.route('/get_cart_total', methods=['GET', 'POST'])
 def getCartTotal():
     total = g.cart.getTotal()
     return jsonify(total=round(total, 2))
-
 
 @app.route('/delete_from_cart', methods=['POST'])
 def deleteFromCart():
@@ -326,7 +328,7 @@ def deleteFromCart():
 @app.route('/set_shipping_method', methods=['POST'])
 def setShippingMethod():
     # the user will send the method name, update the cart value using the name 
-    # of the shiping method
+    # of the shipping method
 
     for shippingMethod in g.shippingMethods:
         if shippingMethod.name == request.form["name"]:
@@ -336,11 +338,9 @@ def setShippingMethod():
             return jsonify(status="ok")
     return jsonify(status="fail")
 
-
 @app.route('/get_shipping_method', methods=["POST"])
 def getShippingMethod():
     return jsonify(name=session["shipping"]["name"])
-
 
 @app.route('/place_order', methods=["POST"])
 def placeOrder():
@@ -402,7 +402,6 @@ def placeOrder():
 
     return jsonify(status="ok")
 
-
 @app.route('/change_user_name', methods=['POST'])
 def change_user_name():
     if g.user.is_authenticated():
@@ -430,7 +429,6 @@ def change_user_email():
 
     return jsonify(status="not authenticated")
 
-
 @app.route('/check_password', methods=['POST'])
 @login_required
 def check_password():
@@ -449,7 +447,6 @@ def change_password():
 
         return jsonify(status="ok")
     return jsonify(status="not authenticated")
-
 
 @app.route("/delete_product", methods=["Post"])
 @login_required
