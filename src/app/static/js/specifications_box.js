@@ -1,7 +1,15 @@
+/**
+ * @brief Class used to represent the specification box ui
+ *        element.
+ *
+ * @param $specificationsContainer A jQuery object representing
+ *        the div where the specifications are store.
+ * @param specifications A dictionary of the form
+ *        <spec_name>:<value>.
+ */
 function SpecificationsBox($specificationsContainer,
                            specifications) {
     this.$specificationsContainer = $specificationsContainer;
-    console.log(this.$specificationsContainer.html());
 
     this.specsCounter = this.$specificationsContainer.
         children("div.row").length -1;
