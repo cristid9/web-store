@@ -79,32 +79,40 @@
 							</div>
 						{% endfor %}
 					</div>
-				</div>
-				<div class="panel-footer">
+					<div class="panel-footer">
 					{% if not is_empty %}
 						{% for shippingMethod in g.shippingMethods %}
 							<div class="row">
-								<div class="radio">
-									<label>
-										<input type="radio" name="shipping"
-											value="{{ shippingMethod.name }}">
-										<div class="col-xs-6">
-											Transport: {{ shippingMethod.name }}
-										</div>
-										<div class="col-xs-3">
-											Pret: {{ shippingMethod.price }}
-										</div>
-										<div class="col-xs-3">
-											{{ shippingMethod.area }}
-										</div>
-									</label>
+								<div class="col-xs-8">
+									<div class="radio">
+										<label>
+											<div class="row">
+												<div class="col-xs-1">
+													<!--filler-->
+												</div>
+												<div class="col-xs-2">
+													<input type="radio" name="shipping"
+														   value="{{ shippingMethod.name }}">
+												</div>
+												<div class="col-xs-5">
+													Transport: {{ shippingMethod.name }}
+												</div>
+												<div class="col-xs-2">
+													Pret: {{ shippingMethod.price }}
+												</div>
+												<div class="col-xs-2">
+													<strong> {{ shippingMethod.area }} </strong>
+												</div>
+											</div>
+										</label>
+									</div>
 								</div>
 							</div>
 						{% endfor %}
 					{% endif %}
 					<div class="row">
-						<div class="col-xs-8">
-							Total: 
+						<div class="col-xs-7">
+							Total:
 							<span class="badge order_total">
 								0
 							</span>
