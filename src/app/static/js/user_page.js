@@ -104,4 +104,10 @@ $(document).ready(function() {
         location.reload();
     });
 
+
 });
+
+
+    function foo() {
+        alert("aaaaa");
+    }

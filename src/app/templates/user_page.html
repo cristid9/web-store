@@ -305,7 +305,7 @@
 {% endif %}
 
     {% if g.user.id == user.id%}
-        <script type="text/javascript" src="{{ url_for('static', filename='js/user_page.js') }}" />
+        <script type="text/javascript" src="{{ url_for('static', filename='js/user_page.js') }}" ></script>
     {% endif %}
 
     {% if g.user.is_admin() and not user.is_admin() and g.user.id != user.id %}
@@ -315,7 +315,7 @@
             var username = "{{ user.username }}";
             var admin = "{{ g.user.username }}";
         </script>
-        <script src="{{ url_for('static', filename='js/ban_user.js') }}" />
+        <script src="{{ url_for('static', filename='js/ban_user.js') }}" ></script>
     {% endif %}
 
 {% endblock %}
