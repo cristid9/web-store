@@ -109,10 +109,12 @@
 							(TVA inclus)
 						</div>
 						<div class="col-xs-4">
-							<button type="submit" class="btn btn-success btn-md
-								place_order">
-								Plaseaza comanda
-							</button>
+							{% if not is_empty %}
+								<button type="submit" class="btn btn-success btn-md
+									place_order">
+									Plaseaza comanda
+								</button>
+							{% endif %}
 						</div>
 					</div>
 				</div>

@@ -287,6 +287,7 @@ def cart():
     form = AddressForm()
     return render_template("products_in_cart.html",
                            cart=g.cart.getProductData(),
+                           is_empty = g.cart.is_empty(),
                            form=form,
                            active_page=url_for('cart'))
 

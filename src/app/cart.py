@@ -23,6 +23,9 @@ class Cart(object):
             "quantity": 1
         }
 
+    def is_empty(self):
+        return not bool(self.items)
+
     def deleteFromCart(self, productId):
         del self.items[productId]
 
