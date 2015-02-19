@@ -117,6 +117,7 @@ class Order(db.Model):
     def __repr__(self):
         return "<Order(%r)>" % self.total
 
+
 ## There can be many products in an order. The only way we
 #  can bind the products in the order to the order is using
 #  a one(order) to many(products) relationship. The purpose
