@@ -1,3 +1,12 @@
+/**
+ * @brief Class used to represent the main image(the selected one)
+ *        in the image gallery.
+ *
+ * @param placeholder A link to a placeholder image, it will be
+ *        used if there is not any image available.
+ * @param $mainImageObject A jQuery object representing the div
+ *        where the main image is located.
+ */
 function MainImage(placeholder,
                    $mainImageObject) {
 
@@ -8,6 +17,15 @@ function MainImage(placeholder,
     this.$mainImageObject = $mainImageObject;
 }
 
+/**
+ * @brief Use this method to set the current image in image
+ *        gallery.
+ *
+ * @param $item A jQuery object representing the new main
+ *        object.
+ *
+ * @return void It doesn't return anything.
+ */
 MainImage.prototype.setCurrentMainItem = function($item) {
     this.$currentMainItem = $item;
     this.$mainImageObject.html('<img src="' + $item.attr('src') +
@@ -15,6 +33,12 @@ MainImage.prototype.setCurrentMainItem = function($item) {
     this.isDefault = false;
 };
 
+/**
+ * @brief Use this method to set the main item to the
+ *        default one.
+ *
+ * @return void It doesn't return anything.
+ */
 MainImage.prototype.setDefaultMainItem = function() {
     this.$mainImageObject.html('<img src="' + this.placeholder +
         '" width="100%" height="100%" />');
