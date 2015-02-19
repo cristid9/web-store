@@ -54,3 +54,7 @@ class AddShippingMethodForm(Form):
     price = IntegerField('price', [InputRequired()])
     delivery_time = StringField('delivery_time', [InputRequired()])
     area = StringField('area', [InputRequired()])
+
+
+class CommentForm(Form):
+    comment = TextAreaField('comment', [InputRequired()])
