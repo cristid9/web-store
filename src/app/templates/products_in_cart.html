@@ -14,10 +14,10 @@
 				<div class="panel-body">
 					<div class="media">
 						{% for product in cart %}
-							<a class="pull-left" href="#">
-								<img src="{{ product.pictures[0].link }}" 
-									width="100" height="100">
-							</a>
+								<a class="pull-left" href="#">
+									<img src="{{ product.pictures[0].link }}"
+										width="100" height="100">
+								</a>
 								<div class="row" id="{{ product.id }}">
 									<div class="col-xs-3">
 										<div class="media-body">
@@ -79,58 +79,70 @@
 							</div>
 						{% endfor %}
 					</div>
-					<div class="panel-footer">
-					{% if not is_empty %}
-						{% for shippingMethod in g.shippingMethods %}
-							<div class="row">
-								<div class="col-xs-8">
-									<div class="radio">
-										<label>
+				</div>
+				<div class="container">
+					<div class="row">
+						<div class="col-xs-1">
+							<!--filler-->
+						</div>
+						<div class="col-xs-8">
+							<div class="panel panel-default">
+								<div class="panel-body">
+									{% if not is_empty %}
+										{% for shippingMethod in g.shippingMethods %}
 											<div class="row">
-												<div class="col-xs-1">
-													<!--filler-->
-												</div>
-												<div class="col-xs-2">
-													<input type="radio" name="shipping"
-														   value="{{ shippingMethod.name }}">
-												</div>
-												<div class="col-xs-5">
-													Transport: {{ shippingMethod.name }}
-												</div>
-												<div class="col-xs-2">
-													Pret: {{ shippingMethod.price }}
-												</div>
-												<div class="col-xs-2">
-													<strong> {{ shippingMethod.area }} </strong>
+												<div class="col-xs-8">
+													<div class="radio">
+														<label>
+															<div class="row">
+																<div class="col-xs-1">
+																	<!--filler-->
+																</div>
+																<div class="col-xs-2">
+																	<input type="radio" name="shipping"
+																		   value="{{ shippingMethod.name }}">
+																</div>
+																<div class="col-xs-5">
+																	Transport: {{ shippingMethod.name }}
+																</div>
+																<div class="col-xs-2">
+																	Pret: {{ shippingMethod.price }}
+																</div>
+																<div class="col-xs-2">
+																	<strong> {{ shippingMethod.area }} </strong>
+																</div>
+															</div>
+														</label>
+													</div>
 												</div>
 											</div>
-										</label>
+										{% endfor %}
+									{% endif %}
+									<div class="row">
+										<div class="col-xs-7">
+											Total:
+											<span class="badge order_total">
+												0
+											</span>
+											(TVA inclus)
+										</div>
+										<div class="col-xs-4">
+											{% if not is_empty %}
+												<button type="submit" class="btn btn-success btn-md
+													place_order">
+													Plaseaza comanda
+												</button>
+											{% endif %}
+										</div>
 									</div>
 								</div>
 							</div>
-						{% endfor %}
-					{% endif %}
-					<div class="row">
-						<div class="col-xs-7">
-							Total:
-							<span class="badge order_total">
-								0
-							</span>
-							(TVA inclus)
-						</div>
-						<div class="col-xs-4">
-							{% if not is_empty %}
-								<button type="submit" class="btn btn-success btn-md
-									place_order">
-									Plaseaza comanda
-								</button>
-							{% endif %}
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+
 
 	{% include 'modals/order_details_modal.html' %}
 	{% include 'modals/status_modal.html' %}
