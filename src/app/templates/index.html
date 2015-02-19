@@ -15,8 +15,10 @@
 			{% for product in promotionalProducts.items %}
 				<div class="item {{ 'active' if loop.first else ''}}" alt="">
 					<center>
-						<img src="{{ product.pictures[0].link }}" width="400px"
-							height="300px" />
+						<a href="{{ url_for('productPage', productId=product.id) }}">
+							<img src="{{ product.pictures[0].link }}" width="400px"
+									height="300px" />
+						</a>
 					</center>
 					<div class="carousel-caption">
 						<center>
