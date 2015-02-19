@@ -4,15 +4,16 @@
 #  to a particular module and don't provide crucial functionality.
 
 from flask.ext.mail import Message
-from main import mail
+from main import mail, app
 from src.app.decorators import async
 
 @async
 def sendMail(subject, sender, recipients, messageBody, messageHtmlBody):
-	msg = Message(subject, sender=sender, recipients=recipients)
-	msg.body = messageBody
-	msg.html = messageHtmlBody
-	mail.send(msg)
+	with app.app_context():
+		msg = Message(subject, sender=sender, recipients=recipients)
+		msg.body = messageBody
+		msg.html = messageHtmlBody
+		mail.send(msg)
 
 ## We don't wan't to make dirty and log concatenations in app, to avoid this
 #  scenario I created this functions that add the remaining parts to the url,
