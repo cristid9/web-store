@@ -40,16 +40,3 @@ manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
 PRODUCTS_PER_PAGE = 10
-
-
-
-
-
-
-
-
-
-
-
-
-
