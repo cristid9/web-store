@@ -106,8 +106,3 @@ $(document).ready(function() {
 
 
 });
-
-
-    function foo() {
-        alert("aaaaa");
-    }
