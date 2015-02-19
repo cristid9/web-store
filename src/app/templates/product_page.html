@@ -135,8 +135,9 @@
 							<div class="col-xs-6">
 								<textarea class="form-control"
 										  placeholder="minim 10 caractere"
-										  id="comment_content">
-								</textarea>
+										  id="comment_content"
+										  rows="3"
+										  cols="30"></textarea>
 							</div>
 							<div class="col-xs-2">
 								<button type="button"
@@ -148,6 +149,34 @@
 						</div>
 					</div>
 					<div id="comments_container">
+						<br>
+						<div class="row">
+							<div class="col-xs-6">
+								{% for comment in comments|reverse() %}
+									<br>
+									<div class="row">
+										<div class="col-xs-10">
+											<div class="row">
+												<div class="col-xs-2">
+													<a href="{{ url_for('user_page',
+															user_name=comment.user.username) }}">
+														{{ comment.user.name|truncate(10) }}
+													</a>
+												</div>
+												<div class="col-xs-6">
+													{{ comment.date.strftime("%d-%m-%y %H:%M") }}
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-xs-8">
+													{{ comment.comment}}
+												</div>
+											</div>
+										</div>
+									</div>
+								{% endfor %}
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -205,7 +234,7 @@
 		<script type="text/javascript">
 			var userData = {
 				name: "{{ g.user.username }}",
-				productId: "{{ product.id }}"
+				productId: "{{ product.id }}",
 			};
 		</script>
 		<script type="text/javascript" src="{{ url_for('static', filename='js/comment.js') }}">

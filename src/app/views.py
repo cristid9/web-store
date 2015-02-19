@@ -124,11 +124,13 @@ def user_page(user_name):
 @app.route('/product_page/<int:productId>')
 def productPage(productId=1):
     product = Product.query.get(productId)
+    query = ProductComment.query.filter_by(productId=productId)
+    comments = query.all()
     if product is None:
         return render_template("product_does_not_exists.html")
     return render_template("product_page.html",
-                           product=product
-    )
+                           product=product,
+                           comments=comments)
 
 
 @app.route('/validate/<pendingUserId>')
@@ -242,13 +244,13 @@ def addNewProduct():
             newCategory = Categories(newProduct.category)
             db.session.add(newCategory)
             db.session.commit()
-
-        # The product category may exist, but is unavailable, because there
-        # are no products available left in it. We should make it available.
-        if not category.available:
-            category.available = True
-            db.session.add(category)
-            db.session.commit()
+        else:
+            # The product category may exist, but is unavailable, because there
+            # are no products available left in it. We should make it available.
+            if not category.available:
+                category.available = True
+                db.session.add(category)
+                db.session.commit()
 
         return redirect(url_for('productAddedSuccessfully', name=newProduct.name))
 

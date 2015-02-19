@@ -30,13 +30,7 @@ Comment.prototype.__sendToServer = function() {
     });
 };
 
-Comment.prototype.__addToPage = function() {
-    this.$container.prepend('<div class="row">' +
-            '<strong> ' + this.content + '</strong>' +
-        '</div>');
-};
-
 Comment.prototype.publish = function() {
     this.__sendToServer();
-    this.__addToPage();
+    location.reload();
 };

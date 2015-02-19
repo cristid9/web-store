@@ -66,11 +66,15 @@ class ProductComment(db.Model):
     __tablename__ = 'product_comments_table'
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.String, nullable=False)
+    date = db.Column(db.DateTime, nullable=False)
     userId = db.Column(db.Integer, db.ForeignKey('user_table.id'))
     productId = db.Column(db.Integer, db.ForeignKey('product_table.id'))
+    user = db.relationship('User')
+
     def __init__(self, comment, userId):
         self.comment = comment
         self.userId = userId
+        self.date = datetime.utcnow()
 
     def __repr__(self):
         return "<ProductComment(%r)>" % self.comment
