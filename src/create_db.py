@@ -1,3 +1,4 @@
+## Use this module to create the database.
 from app.main import db
 from app.user import *
 from app.product import *
