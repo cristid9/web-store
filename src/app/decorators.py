@@ -1,7 +1,7 @@
 ## @package decorators
 #
 # This file will contain the definition of the all decorators used in the
-#  application.
+# application.
 
 from threading import Thread
 from flask import g, redirect, url_for
