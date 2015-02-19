@@ -8,7 +8,7 @@ from product import Product, Categories, ProductPictures, ProductComment, Produc
 from cart import Cart, ShippingMethods, Order, ProductsInOrder
 from hashlib import md5
 from decorators import isAdmin
-from helper import sendMail, generateUrl, flashErrors
+from helper import sendMail, generateUrl, flashErrors, get_max_pages
 from uuid import uuid4
 from flask.ext.login import login_user, logout_user, current_user, \
     login_required
@@ -191,13 +191,18 @@ def logout():
 def categories(category, page):
     query = Product.query.filter(Product.category == category,
                                  Product.available == True)
+
+    max_pages = get_max_pages(len(query.all()), PRODUCTS_PER_PAGE)
     products = query.paginate(page, PRODUCTS_PER_PAGE, False)
 
     # The content doesn't really matter, he important thing is
     # to make sure if we are indeed on this page.
     return render_template("products.html",
                            products=products,
-                           active_page="categories")
+                           active_page="categories",
+                           page_number=page,
+                           max_pages=max_pages,
+                           category=category)
 
 @app.route('/add_new_product', methods=['GET', 'POST'])
 @login_required

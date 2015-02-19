@@ -15,11 +15,13 @@ def sendMail(subject, sender, recipients, messageBody, messageHtmlBody):
 		msg.html = messageHtmlBody
 		mail.send(msg)
 
+
 ## We don't wan't to make dirty and log concatenations in app, to avoid this
 #  scenario I created this functions that add the remaining parts to the url,
 #  in this case the http://.
 def generateUrl(hostname, route):
 	return "http://" + hostname + route
+
 
 ## Since the process of flashing all the errors raised when validating a form
 #  takes quite more lines of code, a helper that does that for us is a very
@@ -31,3 +33,20 @@ def flashErrors(errors, flash):
 	for field in errors:
 		for error in errors[field]:
 			flash(error)
+
+
+## Use this helper function to compute the maximum number of pages
+#  that can exists, taking into account the number of products
+#  that should be displayed on every page.
+#
+#  @param items The total number of items. For example, the total
+#         number of products in a given category.
+#  @param items_per_page The maximum number of items
+#         that can be displayed ona page.
+#
+#  @return int The maximum number of pages.
+def get_max_pages(items, items_per_page):
+	max_pages = items / items_per_page
+	if items % items_per_page > 0:
+		max_pages += 1
+	return  max_pages
