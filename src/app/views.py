@@ -111,6 +111,7 @@ def singup():
     return render_template('singup.html',
                            form=form)
 
+
 @app.route('/user_page/<string:user_name>', methods=['GET'])
 def user_page(user_name):
     user = User.query.filter_by(username=user_name).first()
@@ -199,6 +200,7 @@ def categories(category, page):
                            products=products,
                            active_page="categories")
 
+
 @app.route('/add_new_product', methods=['GET', 'POST'])
 @login_required
 @isAdmin(route="onlyAdmins")
@@ -272,9 +274,6 @@ def productAddedSuccessfully(name):
 
 @app.route('/add_to_cart', methods=['POST'])
 def addToCart():
-    print "*" * 70
-    print request.form["productId"]
-    print "*" * 70
     product = Product.query.get(int(request.form["productId"]))
 
     g.cart.addToCart(product.id, product.price)
@@ -292,6 +291,7 @@ def cart():
                            is_empty = g.cart.is_empty(),
                            form=form,
                            active_page=url_for('cart'))
+
 
 @app.route('/update_cart', methods=['GET', 'POST'])
 def updateCart():
@@ -316,10 +316,12 @@ def checkStock():
     product = Product.query.get(int(request.form["id"]))
     return jsonify(stock=product.stock)
 
+
 @app.route('/get_cart_total', methods=['GET', 'POST'])
 def getCartTotal():
     total = g.cart.getTotal()
     return jsonify(total=round(total, 2))
+
 
 @app.route('/delete_from_cart', methods=['POST'])
 def deleteFromCart():
@@ -341,9 +343,11 @@ def setShippingMethod():
             return jsonify(status="ok")
     return jsonify(status="fail")
 
+
 @app.route('/get_shipping_method', methods=["POST"])
 def getShippingMethod():
     return jsonify(name=session["shipping"]["name"])
+
 
 @app.route('/place_order', methods=["POST"])
 def placeOrder():
@@ -405,6 +409,7 @@ def placeOrder():
 
     return jsonify(status="ok")
 
+
 @app.route('/change_user_name', methods=['POST'])
 def change_user_name():
     if g.user.is_authenticated():
@@ -432,12 +437,14 @@ def change_user_email():
 
     return jsonify(status="not authenticated")
 
+
 @app.route('/check_password', methods=['POST'])
 @login_required
 def check_password():
     if g.user.password != md5(request.form["currentPassword"]).hexdigest():
         return jsonify(status="wrong")
     return jsonify(status="correct")
+
 
 @app.route('/change_password', methods=['POST'])
 def change_password():
@@ -450,6 +457,7 @@ def change_password():
 
         return jsonify(status="ok")
     return jsonify(status="not authenticated")
+
 
 @app.route("/delete_product", methods=["Post"])
 @login_required
@@ -476,13 +484,16 @@ def delete_product():
 
     return jsonify(status="ok")
 
+
 @app.route("/product_deleted_successfully", methods=["GET"])
 def product_deleted_successfully():
     return render_template("product_deleted_successfully.html")
 
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template("404.html"), 404
+
 
 @app.route("/edit_product/<int:product_id>", methods=['GET', 'POST'])
 @login_required
@@ -529,9 +540,11 @@ def edit_product(product_id):
                            form = form,
                            product = product)
 
+
 @app.route("/product_edited_successfully", methods=["GET"])
 def product_edited_successfully():
     return render_template("product_edited_successfully.html")
+
 
 @app.route("/add_shipping_method", methods=["GET", "POST"])
 @login_required
@@ -556,9 +569,11 @@ def add_shipping_method():
     return render_template("add_shipping_method.html",
                            form=form)
 
+
 @app.route("/shipping_method_added_successfully", methods=["GET"])
 def shipping_method_added_successfully():
     return render_template("shipping_method_added_successfully.html")
+
 
 @app.route("/ban_user", methods=["POST"])
 @login_required
@@ -588,11 +603,13 @@ def ban_user():
     return jsonify(status="ok",
                    redirectPage=url_for('user_deleted_successfully'))
 
+
 @app.route('/user_deleted_successfully', methods=["GET"])
 @login_required
 @isAdmin(route="onlyAdmins")
 def user_deleted_successfully():
     return render_template('user_deleted_successfully.html')
+
 
 @app.route('/bought_products/<string:username>', methods=['GET'])
 @login_required
