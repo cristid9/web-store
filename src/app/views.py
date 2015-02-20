@@ -189,6 +189,11 @@ def logout():
 
 @app.route('/categories/<string:category>/<int:page>')
 def categories(category, page):
+    # Check if the category exists.
+    category_query = Categories.query.filter_by(name=category)
+    if category_query.first() is None:
+        return render_template('404.html')
+
     query = Product.query.filter(Product.category == category,
                                  Product.available == True)
 
