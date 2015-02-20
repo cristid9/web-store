@@ -31,6 +31,7 @@ def before_request():
 @app.route('/index')
 def index():
     product_query = Product.query.filter(Product.available == True)
+    product_query = product_query.order_by(Product.date.desc())
     promotional_products = product_query.paginate(1, 3, False)
     return render_template('index.html',
                            promotionalProducts=promotional_products,
