@@ -16,6 +16,7 @@ class Product(db.Model):
     name = db.Column(db.String, nullable=False)
     price = db.Column(db.Float, nullable=False)
     stock = db.Column(db.Integer, nullable=False)
+    date = db.Column(db.DateTime, nullable=False)
     # When we delete a product we actually make is unavailable, thus
     # keeping the integrity of all the references to that product, like
     # orders, for example.
@@ -35,6 +36,7 @@ class Product(db.Model):
         self.name = name
         self.price = price
         self.stock = stock
+        self.date = datetime.utcnow()
 
     def __repr__(self):
         return "<Product(%r, %r, %r)>" % (self.name, self.price, self.stock)
