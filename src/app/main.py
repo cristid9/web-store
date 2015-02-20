@@ -35,8 +35,4 @@ lm.login_view = 'login'
 
 db = SQLAlchemy(app)
 
-migrate = Migrate(app, db)
-manager = Manager(app)
-manager.add_command('db', MigrateCommand)
-
 PRODUCTS_PER_PAGE = 10
