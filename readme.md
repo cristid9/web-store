@@ -46,7 +46,7 @@ environment](https://virtualenv.pypa.io/en/latest/).
      export DATABASE_URL = "postgresql://cristi:1234@localhost/test_web_store_db"
  ```
 
-4. Create de database:
+4. Create the database:
  ```
      python create_db.py
  ```
