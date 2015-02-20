@@ -31,7 +31,7 @@ environment](https://virtualenv.pypa.io/en/latest/).
 
 1. Clone the application:
  ```
-     git clone <link>
+     git clone https://github.com/cristid9/web-store.git
  ```
 
 2. Install the requirements:
