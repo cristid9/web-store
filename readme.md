@@ -30,28 +30,28 @@ properly configured. We also recommend you to use a [virtual
 environment](https://virtualenv.pypa.io/en/latest/).
 
 1. Clone the application:
-```
-    git clone <link>
-```
+ ```
+     git clone <link>
+ ```
 
 2. Install the requirements:
-```
-    cd src/
-    pip install -r requirements.txt
-```
+ ```
+     cd src/
+     pip install -r requirements.txt
+ ```
 
 3. Create an environment variable with the database url.
-Usually, it looks like this `postgresql://cristi:1234@localhost/test_web_store_db`.
-```
-    export DATABASE_URL = "postgresql://cristi:1234@localhost/test_web_store_db"
-```
+ Usually, it looks like this `postgresql://cristi:1234@localhost/test_web_store_db`.
+ ```
+     export DATABASE_URL = "postgresql://cristi:1234@localhost/test_web_store_db"
+ ```
 
 4. Create de database:
-```
-    python create_db.py
-```
+ ```
+     python create_db.py
+ ```
 
 5. Run the developement version of the app:
-```
-    python run_dev.py
-```
+ ```
+     python run_dev.py
+ ```
