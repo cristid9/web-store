@@ -235,8 +235,7 @@ def addNewProduct():
         db.session.commit()
 
         # Now add the images.
-        pictures = form.pictures.data.split('|')
-        del pictures[-1]
+        pictures = json.loads(form.pictures.data)
 
         for pictureLink in pictures:
             db.session.add(ProductPictures(pictureLink, newProduct.id))

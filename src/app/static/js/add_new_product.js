@@ -51,7 +51,7 @@ $(document).ready(function() {
         }
 
         $("#links_container").find("input").each(function(index) {
-            imageLinks.push(this.value + "|"); // It is easier to split links by the | character
+            imageLinks.push(this.value); // It is easier to split links by the | character
         });
 
         // Before hiding the dialog we must also check if all the boxes are not empty.
@@ -74,8 +74,9 @@ $(document).ready(function() {
         if($(event.target).hasClass("close")) {
             for(var i = 0; i < imageLinks.length; i++) {
                 // The last charachter is a "|" and we need to get rid of it.
-                if(imageLinks[i].slice(0, -1) === $(event.target).closest("div.row").find("input[type=text]").
-                    val()) {
+                if(imageLinks[i] === $(event.target).closest("div.row")
+                                        .find("input[type=text]")
+                                        .val()) {
                     imageLinks.splice(i, 1);
                 }
             }
@@ -95,7 +96,7 @@ $(document).ready(function() {
             alert("You haven't added any image. Please add at least one image and submit the form after");
         }
         else {
-            $("#pictures").val(imageLinks);
+            $("#pictures").val(JSON.stringify(imageLinks));
             $("#specifications").val(JSON.stringify(specificationsObject));
             $("#image_uploading_form").submit();
         }
