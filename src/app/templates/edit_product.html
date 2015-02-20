@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel panel-heading">
+                <h3>
+                    <span class="glyphicon glyphicon-list-alt"> </span>
+                    Editeaza produsul
+                </h3>
+            </div>
+            <div class="panel panel-body">
+                <form method="POST" action="" id="edit_product_form">
+                    {{ form.hidden_tag() }}
+
+                    <div class="row">
+                        <div class="col-xs-2">
+                            Product Name
+                        </div>
+
+                        <div class="col-xs-4">
+                            {{ form.name(class="form-control",
+                                value=product.name) }}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            Product Price
+                        </div>
+
+                        <div class="col-xs-3">
+                            {{ form.price(class="form-control",
+                                value=product.price) }}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            Product Stock
+                        </div>
+
+                        <div class="col-xs-2">
+                            {{ form.stock(class="form-control",
+                                value=product.stock) }}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            Product Category
+                        </div>
+
+                        <div class="col-xs-4">
+                            {{ form.category(class="form-control",
+                                value=product.category) }}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            Product Description
+                        </div>
+
+                        <div class="col-xs-4">
+                            {{ form.description(class="form-control", rows="2") }}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row hidden">
+                        <div class="col-xs-4">
+                            {{ form.pictures(id="pictures") }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            Product Pictures
+                        </div>
+
+                        <div class="col-xs-4">
+                            <button type="button" class="btn btn-primary bt-md" id="edit_images_button">
+                                Editeaza imaginile
+                            </button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row hidden">
+                        <div class="col-xs-4">
+                            {{ form.specifications(id="specifications") }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            Product Specifications
+                        </div>
+                        <div class="col-xs-4">
+                            <button type="button" class="btn btn-primary btn-md" id="edit_specifications">
+                                Editeaza specificatiile
+                            </button>
+                        </div>
+                    </div>
+                    <br>
+                    <button type="button" class="btn btn-success btn-md" id="add_the_edits">
+                        Save edits
+                        <span class="glyphicon glyphicon-ok">
+                        </span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% include 'modals/edit_images_modal.html' %}
+    {% include 'modals/edit_specifications_modal.html' %}
+
+    <script>
+        var collectionItems = [];
+        var placeholder = "{{ url_for('static', filename='images/placeholder.png') }}";
+
+        {% for picture in product.pictures %}
+            collectionItems.push("{{ picture.link }}")
+        {% endfor %}
+
+        var specifications = {};
+        {% for specification in product.specifications %}
+            specifications["{{ specification.name }}"] = "{{ specification.data }}";
+        {% endfor %}
+
+    </script>
+
+    <script src="{{ url_for('static', filename='js/specifications_box.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/product_gallery.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/edit_product.js') }}"> </script>
+{% endblock %}

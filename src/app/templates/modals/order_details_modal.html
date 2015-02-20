@@ -1,0 +1,78 @@
+<div class="modal fade" id="order_details">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true"> &times; </span>
+                    <span class="sr-only"> Close </span>
+                </button>
+            </div>
+            <br>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-3">
+                        Telefon:
+                    </div>
+                    <div class="col-xs-8">
+                        {{ form.phone(class='form-control',
+                            placeholder='numarul tau de telefon',
+                            id='phone') }}
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-xs-3">
+                        Email:
+                    </div>
+                    <div class="col-xs-8">
+                        {{ form.email(class='form-control',
+                            placeholder='adresa de email',
+                            id='email') }}
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-xs-3">
+                        Judet:
+                    </div>
+                    <div class="col-xs-8">
+                        {{ form.region(class='form-control',
+                            placeholder='judetul in care stai',
+                            id='region') }}
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-xs-3">
+                        Oras:
+                    </div>
+                    <div class="col-xs-8">
+                        {{ form.city(class='form-control',
+                            placeholder='orasul unde vom livra comanda',
+                            id='city') }}
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-xs-3">
+                        Address
+                    </div>
+                    <div class="col-xs-8">
+                        {{ form.address(class='form-control',
+                            placeholder='Adresa ta', id_='address') }}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                    data-dismiss="modal">
+                    Renunta
+                </button>
+                <button type="button" id="send_order"
+                    class="btn btn-primary">
+                    Trimite comanda
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block content %}
+	<!-- carousel -->
+	<div id="carousel-example-generic" class="carousel slide" 
+		data-ride="carousel">
+		<ol class="carousel-indicators">
+			{% for product in promotionalProducts.items %}
+				<li data-target="#carousel-example-generic" data-slide-to="{{ loop.index - 1 }}"
+					class="active"></li>
+			{% endfor %}
+
+		</ol>
+		
+		<div class="carousel-inner">
+			{% for product in promotionalProducts.items %}
+				<div class="item {{ 'active' if loop.first else ''}}" alt="">
+					<center>
+						<a href="{{ url_for('productPage', productId=product.id) }}">
+							<img src="{{ product.pictures[0].link }}" width="400px"
+									height="300px" />
+						</a>
+					</center>
+					<div class="carousel-caption">
+						<center>
+							<h3> {{ product.description }} </h3>
+						</center>
+					</div>
+				</div>
+			{% endfor %}
+		</div>	
+
+		<a class="left carousel-control" href="#carousel-example-generic"
+			role="button" data-slide="prev">
+			<span class="glyphicon glyphicon-chevron-left"></span>
+		</a>
+		<a class="right carousel-control" href="#carousel-example-generic"
+			role="button" data-slide="next">
+			<span class="glyphicon glyphicon-chevron-right"></span>
+		</a>	
+	</div>
+
+	<br>
+	<br>
+
+	<div class="container">
+		<div class="row">
+			{% for product in promotionalProducts.items %}
+				<div class="col-xs-4">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="col-xs-6">
+								<a href="{{url_for('productPage',
+										productId=product.id)}}">
+									<img src="{{ product.pictures[0].link }}"
+										width="100px" height="100px">
+								</a>
+							</div>
+							<div class="col-xs-6">
+								<p>
+									<a href="{{ url_for('productPage', productId=product.id) }}">
+										{{ product.description }}
+									</a>
+								</p>
+								<strong> {{ product.price }}</strong>
+								<br>
+								<button class="btn btn-success btn-sm add_to_cart"
+										id="{{ product.id }}">
+									Add to cart
+									<span class="glyphicon glyphicon-shopping-cart">
+									</span>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			{% endfor %}
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".add_to_cart").click(function(event) {
+				$.post('/add_to_cart', {
+					productId: $(event.target).attr('id'),
+				}).done(function(data) {
+					if(data.status == "success") {
+						alert("Produsul a fost adaugat cu succcess");
+					}
+				});
+			});
+		});
+
+	</script>
+{% endblock %}
+
+
+
+

@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+{% block content %}
+	<div class="container">
+		<div class="row">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="col-xs-3">
+						<div id="carousel-example-generic" class="carousel slide" 
+							data-ride="carousel">
+							<ol class="carousel-indicators">
+								{% set counter = 0 %}
+								{% for picture in product.pictures %}
+									{% if counter == 0 %}
+										<li data-target="#carousel-generic active"
+											data-slide-to="{{ counter }}">
+										</li>
+									{% else %}
+										<li data-target="#carousel-example-generic" 
+											data-slide-to="{{ counter}}">
+										</li>
+									{% endif %}
+									{% set counter = counter + 1 %}
+								{% endfor %}
+							</ol>
+							<div class="carousel-inner">
+								{% set counter = 0 %}
+								{% for picture in product.pictures %}
+									{% if counter == 0 %}
+										<div class="item active">
+									{% else %}
+										<div class="item">
+									{% endif %}
+											<center>
+											<img src="{{ picture.link }}" 
+												width="150"	height="150">
+											</center>
+										</div>
+									{% set counter = counter + 1 %}
+								{% endfor %}
+							</div>
+
+							<a class="left carousel-control" 
+								href="#carousel-example-generic" 
+								role="button" data-slide="prev">
+								<span class="glyphicon glyphicon-chevron-left">
+								</span>
+							</a>
+							<a class="right carousel-control" 
+								href="#carousel-example-generic" role="button" 
+								data-slide="next">
+								<span class="glyphicon glyphicon-chevron-right">
+								</span>
+							</a>
+						</div>
+					</div>
+					<div class="col-xs-4">
+						<div class="row">
+							<div class="col-xs-3">
+								<h3>
+									<strong> {{ product.name }} </strong>
+								</h3>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-10">
+								<p> {{ product.description }} </p>
+								<p> <strong> {{ product.price }} lei</strong> </p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-4">
+								<button type="button" class="btn btn-success btn-md
+								add_to_cart">
+									Adauga
+								<span
+										class="glyphicon glyphicon-shopping-cart">
+								</span>
+								</button>
+							</div>
+							{% if g.user.is_authenticated() and g.user.is_admin() %}
+								<div class="col-xs-3">
+									<button type="button" class="btn btn-danger btn-md"
+											id="delete_product">
+										Sterge
+									</button>
+								</div>
+								<div class="col-xs-3">
+									<a href="{{ url_for('edit_product', product_id=product.id) }}"
+									   		class="btn btn-primary btn-md">
+										Modifica
+									</a>
+								</div>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Specificatiile produsului
+				</div>
+				<div class="panel-body">
+					{% set counter = 0 %}
+					{% for specification in product.specifications %}
+						{% if counter % 2 == 0 %}
+							<div class="row">
+						{% endif %}
+							<div class="col-xs-4">
+								<h5> 
+									{{ specification.name }}: 
+									{{ specification.data }} 
+								</h5>
+							</div>
+						{% if counter % 2 != 0 %}
+							</div>
+						{% endif %}
+						{% set counter = counter + 1 %}
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Comentarii 
+				</div>
+				<div class="panel-body">
+					<div id="comment_form">
+						<div class="row">
+							<div class="col-xs-0">
+								<!--filler-->
+							</div>
+							<div class="col-xs-6">
+								<textarea class="form-control"
+										  placeholder="minim 10 caractere"
+										  id="comment_content"
+										  rows="3"
+										  cols="30"></textarea>
+							</div>
+							<div class="col-xs-2">
+								<button type="button"
+										class="btn btn-success btn-md"
+										id="publish_comment">
+									Publica
+								</button>
+							</div>
+						</div>
+					</div>
+					<div id="comments_container">
+						<br>
+						<div class="row">
+							<div class="col-xs-6">
+								{% for comment in comments|reverse() %}
+									<br>
+									<div class="row">
+										<div class="col-xs-10">
+											<div class="row">
+												<div class="col-xs-2">
+													<a href="{{ url_for('user_page',
+															user_name=comment.user.username) }}">
+														{{ comment.user.name|truncate(10) }}
+													</a>
+												</div>
+												<div class="col-xs-6">
+													{{ comment.date.strftime("%d-%m-%y %H:%M") }}
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-xs-8">
+													{{ comment.comment}}
+												</div>
+											</div>
+										</div>
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% if g.user.is_authenticated() and  g.user.is_admin()%}
+
+		{% include 'modals/delete_product_modal.html' %}
+
+		<script type="text/javascript">
+			// It is easier to retrieve product data saving them in a js object.
+			var productData = {
+				id: {{ product.id }},
+				// To this page will be redirected the user after the product is deleted
+				redirectPage: "{{ url_for('product_deleted_successfully') }}"
+			};
+		</script>
+
+		<script type="text/javascript" src="{{ url_for('static', filename='js/product_page_admin.js') }}"></script>
+	{% endif %}
+
+	{% if g.user.is_authenticated() %}
+		<script type="text/javascript">
+			var userData = {
+				name: "{{ g.user.username }}",
+				productId: "{{ product.id }}",
+			};
+		</script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/comment.js') }}">
+		</script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/product_page.js') }}"></script>
+	{% endif %}
+
+</div>
+{% endblock %}

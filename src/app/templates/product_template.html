@@ -1,0 +1,41 @@
+<div id="{{ product.id }}">
+	<div class="panel panel-default">
+		<div class="panel-body center-block">
+			<div class="row">
+				<div class="col-xs-5">
+					<a href="{{ url_for('productPage', 
+						productId=product.id) }}">
+						<img width="150px" height="150px 
+							"src="{{product.pictures[0].link}}">
+					</a>
+				</div>
+				<div class="col-xs-6">
+					<div class="row product-name">	
+						{{ product.name }}
+					</div>
+					<div class="row">
+						{{ product.description }}
+					</div>
+					<div class="row">
+						<strong> {{ product.price }} </strong>
+					</div>
+					<div class="row" id="{{ product.id }}">
+						{% if product.stock %}
+							<button type="button" class="btn 
+								btn-success btn-sm add_to_cart" >
+								Adauga 
+								<span class="glyphicon 
+									glyphicon-shopping-cart">
+								</span>
+							</button>
+						{% else %}
+							<span class="label label-danger"> 
+								Stoc epuizat 
+							</span>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>	
+</div>

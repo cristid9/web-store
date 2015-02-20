@@ -1,0 +1,16 @@
+{% for product in cart %}
+	<h4>
+		{{product.quantity}} x {{ product.name }}: {{ product.price 
+			* product.quantity }}
+	</h4>
+{% endfor %}
+<h4> Transport: {{ shipping }}({{ shippingCost }}) </h4>
+<h3> Total Comanda: {{ total }} lei </h3>
+
+<h1> Date de livrare </h1>
+<h4> Nume: {{ name }} </h4>
+<h4> Telefon: {{ phone }} </h4>
+<h4> Judet: {{ region }} </h4>
+<h4> Oras: {{ city }} </h4>
+<h4> Adresa: {{ address }} </h4>
+

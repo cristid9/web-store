@@ -1,38 +1,108 @@
 ## @package user
 #
-#
-#
-#
+# This module contains all the classes related to a user, independet of it's
+#  state
 
-##
-#
-#
-#
-class User(object):
-	
-	##
-	#
-	#
-	#
-	def __init__(self, db=None, user_id=None):
-		self.db = db
-		self.username = None
-		self.email = None
-		self.state = None
-		self.user_id = user_id
-		self.loadUser(user_id)
+from main import db
+from datetime import datetime
 
-	@staticmethod
-	def addUser( username, password, email):
-		# Add query to add a new record in the user table
-		pass
+## Since there are 2 types of user: pending users and normal users, and both
+#  have the same attributes there must be a base user class and the other
+#  should extend this class.
+class User(db.Model):
+    __tablename__ = 'user_table'
 
-	def loadUser(self, user_id):
-		# Add query to load a user from the database
-		pass
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String, nullable=False)
+    name = db.Column(db.String, nullable=False)
+    state = db.Column(db.String, nullable=False)
+    password = db.Column(db.String, nullable=False)
+    email = db.Column(db.String, nullable=False)
+    userData = db.relationship('UserData', backref='user', lazy='dynamic')
 
-	@staticmethod	
-	def deleteUser(user_id):
-		# Delete a user using it's id
-		pass
-			
+    ## Method required by flask-login.
+    def is_authenticated(self):
+        return True
+
+    ## Method required by flask-login.
+    def is_active(self):
+        return True
+
+    ## Method required by flask-login.
+    def is_anoymous(self):
+        return False
+
+    ## Method required by flask-login.
+    def get_id(self):
+        return unicode(self.id)
+
+    ## Use this method to check if an user is admin.
+    #
+    # @return bool It returns `True` if the user is admin or
+    #         `False` otherwise.
+    def is_admin(self):
+        if self.state == "admin":
+            return True
+        return False
+
+    ## Constructor method of the BaseUser class.
+    def __init__(self, username, name, state, password, email):
+        self.username = username
+        self.name = name
+        self.state = state
+        self.password = password
+        # An user should have a primary email address.
+        self.email = email
+
+    def __repr__(self):
+        return "<User(%r, %r, %r)>" % (self.username, self.name, self.password)
+
+
+## This class represents a user who hasn't validated his account yet.
+class PendingUser(db.Model):
+    __tablename__ = 'pending_user_table'
+
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String, nullable=False)
+    name = db.Column(db.String, nullable=False)
+    password = db.Column(db.String, nullable=False)
+    email = db.Column(db.String, nullable=False)
+    pendingId = db.Column(db.String, nullable=False, unique=True)
+    registrationDate = db.Column(db.DateTime, nullable=False)
+
+    def __init__(self, pendingId, username, name, password, email):
+        self.username = username
+        self.name = name
+        self.password = password
+        # An user should have a primary email address.
+        self.email = email
+        self.pendingId = pendingId
+        self.registrationDate = datetime.utcnow()
+
+
+## Used to represent shiping informations of an user.
+class UserData(db.Model):
+    __tablename__ = 'userdata_table'
+
+    id = db.Column(db.Integer, primary_key=True)
+    phone = db.Column(db.String)
+    email = db.Column(db.String)
+    region = db.Column(db.String)
+    city = db.Column(db.String)
+    address = db.Column(db.String)
+    userId = db.Column(db.Integer, db.ForeignKey('user_table.id'))
+
+    def __init__(self, phone=None, email=None, region=None, city=None,
+                 address=None):
+        self.phone = phone
+        self.email = email
+        self.region = region
+        self.city = city
+        self.address = address
+
+    def __repr__(self):
+        return "<UserData(%r, %r, %r, %r, %r)>" % (self.phone,
+                                                   self.email,
+                                                   self.region,
+                                                   self.city,
+                                                   self.address)

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+	<div class="row">
+		<div class="col-xs-2">
+		</div>
+		<div class="col-xs-8">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<span class="glyphicon glyphicon-search"></span>
+					Rezultatele cautarii
+				</div>
+				<div class="panel-body">
+					{% for product in products %}
+						<div class="row">
+							<div class="col-xs-2">
+								<a href="{{ url_for('productPage', 
+									productId=product.id) }}">
+									<img src="{{ product.pictures[0].link }}"
+										width="100px" height="100px">
+								</a>
+							</div>
+							<div class="col-xs-6">
+								<p> {{ product.description }} </p>
+								<p> 
+									<strong> {{ product.price }} lei </strong> 
+								</p>
+								{% if product.stock %}
+									<h4>	
+										<span class="label label-success">
+											disponibil
+										</span>
+									</h4>
+								{% else %}
+									<h4>
+										<span class="label labe-danger">
+											stoc epuizat
+										</span>
+									</h4>
+								{% endif %}
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

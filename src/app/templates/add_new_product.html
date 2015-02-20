@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel panel-heading">
+                <h3>
+                    <span class="glyphicon glyphicon-list-alt"> </span>
+                    Adauga noul produs
+                </h3>
+            </div>
+            <div class="panel panel-body">
+                <form method="POST" action="" id="image_uploading_form">
+                    {{ form.hidden_tag() }}
+
+                    <div class="row">
+                        <div class="col-xs-2">
+                            Product Name
+                        </div>
+
+                        <div class="col-xs-4">
+                            {{ form.name(class="form-control",
+                                placeholder="name") }}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            Product Price
+                        </div>
+
+                        <div class="col-xs-3">
+                            {{ form.price(class="form-control",
+                                placeholder="price in lei") }}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            Product Stock
+                        </div>
+
+                        <div class="col-xs-2">
+                            {{ form.stock(class="form-control",
+                                placeholder="stock") }}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            Product Category
+                        </div>
+
+                        <div class="col-xs-4">
+                            {{ form.category(class="form-control",
+                                placeholder="category") }}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            Product Description
+                        </div>
+
+                        <div class="col-xs-4">
+                            {{ form.description(class="form-control",
+                                placeholder="description", rows="2") }}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row hidden">
+                        <div class="col-xs-4">
+                            {{ form.pictures(id="pictures") }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            Product Pictures
+                        </div>
+
+                        <div class="col-xs-4">
+                            <button type="button" class="btn btn-primary bt-md" id="add_images_button">
+                                Add images
+                            </button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row hidden">
+                        <div class="col-xs-4">
+                            {{ form.specifications(id="specifications") }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            Product Specifications
+                        </div>
+                        <div class="col-xs-4">
+                            <button type="button" class="btn btn-primary btn-md" id="add_specifications">
+                                Add specifications
+                            </button>
+                        </div>
+                    </div>
+                    <br>
+                    <button type="button" class="btn btn-success btn-md" id="add_the_product">
+                        Add the product
+                        <span class="glyphicon glyphicon-ok">
+                        </span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% include 'modals/add_images_modal.html' %}
+    {% include 'modals/add_specifications_modal.html' %}
+
+    <script type="text/javascript" src="{{ url_for('static', filename='js/add_new_product.js') }}">
+    </script>
+{% endblock %}
