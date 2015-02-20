@@ -13,7 +13,7 @@ $(document).ready(function() {
             alert("Comentariul nu este valid, ai grija ca nu poti folosi mai" +
                   "putin de 10 caractere");
         } else {
-            comment.publish()
+            comment.publish();
         }
     });
 
