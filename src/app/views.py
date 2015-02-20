@@ -8,7 +8,7 @@ from product import Product, Categories, ProductPictures, ProductComment, Produc
 from cart import Cart, ShippingMethods, Order, ProductsInOrder
 from hashlib import md5
 from decorators import isAdmin
-from helper import sendMail, generateUrl, flashErrors
+from helper import sendMail, generateUrl, flashErrors, get_max_pages
 from uuid import uuid4
 from flask.ext.login import login_user, logout_user, current_user, \
     login_required
@@ -31,6 +31,7 @@ def before_request():
 @app.route('/index')
 def index():
     product_query = Product.query.filter(Product.available == True)
+    product_query = product_query.order_by(Product.date.desc())
     promotional_products = product_query.paginate(1, 3, False)
     return render_template('index.html',
                            promotionalProducts=promotional_products,
@@ -190,15 +191,25 @@ def logout():
 
 @app.route('/categories/<string:category>/<int:page>')
 def categories(category, page):
+    # Check if the category exists.
+    category_query = Categories.query.filter_by(name=category)
+    if category_query.first() is None:
+        return render_template('404.html')
+
     query = Product.query.filter(Product.category == category,
                                  Product.available == True)
+
+    max_pages = get_max_pages(len(query.all()), PRODUCTS_PER_PAGE)
     products = query.paginate(page, PRODUCTS_PER_PAGE, False)
 
     # The content doesn't really matter, he important thing is
     # to make sure if we are indeed on this page.
     return render_template("products.html",
                            products=products,
-                           active_page="categories")
+                           active_page="categories",
+                           page_number=page,
+                           max_pages=max_pages,
+                           category=category)
 
 
 @app.route('/add_new_product', methods=['GET', 'POST'])
@@ -232,8 +243,7 @@ def addNewProduct():
         db.session.commit()
 
         # Now add the images.
-        pictures = form.pictures.data.split('|')
-        del pictures[-1]
+        pictures = json.loads(form.pictures.data)
 
         for pictureLink in pictures:
             db.session.add(ProductPictures(pictureLink, newProduct.id))

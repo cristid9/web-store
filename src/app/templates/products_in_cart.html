@@ -14,10 +14,10 @@
 				<div class="panel-body">
 					<div class="media">
 						{% for product in cart %}
-							<a class="pull-left" href="#">
-								<img src="{{ product.pictures[0].link }}" 
-									width="100" height="100">
-							</a>
+								<a class="pull-left" href="#">
+									<img src="{{ product.pictures[0].link }}"
+										width="100" height="100">
+								</a>
 								<div class="row" id="{{ product.id }}">
 									<div class="col-xs-3">
 										<div class="media-body">
@@ -79,156 +79,73 @@
 							</div>
 						{% endfor %}
 					</div>
-					<div class="panel-footer">
-					{% if not is_empty %}
-						{% for shippingMethod in g.shippingMethods %}
-							<div class="row">
-								<div class="col-xs-8">
-									<div class="radio">
-										<label>
+				</div>
+				<div class="container">
+					<div class="row">
+						<div class="col-xs-1">
+							<!--filler-->
+						</div>
+						<div class="col-xs-8">
+							<div class="panel panel-default">
+								<div class="panel-body">
+									{% if not is_empty %}
+										{% for shippingMethod in g.shippingMethods %}
 											<div class="row">
-												<div class="col-xs-1">
-													<!--filler-->
-												</div>
-												<div class="col-xs-2">
-													<input type="radio" name="shipping"
-														   value="{{ shippingMethod.name }}">
-												</div>
-												<div class="col-xs-5">
-													Transport: {{ shippingMethod.name }}
-												</div>
-												<div class="col-xs-2">
-													Pret: {{ shippingMethod.price }}
-												</div>
-												<div class="col-xs-2">
-													<strong> {{ shippingMethod.area }} </strong>
+												<div class="col-xs-8">
+													<div class="radio">
+														<label>
+															<div class="row">
+																<div class="col-xs-1">
+																	<!--filler-->
+																</div>
+																<div class="col-xs-2">
+																	<input type="radio" name="shipping"
+																		   value="{{ shippingMethod.name }}">
+																</div>
+																<div class="col-xs-5">
+																	Transport: {{ shippingMethod.name }}
+																</div>
+																<div class="col-xs-2">
+																	Pret: {{ shippingMethod.price }}
+																</div>
+																<div class="col-xs-2">
+																	<strong> {{ shippingMethod.area }} </strong>
+																</div>
+															</div>
+														</label>
+													</div>
 												</div>
 											</div>
-										</label>
+										{% endfor %}
+									{% endif %}
+									<div class="row">
+										<div class="col-xs-7">
+											Total:
+											<span class="badge order_total">
+												0
+											</span>
+											(TVA inclus)
+										</div>
+										<div class="col-xs-4">
+											{% if not is_empty %}
+												<button type="submit" class="btn btn-success btn-md
+													place_order">
+													Plaseaza comanda
+												</button>
+											{% endif %}
+										</div>
 									</div>
 								</div>
 							</div>
-						{% endfor %}
-					{% endif %}
-					<div class="row">
-						<div class="col-xs-7">
-							Total:
-							<span class="badge order_total">
-								0
-							</span>
-							(TVA inclus)
-						</div>
-						<div class="col-xs-4">
-							{% if not is_empty %}
-								<button type="submit" class="btn btn-success btn-md
-									place_order">
-									Plaseaza comanda
-								</button>
-							{% endif %}
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="modal fade" id="order_details">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">
-						<span aria-hidden="true"> &times; </span>
-						<span class="sr-only"> Close </span>
-					</button>
-				</div>
-				<br>
-				<div class="modal-body">
-					<div class="row">
-						<div class="col-xs-3">
-							Telefon:
-						</div>
-						<div class="col-xs-8">
-							{{ form.phone(class='form-control', 
-								placeholder='numarul tau de telefon', 
-								id='phone') }}
-						</div>
-					</div>
-					<br>
-					<div class="row">
-						<div class="col-xs-3">
-							Email:
-						</div>
-						<div class="col-xs-8">
-							{{ form.email(class='form-control', 
-								placeholder='adresa de email', 
-								id='email') }}
-						</div>
-					</div>
-					<br>
-					<div class="row">
-						<div class="col-xs-3">
-							Judet:
-						</div>
-						<div class="col-xs-8">
-							{{ form.region(class='form-control', 
-								placeholder='judetul in care stai', 
-								id='region') }}
-						</div>
-					</div>
-					<br>
-					<div class="row">
-						<div class="col-xs-3">
-							Oras:
-						</div>
-						<div class="col-xs-8">
-							{{ form.city(class='form-control', 
-								placeholder='orasul unde vom livra comanda',
-								id='city') }}
-						</div>
-					</div>
-					<br>
-					<div class="row">
-						<div class="col-xs-3">
-							Address
-						</div>
-						<div class="col-xs-8">
-							{{ form.address(class='form-control', 
-								placeholder='Adresa ta', id_='address') }}
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" 
-						data-dismiss="modal">
-						Renunta
-					</button>
-					<button type="button" id="send_order" 
-						class="btn btn-primary">
-						Trimite comanda
-					</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="modal fade" id="modal_status">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">
-						<span aria-hidden="true"> &times; </span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<h4> Un email cu factura a fost trimis </h4>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" 
-						data-dismiss="modal">
-						Close
-					</button>
-				</div>
-			</div>
-		</div>
-	</div>
+
+
+	{% include 'modals/order_details_modal.html' %}
+	{% include 'modals/status_modal.html' %}
 
 	<script type="text/javascript">
 		function updateTotal() {
