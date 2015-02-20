@@ -5,7 +5,7 @@
 
 from flask.ext.mail import Message
 from main import mail, app
-from src.app.decorators import async
+from decorators import async
 
 ## Use this function to send an email asynchronously.
 #
