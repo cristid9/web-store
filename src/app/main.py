@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.mail import Mail
@@ -14,8 +15,8 @@ KVSessionExtension(store, app)
 app.debug = True
 app.secret_key = 'kjsdhfssdkf'
 app.csrf_enabled = True
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://cristi:1234@localhost/"\
-							"test_web_store_db"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ["DATABASE_URL"]
+
 # Setting needed for mail server.
 app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
 app.config['MAIL_PORT'] = 465
